@@ -266,452 +266,402 @@ def train_models():
 # ════════════════════════════════════════════════════════
 #  고퀄리티 인체 해부도 렌더러 v2
 # ════════════════════════════════════════════════════════
-BODY_PART_FULL_INFO = {
-    "brain":      {"name":"뇌","sub":"중추신경계 · 두개골 내부","desc":"뇌는 1,000억 개 이상의 신경세포로 이루어진 인체 최고의 제어 센터입니다. 편두통은 뇌혈관의 수축·확장으로 발생하고, 뇌출혈은 혈관 파열로 뇌 조직이 손상되는 응급 상황입니다."},
-    "heart":      {"name":"심장","sub":"흉강 좌측 · 근육 펌프","desc":"성인 심장은 하루 약 10만 번 박동하며 5L의 혈액을 순환시킵니다. 심근경색은 관상동맥이 막혀 심근 조직이 괴사하는 응급 상황으로 골든 타임은 90분입니다."},
-    "lungs":      {"name":"폐","sub":"흉강 양측 · 가스 교환","desc":"좌폐 2엽, 우폐 3엽으로 구성되며 폐포 면적은 테니스코트 크기(70㎡)에 달합니다. 폐렴은 폐포를 세균·바이러스가 침범하고, 결핵균은 폐 상엽을 주로 침범합니다."},
-    "liver":      {"name":"간","sub":"복강 우상부 · 해독·대사","desc":"체내 최대 장기(1.2~1.5kg)로 500가지 이상의 대사 기능을 담당합니다. A~E형 간염 바이러스 모두 간세포를 표적으로 삼으며, 만성 염증 반복 시 간경화로 진행됩니다."},
-    "stomach":    {"name":"위","sub":"복강 좌상부 · 소화 시작","desc":"위는 강산성(pH 1~3) 위액으로 음식을 분해합니다. 헬리코박터 파일로리균이 위 점막 보호층을 무너뜨려 궤양을 유발하고, GERD는 하부식도괄약근 기능 이상으로 발생합니다."},
-    "intestine":  {"name":"소장·대장","sub":"복강 중앙 · 흡수·배설","desc":"소장은 6~7m로 영양소를 흡수하고, 대장은 수분 재흡수·배설을 담당합니다. 장티푸스균은 소장 림프절에 침입하고, 치질은 항문 주위 정맥총이 팽창해 발생합니다."},
-    "kidney":     {"name":"신장","sub":"후복막 · 혈액 정화","desc":"양쪽 신장은 하루 180L의 혈액을 여과해 1~2L의 소변을 생성합니다. 당뇨병성 신증과 고혈압성 신경화증은 만성 신부전의 주요 원인입니다."},
-    "skin":       {"name":"피부","sub":"전신 표면 · 1차 방어막","desc":"체표면적 약 1.5~2㎡, 무게 약 3~4kg으로 인체 최대 기관입니다. 건선은 T세포 과활성화로 피부세포가 과증식하고, 여드름은 피지선 과분비와 세균 감염으로 발생합니다."},
-    "joints":     {"name":"관절","sub":"뼈 연결부 · 운동 담당","desc":"초자연골·활액막·인대·건으로 구성됩니다. 골관절염은 연골 마모에 의한 퇴행성 질환이고, 류마티스 관절염은 활액막을 자가면역 반응이 공격하는 전신 염증 질환입니다."},
-    "thyroid":    {"name":"갑상선","sub":"경부 전면 · 호르몬 분비","desc":"나비 모양의 내분비 기관으로 T3·T4 호르몬을 분비합니다. 기능 항진은 대사항진(체중 감소·빠른 심박), 기능 저하는 대사저하(피로·체중 증가) 증상으로 나타납니다."},
-    "pancreas":   {"name":"췌장","sub":"복강 후방 · 혈당 조절","desc":"랑게르한스섬의 β세포가 인슐린을 분비합니다. 1형 당뇨는 β세포 자가면역 파괴, 2형 당뇨는 인슐린 저항성 증가가 핵심 기전입니다."},
-    "gallbladder":{"name":"담낭","sub":"간 하면 · 담즙 저장","desc":"담즙을 농축·저장했다가 지방 소화 시 십이지장으로 분비합니다. 담즙 성분 불균형이나 정체 시 담석이 형성되고, 담즙이 혈중으로 역류하면 황달이 발생합니다."},
-    "spleen":     {"name":"비장","sub":"복강 좌상부 · 면역 필터","desc":"노화된 적혈구를 제거하고 면역세포를 생산합니다. 말라리아 감염 시 감염된 적혈구가 비장에 집적되어 비종대(비장 비대)가 특징적으로 나타납니다."},
-    "bladder":    {"name":"방광","sub":"골반강 · 소변 저장","desc":"400~600ml의 소변을 저장합니다. 요로 감염의 80%는 대장균이 요도를 통해 상행 감염되며, 여성은 요도가 짧아 감염 위험이 높습니다."},
-    "spine":      {"name":"척추","sub":"중심축 · 신경 보호","desc":"경추 7개, 흉추 12개, 요추 5개의 척추뼈로 구성됩니다. 경추 척추증은 추간판 변성으로 신경근이 압박되어 목·어깨·팔로 방사통이 발생합니다."},
-    "legs":       {"name":"하지·정맥","sub":"하체 · 혈액 환류","desc":"하지 정맥판막이 일방통행 밸브 역할을 합니다. 정맥류는 판막 기능 부전으로 혈액이 역류하면서 정맥벽이 팽창·구불구불해지는 질환입니다."},
-    "eye":        {"name":"눈","sub":"시각기관 · 안구","desc":"편두통에서 광선 공포증·눈 앞 섬광 전조가 나타납니다. 당뇨병성 망막병증은 망막 미세혈관이 손상되어 진행하는 성인 실명의 주요 원인입니다."},
-    "ear":        {"name":"귀 (내이)","sub":"청각·전정기관","desc":"내이 전정기관의 이석(탄산칼슘 결정)이 반고리관으로 이탈하면 특정 자세에서 강한 회전성 어지럼증이 유발됩니다."},
-    "esophagus":  {"name":"식도","sub":"인두~위 연결 통로","desc":"25cm 길이의 근육관으로 하부식도괄약근이 위산 역류를 막습니다. GERD에서 반복적인 위산 자극은 바렛 식도, 나아가 식도암으로 진행할 수 있습니다."},
-    "blood":      {"name":"혈액","sub":"전신 순환 · 운반 매체","desc":"적혈구(산소)·백혈구(면역)·혈소판(지혈)·혈장으로 구성됩니다. 말라리아 원충은 적혈구 내 증식·파열하고, 뎅기열은 혈소판을 감소시켜 출혈 경향을 높입니다."},
-    "lymph":      {"name":"림프계","sub":"면역 네트워크","desc":"림프관·림프절·비장·흉선으로 구성된 면역 고속도로입니다. 감염 시 림프절에서 T·B세포가 활성화되며, AIDS에서는 HIV가 CD4 T세포를 직접 파괴합니다."},
-    "immune":     {"name":"면역계","sub":"전신 방어 체계","desc":"선천면역(대식세포·NK세포)과 후천면역(T세포·B세포)으로 구성됩니다. HIV는 CD4 T세포에 침투해 점진적으로 파괴하고, CD4 수치 200/μL 미만이면 AIDS로 진행됩니다."},
-    "neck":       {"name":"경추","sub":"목 척추","desc":"경추 7개 척추뼈가 뇌와 몸통을 연결합니다. 추간판 탈수·변성으로 신경근이 압박되면 목·어깨·팔 방사통이 발생합니다."},
-    "nose":       {"name":"코","sub":"호흡·후각기관","desc":"비강 점막은 공기를 가온·가습·여과합니다. 알레르기 비염은 알레르겐에 반응한 비만세포가 히스타민을 분비해 콧물·재채기·코막힘을 유발합니다."},
+
+# ════════════════════════════════════════════════════════
+#  인체 해부도 렌더러 v5 — 흰 바탕, 분리된 두 다리
+# ════════════════════════════════════════════════════════
+BODY_PART_INFO = {
+    "brain":       {"name":"뇌",        "sub":"중추신경계 · 두개골 내부",  "desc":"약 1,000억 개 신경세포로 이루어진 인체 제어 센터입니다. 편두통은 뇌혈관 수축·확장 이상, 뇌출혈은 혈관 파열로 뇌 조직이 손상되는 응급 상황입니다."},
+    "heart":       {"name":"심장",      "sub":"흉강 좌측 · 근육 펌프",     "desc":"하루 약 10만 번 박동합니다. 심근경색은 관상동맥 폐색으로 심근이 괴사하는 응급 상황이며 90분 내 치료가 핵심입니다."},
+    "lungs":       {"name":"폐",        "sub":"흉강 양측 · 가스 교환",     "desc":"좌폐 2엽·우폐 3엽, 폐포 면적 약 70㎡입니다. 폐렴은 폐포를 세균·바이러스가 침범하고, 결핵균은 폐 상엽을 주로 침범합니다."},
+    "liver":       {"name":"간",        "sub":"복강 우상부 · 해독·대사",   "desc":"체내 최대 장기(1.2~1.5kg)로 500가지 이상의 대사 기능을 담당합니다. A~E형 간염 모두 간세포를 표적으로 하며 만성 염증 반복 시 간경화로 진행됩니다."},
+    "stomach":     {"name":"위",        "sub":"복강 좌상부 · 소화 시작",   "desc":"강산성 위액(pH 1~3)으로 음식을 분해합니다. H.pylori균이 점막 보호층을 파괴해 소화성 궤양을 유발하고, GERD는 하부식도괄약근 기능 이상으로 발생합니다."},
+    "intestine":   {"name":"소장·대장", "sub":"복강 중앙 · 흡수·배설",    "desc":"소장(6~7m)은 영양소를, 대장은 수분을 흡수합니다. 장티푸스균은 소장 림프절을 침범하고, 치질은 항문 주위 정맥총 팽창으로 발생합니다."},
+    "kidney":      {"name":"신장",      "sub":"후복막 좌우 · 혈액 정화",   "desc":"하루 약 180L 혈액을 여과해 1~2L 소변을 생성합니다. 당뇨·고혈압의 장기 합병증으로 신기능이 저하되며, 요로 감염은 대장균의 상행 감염으로 주로 발생합니다."},
+    "skin":        {"name":"피부",      "sub":"전신 표면 · 1차 방어막",    "desc":"체표면적 약 1.5~2㎡의 인체 최대 기관입니다. 건선은 T세포 과활성화로 피부세포가 과증식하고, 여드름은 피지선 과분비와 세균 감염으로 발생합니다."},
+    "joints":      {"name":"관절",      "sub":"뼈 연결부 · 운동 담당",     "desc":"초자연골·활액막·인대·건으로 구성됩니다. 골관절염은 연골 마모, 류마티스 관절염은 활액막을 자가면역이 공격하는 전신 염증 질환입니다."},
+    "thyroid":     {"name":"갑상선",    "sub":"경부 전면 · 호르몬 분비",   "desc":"T3·T4 호르몬을 분비합니다. 기능 항진은 체중 감소·빠른 심박, 기능 저하는 피로·체중 증가 증상으로 나타납니다."},
+    "pancreas":    {"name":"췌장",      "sub":"복강 후방 · 혈당 조절",     "desc":"랑게르한스섬의 β세포가 인슐린을 분비합니다. 1형 당뇨는 β세포 파괴, 2형 당뇨는 인슐린 저항성 증가가 핵심 기전입니다."},
+    "gallbladder": {"name":"담낭",      "sub":"간 하면 · 담즙 저장",       "desc":"담즙을 농축·저장했다가 지방 소화 시 분비합니다. 담즙 성분 불균형 시 담석이 형성되고, 담즙 역류 시 황달이 발생합니다."},
+    "spleen":      {"name":"비장",      "sub":"복강 좌상부 · 면역 필터",   "desc":"노화된 적혈구를 제거하고 면역세포를 생산합니다. 말라리아 감염 시 감염된 적혈구가 집적되어 비장 비대가 특징적으로 나타납니다."},
+    "bladder":     {"name":"방광",      "sub":"골반강 · 소변 저장",        "desc":"400~600ml의 소변을 저장합니다. 요로 감염의 80%는 대장균이 요도를 통해 상행 감염되며, 여성은 요도가 짧아 감염 위험이 높습니다."},
+    "spine":       {"name":"척추",      "sub":"중심축 · 신경 보호",        "desc":"경추 7개·흉추 12개·요추 5개로 구성됩니다. 경추 척추증은 추간판 변성으로 신경근이 압박되어 목·어깨·팔로 방사통이 발생합니다."},
+    "legs":        {"name":"하지·정맥", "sub":"하체 · 혈액 환류",          "desc":"하지 정맥판막이 일방통행 밸브 역할을 합니다. 정맥류는 판막 기능 부전으로 혈액이 역류하면서 정맥벽이 팽창하는 질환입니다."},
+    "eye":         {"name":"눈",        "sub":"시각기관 · 안구",            "desc":"편두통 전조 증상(광선 공포증·섬광)이 나타납니다. 당뇨 합병증으로 망막 미세혈관이 손상되는 망막병증은 성인 실명의 주요 원인입니다."},
+    "ear":         {"name":"귀 (내이)", "sub":"청각·전정기관",             "desc":"내이 이석이 반고리관으로 이탈하면 특정 자세에서 강한 회전성 어지럼증(이석증)이 유발됩니다."},
+    "esophagus":   {"name":"식도",      "sub":"인두~위 연결 통로",          "desc":"하부식도괄약근이 위산 역류를 막습니다. GERD에서 반복적인 위산 자극은 바렛 식도로 진행될 수 있습니다."},
+    "blood":       {"name":"혈액",      "sub":"전신 순환 · 운반 매체",      "desc":"적혈구·백혈구·혈소판·혈장으로 구성됩니다. 말라리아 원충은 적혈구 내 증식·파열하고, 뎅기열은 혈소판을 감소시켜 출혈 경향을 높입니다."},
+    "lymph":       {"name":"림프계",    "sub":"면역 네트워크",              "desc":"림프관·림프절·비장·흉선으로 구성됩니다. 감염 시 림프절에서 T·B세포가 활성화되며, AIDS에서는 HIV가 CD4 T세포를 직접 파괴합니다."},
+    "immune":      {"name":"면역계",    "sub":"전신 방어 체계",             "desc":"선천면역과 후천면역으로 구성됩니다. HIV는 CD4 T세포를 점진적으로 파괴하고, CD4 수치 200/μL 미만이면 AIDS로 진행됩니다."},
+    "neck":        {"name":"경추",      "sub":"목 척추",                   "desc":"경추 7개 척추뼈가 뇌와 몸통을 연결합니다. 추간판 변성으로 신경근이 압박되면 목·어깨·팔 방사통이 발생합니다."},
+    "nose":        {"name":"코",        "sub":"호흡·후각기관",             "desc":"비강 점막이 공기를 가온·가습·여과합니다. 알레르기 비염은 알레르겐에 반응한 비만세포가 히스타민을 분비해 콧물·재채기를 유발합니다."},
 }
 
 
 def render_body_anatomy(active_parts: dict, part_disease_map: dict):
-    """고퀄리티 인터랙티브 인체 해부도 (v2)"""
+    """인체 해부도 v5 — 흰 바탕, 분리된 두 다리, 차분한 장기 색감"""
 
-    # JS용 데이터 직렬화
-    part_info_js = {}
-    for part, info in BODY_PART_FULL_INFO.items():
+    part_data_js = {}
+    for part, info in BODY_PART_INFO.items():
         diseases = sorted(part_disease_map.get(part, []), key=lambda x: -x["prob"])[:6]
-        part_info_js[part] = {
-            "name": info["name"],
-            "sub":  info["sub"],
-            "desc": info["desc"],
+        part_data_js[part] = {
+            "name":      info["name"],
+            "sub":       info["sub"],
+            "desc":      info["desc"],
             "intensity": round(active_parts.get(part, 0) * 100),
-            "diseases": diseases,
+            "diseases":  diseases,
         }
 
-    active_json   = json.dumps({p: round(v, 3) for p, v in active_parts.items()})
-    part_info_json = json.dumps(part_info_js, ensure_ascii=False)
+    active_json    = json.dumps({p: round(v, 3) for p, v in active_parts.items()})
+    part_data_json = json.dumps(part_data_js, ensure_ascii=False)
 
     html = """<!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;background:transparent;}
-.wrap{display:flex;gap:20px;align-items:flex-start;}
-.svg-col{flex:0 0 270px;}
-.panel-col{flex:1;min-width:0;}
-.info-card{background:#fff;border:0.5px solid rgba(0,0,0,.1);border-radius:14px;padding:18px;margin-bottom:10px;}
-.info-name{font-size:20px;font-weight:500;color:#111;margin-bottom:2px;}
-.info-sub{font-size:12px;color:#888;margin-bottom:14px;}
-.int-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.int-label{font-size:11px;color:#888;font-weight:500;text-transform:uppercase;letter-spacing:.06em;min-width:44px;}
-.int-track{flex:1;height:7px;background:#eee;border-radius:4px;overflow:hidden;}
-.int-fill{height:100%;border-radius:4px;transition:width .45s cubic-bezier(.4,0,.2,1),background .3s;}
-.int-pct{font-size:12px;font-weight:500;min-width:34px;text-align:right;}
-.sec-label{font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;}
-.desc{font-size:13px;color:#555;line-height:1.68;margin-bottom:14px;}
-.tag-wrap{display:flex;flex-wrap:wrap;gap:5px;}
-.tag{font-size:11px;padding:3px 11px;border-radius:999px;font-weight:500;border:1px solid;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:transparent;}
+.layout{display:flex;gap:20px;align-items:flex-start;}
+.svg-wrap{flex:0 0 260px;}
+.panel{flex:1;min-width:0;}
+.ob{cursor:pointer;}
+.ob:hover > *{opacity:.7;}
+.card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:16px;margin-bottom:10px;}
+.card-name{font-size:17px;font-weight:500;color:var(--color-text-primary,#111);margin-bottom:2px;}
+.card-sub{font-size:11px;color:var(--color-text-secondary,#888);margin-bottom:12px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.bar-lbl{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.06em;min-width:40px;}
+.bar-track{flex:1;height:5px;background:var(--color-background-tertiary,#eee);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s,background .3s;}
+.bar-pct{font-size:11px;font-weight:500;min-width:28px;text-align:right;color:var(--color-text-primary,#111);}
+.sec{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.desc{font-size:12px;color:var(--color-text-secondary,#555);line-height:1.65;margin-bottom:12px;}
+.tags{display:flex;flex-wrap:wrap;gap:4px;}
+.tag{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;border:1px solid;}
 .tag-r{background:#FCEBEB;color:#791F1F;border-color:#F09595;}
 .tag-o{background:#FAEEDA;color:#633806;border-color:#EF9F27;}
 .tag-g{background:#EAF3DE;color:#27500A;border-color:#97C459;}
-.tag-n{background:#f5f5f3;color:#888;border-color:rgba(0,0,0,.1);}
-.legend{display:flex;gap:14px;margin-top:12px;font-size:11px;color:#888;flex-wrap:wrap;}
-.lbullet{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle;}
-.hint{font-size:11px;color:#aaa;text-align:center;margin-top:6px;}
-.oz{cursor:pointer;transition:opacity .16s;}
-.oz:hover{opacity:.7;}
+.tag-n{background:var(--color-background-secondary,#f5f5f3);color:var(--color-text-secondary,#888);border-color:var(--color-border-tertiary,rgba(0,0,0,.1));}
+.back-btn{font-size:11px;color:var(--color-text-secondary,#888);background:none;border:none;cursor:pointer;padding:0;margin-top:10px;display:block;}
+.hint{font-size:10px;color:var(--color-text-tertiary,#bbb);text-align:center;margin-top:5px;}
 @media(prefers-color-scheme:dark){
-  .info-card{background:#1e1e1c;border-color:rgba(255,255,255,.1);}
-  .info-name{color:#eee;} .info-sub,.desc,.int-label,.sec-label,.hint{color:#aaa;}
-  .int-pct{color:#ccc;} .int-track{background:#333;}
+  .card{background:#1e1e1c;border-color:rgba(255,255,255,.1);}
+  .card-name{color:#eee;}.card-sub,.desc,.sec{color:#999;}
+  .bar-track{background:#333;}.bar-pct{color:#ccc;}
   .tag-r{background:#501313;color:#F7C1C1;border-color:#A32D2D;}
   .tag-o{background:#412402;color:#FAC775;border-color:#854F0B;}
   .tag-g{background:#173404;color:#C0DD97;border-color:#3B6D11;}
   .tag-n{background:#2a2a28;color:#aaa;border-color:rgba(255,255,255,.1);}
-  .legend{color:#999;}
 }
 </style></head><body>
-<div class="wrap">
-<div class="svg-col">
-<svg viewBox="0 0 270 740" width="100%" style="display:block;">
-<defs>
-  <linearGradient id="sg" x1="0" y1="0" x2=".3" y2="1">
-    <stop offset="0%" stop-color="#F5D0A8"/>
-    <stop offset="100%" stop-color="#E0A070"/>
-  </linearGradient>
-  <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="#EEC090"/>
-    <stop offset="100%" stop-color="#D49060"/>
-  </linearGradient>
-</defs>
+<div class="layout">
+<div class="svg-wrap">
+<svg viewBox="0 0 240 760" width="100%" style="display:block;">
 
-<!-- 몸 실루엣 -->
-<path d="M95,138 Q80,134 70,143 L52,165 L40,215 L38,275 L42,335 L51,365 L60,374 L68,363 L70,300 L74,240 L80,182 L80,162 L102,156" fill="url(#sg)" stroke="#C88A60" stroke-width="1.2"/>
-<path d="M175,138 Q190,134 200,143 L218,165 L230,215 L232,275 L228,335 L219,365 L210,374 L202,363 L200,300 L196,240 L190,182 L190,162 L168,156" fill="url(#sg)" stroke="#C88A60" stroke-width="1.2"/>
-<path d="M80,160 L102,154 L135,152 L168,154 L190,160 L194,185 L196,225 L196,318 L193,375 L188,394 L178,396 L178,428 L188,500 L196,570 L200,640 L204,708 L66,708 L70,640 L74,570 L82,500 L92,428 L92,396 L82,394 L77,375 L74,318 L74,225 L76,185 Z" fill="url(#sg)" stroke="#C88A60" stroke-width="1.3"/>
-<rect x="114" y="111" width="42" height="47" rx="12" fill="url(#sg)" stroke="#C88A60" stroke-width="1.2"/>
-<ellipse cx="135" cy="69" rx="52" ry="62" fill="url(#sg)" stroke="#C88A60" stroke-width="1.3"/>
-<ellipse cx="83" cy="69" rx="9" ry="14" fill="#E8B888" stroke="#C88A60" stroke-width="1"/>
-<ellipse cx="187" cy="69" rx="9" ry="14" fill="#E8B888" stroke="#C88A60" stroke-width="1"/>
+<!-- 머리 -->
+<ellipse cx="120" cy="56" rx="38" ry="44" fill="white" stroke="#CCC" stroke-width="1.2"/>
+<path d="M82,46 Q75,46 73,55 Q71,64 73,72 Q75,80 82,80" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M158,46 Q165,46 167,55 Q169,64 167,72 Q165,80 158,80" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M104,48 Q110,44 117,46" fill="none" stroke="#C8B8A8" stroke-width="1" stroke-linecap="round"/>
+<path d="M123,46 Q130,44 136,48" fill="none" stroke="#C8B8A8" stroke-width="1" stroke-linecap="round"/>
+<ellipse cx="110" cy="58" rx="7" ry="5" fill="#F0F0EE" stroke="#DDD" stroke-width=".7"/>
+<ellipse cx="130" cy="58" rx="7" ry="5" fill="#F0F0EE" stroke="#DDD" stroke-width=".7"/>
+<circle cx="110" cy="58" r="3" fill="#7A6050"/>
+<circle cx="130" cy="58" r="3" fill="#7A6050"/>
+<circle cx="111" cy="57" r="1.1" fill="white"/>
+<circle cx="131" cy="57" r="1.1" fill="white"/>
+<path d="M117,70 Q120,77 123,70" fill="none" stroke="#C8A888" stroke-width="1" stroke-linecap="round"/>
+<circle cx="116" cy="74" r="2.5" fill="#DDCCB8" opacity=".5"/>
+<circle cx="124" cy="74" r="2.5" fill="#DDCCB8" opacity=".5"/>
+<path d="M112,84 Q120,90 128,84" fill="none" stroke="#C0A090" stroke-width="1.2" stroke-linecap="round"/>
 
-<!-- 얼굴 -->
-<ellipse cx="120" cy="74" rx="9.5" ry="6.5" fill="#fff" stroke="#B89070" stroke-width=".8"/>
-<ellipse cx="150" cy="74" rx="9.5" ry="6.5" fill="#fff" stroke="#B89070" stroke-width=".8"/>
-<circle cx="120" cy="74" r="4.5" fill="#3A2820"/>
-<circle cx="150" cy="74" r="4.5" fill="#3A2820"/>
-<circle cx="121" cy="73" r="1.4" fill="white"/>
-<circle cx="151" cy="73" r="1.4" fill="white"/>
-<path d="M130,87 Q135,93 140,87" fill="none" stroke="#B87860" stroke-width="1.3" stroke-linecap="round"/>
-<path d="M126,85 Q128,90 130,87" fill="none" stroke="#C09080" stroke-width="1" stroke-linecap="round"/>
-<path d="M140,87 Q142,90 144,85" fill="none" stroke="#C09080" stroke-width="1" stroke-linecap="round"/>
-<ellipse cx="129" cy="92" rx="4.5" ry="3.5" fill="#D49878" opacity=".65"/>
-<ellipse cx="141" cy="92" rx="4.5" ry="3.5" fill="#D49878" opacity=".65"/>
+<!-- 목 -->
+<rect x="111" y="96" width="18" height="30" rx="6" fill="white" stroke="#CCC" stroke-width="1"/>
 
-<!-- 손발 -->
-<ellipse cx="47" cy="382" rx="13" ry="17" fill="url(#sg)" stroke="#C88A60" stroke-width="1"/>
-<ellipse cx="223" cy="382" rx="13" ry="17" fill="url(#sg)" stroke="#C88A60" stroke-width="1"/>
-<path d="M88,708 Q70,708 66,700 L62,692 L64,686 L96,686 L98,708 Z" fill="url(#sg)" stroke="#C88A60" stroke-width="1"/>
-<path d="M182,708 Q200,708 204,700 L208,692 L206,686 L174,686 L172,708 Z" fill="url(#sg)" stroke="#C88A60" stroke-width="1"/>
+<!-- 몸통 -->
+<path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
+  fill="white" stroke="#CCC" stroke-width="1.2"/>
 
-<!-- 근육 결 -->
-<path d="M80,205 Q78,240 80,270" fill="none" stroke="#C89070" stroke-width=".5" opacity=".4"/>
-<path d="M190,205 Q192,240 190,270" fill="none" stroke="#C89070" stroke-width=".5" opacity=".4"/>
-<path d="M100,164 L100,394" fill="none" stroke="#C89070" stroke-width=".35" opacity=".22"/>
-<path d="M170,164 L170,394" fill="none" stroke="#C89070" stroke-width=".35" opacity=".22"/>
+<!-- 오른팔 -->
+<path d="M78,126 Q64,131 57,148 L47,200 L45,262 L49,318 L57,330 L65,318 L67,264 L69,206 L77,158 L83,138 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<ellipse cx="52" cy="344" rx="9" ry="13" fill="white" stroke="#CCC" stroke-width=".9"/>
+
+<!-- 왼팔 -->
+<path d="M162,126 Q176,131 183,148 L193,200 L195,262 L191,318 L183,330 L175,318 L173,264 L171,206 L163,158 L157,138 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<ellipse cx="188" cy="344" rx="9" ry="13" fill="white" stroke="#CCC" stroke-width=".9"/>
+
+<!-- 오른 다리 -->
+<path d="M86,402 L100,399 L111,399 L113,456 L112,516 L109,550 L93,553 L87,535 L86,476 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<ellipse cx="99" cy="557" rx="13" ry="10" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M88,565 Q86,602 88,638 L91,668 L99,676 L107,668 L110,638 L112,602 L110,565 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M90,672 Q87,683 84,692 Q82,699 90,702 L110,702 Q118,700 118,693 L114,683 L108,672 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+
+<!-- 왼 다리 -->
+<path d="M154,402 L140,399 L129,399 L127,456 L128,516 L131,550 L147,553 L153,535 L154,476 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<ellipse cx="141" cy="557" rx="13" ry="10" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M152,565 Q154,602 152,638 L149,668 L141,676 L133,668 L130,638 L128,602 L130,565 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M150,672 Q153,683 156,692 Q158,699 150,702 L130,702 Q122,700 122,693 L126,683 L132,672 Z"
+  fill="white" stroke="#CCC" stroke-width="1"/>
 
 <!-- ══ 장기 ══ -->
-
-<!-- 뇌 -->
-<g class="oz" id="oz-brain" data-part="brain">
-  <ellipse cx="135" cy="57" rx="38" ry="34" fill="#C8D8F8" stroke="#5868C8" stroke-width="1.6"/>
-  <path d="M100,53 Q112,36 135,34 Q158,36 170,53" fill="none" stroke="#7888D8" stroke-width="1" opacity=".65"/>
-  <path d="M102,63 Q115,49 135,47 Q155,49 168,63" fill="none" stroke="#7888D8" stroke-width=".8" opacity=".5"/>
-  <path d="M103,72 Q116,61 135,60 Q154,61 167,72" fill="none" stroke="#7888D8" stroke-width=".6" opacity=".38"/>
-  <line x1="135" y1="24" x2="135" y2="90" stroke="#8898D8" stroke-width=".7" opacity=".3"/>
-  <text x="135" y="62" text-anchor="middle" font-size="10" font-weight="600" fill="#2838A0" font-family="-apple-system,sans-serif">뇌</text>
+<g class="ob" id="ob-brain"       data-part="brain">
+  <ellipse cx="120" cy="46" rx="26" ry="22" fill="#E8EEF8" stroke="#90A4CC" stroke-width="1.2"/>
+  <path d="M96,42 Q104,31 120,29 Q136,31 144,42" fill="none" stroke="#90A4CC" stroke-width=".8" opacity=".6"/>
+  <path d="M97,51 Q106,42 120,40 Q134,42 143,51" fill="none" stroke="#90A4CC" stroke-width=".6" opacity=".4"/>
+  <line x1="120" y1="25" x2="120" y2="68" stroke="#90A4CC" stroke-width=".5" opacity=".3"/>
+</g>
+<g class="ob" id="ob-eye"         data-part="eye">
+  <ellipse cx="110" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
+  <ellipse cx="130" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
+</g>
+<g class="ob" id="ob-ear"         data-part="ear">
+  <path d="M82,46 Q75,46 73,55 Q71,64 73,72 Q75,80 82,80" fill="transparent" stroke="transparent" stroke-width="12"/>
+  <path d="M158,46 Q165,46 167,55 Q169,64 167,72 Q165,80 158,80" fill="transparent" stroke="transparent" stroke-width="12"/>
+</g>
+<g class="ob" id="ob-thyroid"     data-part="thyroid">
+  <path d="M112,114 Q107,108 107,115 Q107,124 115,127 L120,128 L125,127 Q133,124 133,115 Q133,108 128,114 Q125,118 120,119 Q115,118 112,114 Z" fill="#FCE8C4" stroke="#D0A040" stroke-width="1.1"/>
+</g>
+<g class="ob" id="ob-esophagus"   data-part="esophagus">
+  <rect x="118" y="124" width="4" height="44" rx="2" fill="#EEE098" stroke="#C0A840" stroke-width=".8"/>
+</g>
+<g class="ob" id="ob-spine"       data-part="spine">
+  <rect x="118" y="132" width="4" height="226" rx="2" fill="#EEEADC" stroke="#B8B090" stroke-width=".8"/>
+  <rect x="116" y="139" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="157" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="175" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="193" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="211" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="229" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="247" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="265" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="283" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="301" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="319" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+  <rect x="116" y="337" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
+</g>
+<g class="ob" id="ob-lungs"       data-part="lungs">
+  <path d="M96,136 Q84,139 79,155 L75,202 Q73,229 83,241 Q93,250 107,246 L109,219 L110,136 Z" fill="#F4C4C4" stroke="#BC8080" stroke-width="1.3"/>
+  <path d="M84,160 Q87,176 85,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
+  <path d="M93,154 Q96,174 94,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
+  <path d="M144,136 Q156,139 161,155 L165,202 Q167,229 157,241 Q147,250 133,246 L131,219 L130,136 Z" fill="#F4C4C4" stroke="#BC8080" stroke-width="1.3"/>
+  <path d="M156,160 Q153,176 155,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
+  <path d="M147,154 Q144,174 146,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
+</g>
+<g class="ob" id="ob-heart"       data-part="heart">
+  <path d="M120,160 Q106,150 96,161 Q85,172 96,186 L120,211 L144,186 Q155,172 144,161 Q134,150 120,160 Z" fill="#EEA0A0" stroke="#B85050" stroke-width="1.5"/>
+  <path d="M108,167 Q103,176 108,186" fill="none" stroke="#E8BCBC" stroke-width=".9" opacity=".5"/>
+  <path d="M120,152 Q121,142 124,135 Q127,127 125,122" fill="none" stroke="#B85050" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M115,160 L100,147" fill="none" stroke="#8090B0" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M125,160 L140,147" fill="none" stroke="#B87878" stroke-width="1.2" stroke-linecap="round"/>
+</g>
+<g class="ob" id="ob-liver"       data-part="liver">
+  <path d="M129,224 Q148,218 162,226 L165,251 Q161,273 146,274 Q132,274 123,265 Q116,256 122,228 Z" fill="#E8B880" stroke="#B07838" stroke-width="1.2"/>
+  <path d="M135,232 Q146,229 156,234" fill="none" stroke="#C89858" stroke-width=".7" opacity=".5"/>
+</g>
+<g class="ob" id="ob-gallbladder" data-part="gallbladder">
+  <ellipse cx="155" cy="280" rx="8" ry="10" fill="#D4D880" stroke="#909030" stroke-width="1"/>
+</g>
+<g class="ob" id="ob-stomach"     data-part="stomach">
+  <path d="M91,228 Q77,231 72,247 Q67,264 79,276 Q90,284 109,282 L111,256 L103,228 Z" fill="#EEC880" stroke="#B88840" stroke-width="1.2"/>
+  <path d="M79,245 Q77,257 81,268" fill="none" stroke="#C09840" stroke-width=".7" opacity=".5"/>
+</g>
+<g class="ob" id="ob-spleen"      data-part="spleen">
+  <ellipse cx="71" cy="262" rx="11" ry="14" fill="#D0B4DC" stroke="#9060B0" stroke-width="1.1"/>
+</g>
+<g class="ob" id="ob-pancreas"    data-part="pancreas">
+  <path d="M90,290 Q111,284 142,288 L144,299 Q120,306 94,302 Z" fill="#E8D478" stroke="#A89828" stroke-width="1.1"/>
+</g>
+<g class="ob" id="ob-kidney"      data-part="kidney">
+  <path d="M77,304 Q67,304 65,315 Q63,329 72,336 Q80,341 88,335 L90,315 Q90,304 77,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
+  <path d="M72,314 Q70,324 74,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
+  <path d="M163,304 Q173,304 175,315 Q177,329 168,336 Q160,341 152,335 L150,315 Q150,304 163,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
+  <path d="M168,314 Q170,324 166,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
+</g>
+<g class="ob" id="ob-intestine"   data-part="intestine">
+  <path d="M90,310 L89,342 Q89,362 107,364 L133,364 Q151,362 151,342 L150,310"
+    fill="none" stroke="#E0B868" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <path d="M97,324 Q105,315 113,324 Q121,333 129,324 Q137,315 143,324 Q149,333 147,342 Q140,350 133,343 Q126,336 120,343 Q114,350 107,343 Q100,334 97,324 Z" fill="#EED08C" stroke="#C0A040" stroke-width=".9"/>
+</g>
+<g class="ob" id="ob-bladder"     data-part="bladder">
+  <ellipse cx="120" cy="378" rx="17" ry="13" fill="#C0D4EE" stroke="#5888B8" stroke-width="1.2"/>
+</g>
+<g class="ob" id="ob-joints"      data-part="joints">
+  <circle cx="80"  cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
+  <circle cx="160" cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
+  <circle cx="99"  cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
+  <circle cx="141" cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
+</g>
+<g class="ob" id="ob-legs"        data-part="legs">
+  <path d="M93,420 Q91,470 92,522 L93,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
+  <path d="M102,418 Q104,470 102,522 L101,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
+  <path d="M147,420 Q149,470 148,522 L147,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
+  <path d="M138,418 Q136,470 138,522 L139,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
 </g>
 
-<!-- 눈 -->
-<g class="oz" id="oz-eye" data-part="eye">
-  <ellipse cx="120" cy="74" rx="9.5" ry="6.5" fill="#A0D0F0" stroke="#3888C8" stroke-width="1.1"/>
-  <ellipse cx="150" cy="74" rx="9.5" ry="6.5" fill="#A0D0F0" stroke="#3888C8" stroke-width="1.1"/>
+<!-- 전신 오버레이: 피부 -->
+<g class="ob" id="ob-skin"   data-part="skin"   style="pointer-events:none;opacity:0;">
+  <path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
+    fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.45)" stroke-width="1.5" stroke-dasharray="8 5"/>
+</g>
+<g class="ob" id="ob-blood"  data-part="blood"  style="pointer-events:none;opacity:0;">
+  <path d="M120,215 Q96,272 92,352 Q88,412 120,428 Q152,412 148,352 Q144,272 120,215 Z"
+    fill="none" stroke="rgba(200,50,50,.4)" stroke-width="2" stroke-dasharray="6 4"/>
+</g>
+<g class="ob" id="ob-lymph"  data-part="lymph"  style="pointer-events:none;opacity:0;">
+  <circle cx="104" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
+  <circle cx="136" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
+  <path d="M104,177 Q98,208 96,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
+  <path d="M136,177 Q142,208 144,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
+</g>
+<g class="ob" id="ob-immune" data-part="immune" style="pointer-events:none;opacity:0;">
+  <ellipse cx="120" cy="290" rx="92" ry="128" fill="none" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
 </g>
 
-<!-- 귀 -->
-<g class="oz" id="oz-ear" data-part="ear">
-  <ellipse cx="83" cy="69" rx="9" ry="14" fill="#F0C898" stroke="#B87848" stroke-width="1.1" opacity=".85"/>
-  <ellipse cx="187" cy="69" rx="9" ry="14" fill="#F0C898" stroke="#B87848" stroke-width="1.1" opacity=".85"/>
-  <path d="M85,62 Q89,69 85,76" fill="none" stroke="#A06838" stroke-width=".9" opacity=".7"/>
-  <path d="M185,62 Q181,69 185,76" fill="none" stroke="#A06838" stroke-width=".9" opacity=".7"/>
-</g>
-
-<!-- 갑상선 -->
-<g class="oz" id="oz-thyroid" data-part="thyroid">
-  <path d="M120,132 Q113,125 113,133 Q113,144 124,147 L135,148 L146,147 Q157,144 157,133 Q157,125 150,132 Q146,136 135,137 Q124,136 120,132 Z" fill="#F8C090" stroke="#E09050" stroke-width="1.3"/>
-  <text x="135" y="142" text-anchor="middle" font-size="7.5" font-weight="600" fill="#8A3A08" font-family="-apple-system,sans-serif">갑상선</text>
-</g>
-
-<!-- 기관 -->
-<g class="oz" id="oz-esophagus" data-part="esophagus">
-  <rect x="132" y="152" width="6" height="55" rx="3" fill="#D8C888" stroke="#A89848" stroke-width=".9"/>
-</g>
-
-<!-- 척추 -->
-<g class="oz" id="oz-spine" data-part="spine">
-  <rect x="132" y="160" width="6" height="234" rx="2.5" fill="#EDE8D0" stroke="#A0987A" stroke-width=".9"/>
-  <rect x="130" y="167" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="188" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="209" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="230" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="251" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="272" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="293" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="314" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="335" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="356" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-  <rect x="130" y="377" width="10" height="7" rx="2.2" fill="#EDE8D0" stroke="#A0987A" stroke-width=".7"/>
-</g>
-
-<!-- 폐 -->
-<g class="oz" id="oz-lungs" data-part="lungs">
-  <path d="M102,165 Q86,168 80,186 L76,240 Q74,272 87,286 Q100,296 115,292 L119,258 L120,165 Z" fill="#F0A098" stroke="#B84840" stroke-width="1.6"/>
-  <path d="M168,165 Q184,168 190,186 L194,240 Q196,272 183,286 Q170,296 155,292 L151,258 L150,165 Z" fill="#F0A098" stroke="#B84840" stroke-width="1.6"/>
-  <path d="M89,195 Q93,214 91,246" fill="none" stroke="#B84840" stroke-width=".7" opacity=".5"/>
-  <path d="M100,189 Q104,213 102,252" fill="none" stroke="#B84840" stroke-width=".6" opacity=".4"/>
-  <path d="M181,195 Q177,214 179,246" fill="none" stroke="#B84840" stroke-width=".7" opacity=".5"/>
-  <path d="M170,189 Q166,213 168,252" fill="none" stroke="#B84840" stroke-width=".6" opacity=".4"/>
-  <text x="98" y="237" text-anchor="middle" font-size="9" font-weight="600" fill="#801818" font-family="-apple-system,sans-serif">좌폐</text>
-  <text x="172" y="237" text-anchor="middle" font-size="9" font-weight="600" fill="#801818" font-family="-apple-system,sans-serif">우폐</text>
-</g>
-
-<!-- 심장 -->
-<g class="oz" id="oz-heart" data-part="heart">
-  <path d="M135,188 Q118,177 106,188 Q93,200 106,216 L135,246 L164,216 Q177,200 164,188 Q152,177 135,188 Z" fill="#E03030" stroke="#981010" stroke-width="2"/>
-  <path d="M118,196 Q112,206 118,218 L128,228" fill="none" stroke="#FF7070" stroke-width="1" opacity=".4"/>
-  <!-- 대동맥 -->
-  <path d="M135,179 Q136,167 140,160 Q144,150 142,145" fill="none" stroke="#C01010" stroke-width="2.2" stroke-linecap="round"/>
-  <!-- 폐동맥 -->
-  <path d="M128,186 L110,171" fill="none" stroke="#4868C8" stroke-width="1.6" stroke-linecap="round"/>
-  <path d="M142,186 L160,171" fill="none" stroke="#C83838" stroke-width="1.6" stroke-linecap="round"/>
-  <text x="135" y="214" text-anchor="middle" font-size="9" font-weight="600" fill="#7A0808" font-family="-apple-system,sans-serif">심장</text>
-</g>
-
-<!-- 간 -->
-<g class="oz" id="oz-liver" data-part="liver">
-  <path d="M155,256 Q177,249 192,258 L196,287 Q192,314 174,316 Q158,316 148,306 Q140,295 146,260 Z" fill="#C06838" stroke="#8A3810" stroke-width="1.6"/>
-  <path d="M163,265 Q176,262 186,268" fill="none" stroke="#E09050" stroke-width=".8" opacity=".55"/>
-  <path d="M161,278 Q174,275 186,281" fill="none" stroke="#E09050" stroke-width=".7" opacity=".45"/>
-  <text x="170" y="290" text-anchor="middle" font-size="9" font-weight="600" fill="#5A2808" font-family="-apple-system,sans-serif">간</text>
-</g>
-
-<!-- 담낭 -->
-<g class="oz" id="oz-gallbladder" data-part="gallbladder">
-  <ellipse cx="180" cy="322" rx="11" ry="14" fill="#A8C858" stroke="#608018" stroke-width="1.3"/>
-  <path d="M175,314 Q180,311 185,314" fill="none" stroke="#608018" stroke-width=".8" opacity=".7"/>
-  <text x="180" y="325" text-anchor="middle" font-size="7" font-weight="600" fill="#386008" font-family="-apple-system,sans-serif">담낭</text>
-</g>
-
-<!-- 위 -->
-<g class="oz" id="oz-stomach" data-part="stomach">
-  <path d="M112,261 Q95,264 89,282 Q83,304 97,318 Q110,328 133,326 L138,293 L128,261 Z" fill="#E89848" stroke="#A85818" stroke-width="1.6"/>
-  <path d="M98,280 Q96,294 100,308" fill="none" stroke="#C87828" stroke-width=".8" opacity=".55"/>
-  <text x="110" y="298" text-anchor="middle" font-size="9" font-weight="600" fill="#703208" font-family="-apple-system,sans-serif">위</text>
-</g>
-
-<!-- 비장 -->
-<g class="oz" id="oz-spleen" data-part="spleen">
-  <ellipse cx="88" cy="303" rx="15" ry="19" fill="#9870C0" stroke="#5030A0" stroke-width="1.3"/>
-  <path d="M82,296 Q88,300 94,296" fill="none" stroke="#7050A8" stroke-width=".8" opacity=".7"/>
-  <text x="88" y="307" text-anchor="middle" font-size="7.5" font-weight="600" fill="#380880" font-family="-apple-system,sans-serif">비장</text>
-</g>
-
-<!-- 췌장 -->
-<g class="oz" id="oz-pancreas" data-part="pancreas">
-  <path d="M110,330 Q133,323 163,327 L166,340 Q140,348 114,344 Z" fill="#E8B868" stroke="#B87828" stroke-width="1.3"/>
-  <text x="138" y="339" text-anchor="middle" font-size="8" font-weight="600" fill="#784808" font-family="-apple-system,sans-serif">췌장</text>
-</g>
-
-<!-- 신장 -->
-<g class="oz" id="oz-kidney" data-part="kidney">
-  <path d="M90,345 Q77,345 75,358 Q73,375 84,383 Q92,389 101,383 L103,358 Q103,345 90,345 Z" fill="#D05880" stroke="#903060" stroke-width="1.6"/>
-  <path d="M84,356 Q82,367 86,376" fill="none" stroke="#F07898" stroke-width=".8" opacity=".55"/>
-  <text x="87" y="368" text-anchor="middle" font-size="7.5" font-weight="600" fill="#620030" font-family="-apple-system,sans-serif">신장</text>
-  <path d="M180,345 Q193,345 195,358 Q197,375 186,383 Q178,389 169,383 L167,358 Q167,345 180,345 Z" fill="#D05880" stroke="#903060" stroke-width="1.6"/>
-  <path d="M186,356 Q188,367 184,376" fill="none" stroke="#F07898" stroke-width=".8" opacity=".55"/>
-  <text x="183" y="368" text-anchor="middle" font-size="7.5" font-weight="600" fill="#620030" font-family="-apple-system,sans-serif">신장</text>
-</g>
-
-<!-- 장 -->
-<g class="oz" id="oz-intestine" data-part="intestine">
-  <path d="M100,345 L98,382 Q98,406 121,408 L149,408 L149,401 M170,345 L172,382 Q172,406 149,408" fill="none" stroke="#D4A060" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M110,365 Q119,354 128,365 Q137,376 146,365 Q155,354 162,365 Q168,375 166,385 Q158,394 150,386 Q142,378 134,386 Q126,394 118,386 Q111,378 110,365 Z" fill="#F0C888" stroke="#C09848" stroke-width="1.1"/>
-  <text x="135" y="382" text-anchor="middle" font-size="8" font-weight="600" fill="#704808" font-family="-apple-system,sans-serif">장</text>
-</g>
-
-<!-- 방광 -->
-<g class="oz" id="oz-bladder" data-part="bladder">
-  <ellipse cx="135" cy="426" rx="23" ry="18" fill="#88B8E8" stroke="#3870C0" stroke-width="1.6"/>
-  <path d="M124,421 Q135,418 146,421" fill="none" stroke="#6898D0" stroke-width=".8" opacity=".7"/>
-  <text x="135" y="429" text-anchor="middle" font-size="8" font-weight="600" fill="#183880" font-family="-apple-system,sans-serif">방광</text>
-</g>
-
-<!-- 관절 -->
-<g class="oz" id="oz-joints" data-part="joints">
-  <circle cx="76" cy="164" r="15" fill="#DDDCC0" stroke="#888870" stroke-width="1.5" opacity=".92"/>
-  <circle cx="194" cy="164" r="15" fill="#DDDCC0" stroke="#888870" stroke-width="1.5" opacity=".92"/>
-  <!-- 무릎 -->
-  <circle cx="93" cy="565" r="13" fill="#DDDCC0" stroke="#888870" stroke-width="1.5" opacity=".92"/>
-  <circle cx="177" cy="565" r="13" fill="#DDDCC0" stroke="#888870" stroke-width="1.5" opacity=".92"/>
-  <text x="76" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#444422" font-family="-apple-system,sans-serif">관절</text>
-  <text x="194" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#444422" font-family="-apple-system,sans-serif">관절</text>
-</g>
-
-<!-- 하지 혈관 -->
-<g class="oz" id="oz-legs" data-part="legs">
-  <path d="M87,448 Q85,498 87,548 L89,580 L92,630 L95,680" fill="none" stroke="#8090D0" stroke-width="2.5" opacity=".45"/>
-  <path d="M183,448 Q185,498 183,548 L181,580 L178,630 L175,680" fill="none" stroke="#8090D0" stroke-width="2.5" opacity=".45"/>
-  <path d="M90,448 Q95,498 97,548 L100,590 L103,640" fill="none" stroke="#D04848" stroke-width="1.5" opacity=".35"/>
-  <path d="M180,448 Q175,498 173,548 L170,590 L167,640" fill="none" stroke="#D04848" stroke-width="1.5" opacity=".35"/>
-</g>
-
-<!-- 전신 오버레이: skin -->
-<g class="oz" id="oz-skin" data-part="skin" style="pointer-events:none;opacity:0;">
-  <path d="M80,160 L102,154 L135,152 L168,154 L190,160 L194,185 L196,225 L196,318 L193,375 L188,394 L178,428 L188,500 L196,570 L200,640 L204,708 L66,708 L70,640 L74,570 L82,500 L92,428 L82,394 L77,375 L74,318 L74,225 L76,185 Z" fill="rgba(255,90,50,.12)" stroke="rgba(255,70,40,.5)" stroke-width="1.8" stroke-dasharray="9 5"/>
-  <ellipse cx="135" cy="69" rx="52" ry="62" fill="rgba(255,90,50,.09)" stroke="rgba(255,70,40,.4)" stroke-width="1.3" stroke-dasharray="7 4"/>
-</g>
-
-<!-- 혈액 순환 오버레이 -->
-<g class="oz" id="oz-blood" data-part="blood" style="pointer-events:none;opacity:0;">
-  <path d="M135,222 Q112,278 108,358 Q104,418 135,436 Q166,418 162,358 Q158,278 135,222 Z" fill="none" stroke="rgba(220,40,40,.4)" stroke-width="2.5" stroke-dasharray="7 4"/>
-  <path d="M103,175 L62,228 L58,308 L68,378" fill="none" stroke="rgba(70,100,200,.38)" stroke-width="2" stroke-dasharray="5 4"/>
-  <path d="M167,175 L208,228 L212,308 L202,378" fill="none" stroke="rgba(70,100,200,.38)" stroke-width="2" stroke-dasharray="5 4"/>
-</g>
-
-<!-- 림프 오버레이 -->
-<g class="oz" id="oz-lymph" data-part="lymph" style="pointer-events:none;opacity:0;">
-  <circle cx="113" cy="178" r="5.5" fill="none" stroke="rgba(60,180,80,.65)" stroke-width="1.6"/>
-  <circle cx="157" cy="178" r="5.5" fill="none" stroke="rgba(60,180,80,.65)" stroke-width="1.6"/>
-  <circle cx="103" cy="248" r="4.5" fill="none" stroke="rgba(60,180,80,.55)" stroke-width="1.3"/>
-  <circle cx="167" cy="248" r="4.5" fill="none" stroke="rgba(60,180,80,.55)" stroke-width="1.3"/>
-  <path d="M113,183 Q107,213 103,252" fill="none" stroke="rgba(60,180,80,.38)" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <path d="M157,183 Q163,213 167,252" fill="none" stroke="rgba(60,180,80,.38)" stroke-width="1.2" stroke-dasharray="4 3"/>
-</g>
-
-<!-- 면역 오버레이 -->
-<g class="oz" id="oz-immune" data-part="immune" style="pointer-events:none;opacity:0;">
-  <ellipse cx="135" cy="292" rx="95" ry="130" fill="none" stroke="rgba(80,80,220,.22)" stroke-width="2" stroke-dasharray="9 5"/>
+<!-- 라벨 -->
+<g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600">
+  <text x="120" y="49"  fill="#4858A0">뇌</text>
+  <text x="120" y="123" fill="#907030">갑상선</text>
+  <text x="120" y="186" fill="#884040">심장</text>
+  <text x="90"  y="197" fill="#884848">폐</text>
+  <text x="150" y="197" fill="#884848">폐</text>
+  <text x="146" y="254" fill="#7A5020">간</text>
+  <text x="90"  y="257" fill="#7A5820">위</text>
+  <text x="71"  y="265" fill="#603888" font-size="7.5">비장</text>
+  <text x="120" y="298" fill="#706020">췌장</text>
+  <text x="76"  y="323" fill="#784058">신장</text>
+  <text x="164" y="323" fill="#784058">신장</text>
+  <text x="120" y="344" fill="#7A5828">장</text>
+  <text x="120" y="381" fill="#285880">방광</text>
+  <text x="155" y="283" fill="#5A6820" font-size="7">담낭</text>
 </g>
 
 <!-- 범례 -->
-<g font-family="-apple-system,sans-serif">
-  <rect x="8" y="718" width="12" height="10" rx="3" fill="#C8D8F4" stroke="#6878C8" stroke-width=".7"/>
-  <text x="24" y="727" font-size="8.5" fill="#666">비활성</text>
-  <rect x="70" y="718" width="12" height="10" rx="3" fill="#FFD090" stroke="#E09028" stroke-width=".7"/>
-  <text x="86" y="727" font-size="8.5" fill="#666">약한 연관</text>
-  <rect x="152" y="718" width="12" height="10" rx="3" fill="#FF7050" stroke="#C83010" stroke-width=".7"/>
-  <text x="168" y="727" font-size="8.5" fill="#666">강한 연관</text>
-</g>
-
+<rect x="4" y="716" width="232" height="28" rx="7" fill="white" stroke="#E8E8E8" stroke-width=".8"/>
+<circle cx="16"  cy="730" r="5" fill="#E8EEF8" stroke="#90A4CC" stroke-width=".8"/>
+<text x="25"  y="734" font-size="8" fill="#999" font-family="-apple-system,sans-serif">비활성</text>
+<circle cx="74"  cy="730" r="5" fill="#FFF0C0" stroke="#C8A030" stroke-width=".8"/>
+<text x="83"  y="734" font-size="8" fill="#999" font-family="-apple-system,sans-serif">낮은 연관</text>
+<circle cx="148" cy="730" r="5" fill="#FFB880" stroke="#C86030" stroke-width=".8"/>
+<text x="157" y="734" font-size="8" fill="#999" font-family="-apple-system,sans-serif">중간</text>
+<circle cx="194" cy="730" r="5" fill="#FF7868" stroke="#C03020" stroke-width=".8"/>
+<text x="203" y="734" font-size="8" fill="#999" font-family="-apple-system,sans-serif">높음</text>
 </svg>
-<div class="hint" style="font-size:11px;color:#aaa;text-align:center;margin-top:5px;">장기를 클릭하면 상세 정보가 표시됩니다</div>
+<div class="hint">장기를 클릭하면 상세 정보가 표시됩니다</div>
 </div>
 
-<div class="panel-col">
-  <div class="info-card" id="defaultCard">
-    <div class="info-name">인체 해부도</div>
-    <div class="info-sub">장기 또는 신체 부위를 클릭하세요</div>
-    <div class="desc" style="margin-top:8px;">왼쪽 인체 그림에서 장기를 클릭하면 해당 부위의 해부학적 기능과 연관 질병 정보를 확인할 수 있습니다.<br><br>빨간색이 진한 부위일수록 현재 선택된 증상과의 연관도가 높습니다.</div>
-    <div class="sec-label" style="margin-top:4px;">활성화된 연관 부위</div>
-    <div class="tag-wrap" id="activeTags"></div>
+<div class="panel">
+  <div class="card" id="defaultCard">
+    <div class="card-name">인체 해부도</div>
+    <div class="card-sub">장기를 클릭하면 상세 정보가 표시됩니다</div>
+    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>예측된 질병에 따라 연관 부위가 색으로 강조됩니다.</div>
+    <div class="sec">연관 부위</div>
+    <div class="tags" id="activeTags"><span class="tag tag-n">증상 선택 후 표시됩니다</span></div>
   </div>
-  <div class="info-card" id="detailCard" style="display:none;">
-    <div class="info-name" id="dName"></div>
-    <div class="info-sub" id="dSub"></div>
-    <div class="int-wrap">
-      <div class="int-label">연관도</div>
-      <div class="int-track"><div class="int-fill" id="dBar" style="width:0%"></div></div>
-      <div class="int-pct" id="dPct">0%</div>
+  <div class="card" id="detailCard" style="display:none;">
+    <div class="card-name" id="dName"></div>
+    <div class="card-sub"  id="dSub"></div>
+    <div class="bar-row">
+      <div class="bar-lbl">연관도</div>
+      <div class="bar-track"><div class="bar-fill" id="dBar" style="width:0%"></div></div>
+      <div class="bar-pct"  id="dPct">0%</div>
     </div>
-    <div class="sec-label">기능·병리</div>
+    <div class="sec">기능·병리</div>
     <div class="desc" id="dDesc"></div>
-    <div class="sec-label">연관 예측 질병</div>
-    <div class="tag-wrap" id="dDiseases"></div>
-    <div style="margin-top:12px;">
-      <button onclick="document.getElementById('defaultCard').style.display='block';document.getElementById('detailCard').style.display='none';" style="font-size:11px;color:#888;background:none;border:none;cursor:pointer;padding:0;">← 목록으로</button>
-    </div>
+    <div class="sec">연관 질병</div>
+    <div class="tags" id="dDiseases"></div>
+    <button class="back-btn" onclick="document.getElementById('defaultCard').style.display='block';document.getElementById('detailCard').style.display='none';">← 목록으로</button>
   </div>
 </div>
 </div>
 
 <script>
-const PD = """ + part_info_json + """;
-const AP = """ + active_json + """;
+const PD=""" + part_data_json + """;
+const AP=""" + active_json + """;
 
-function getIntColor(pct) {
-  if(pct >= 55) return {fill:'#FF7050',stroke:'#CC2810'};
-  if(pct >= 30) return {fill:'#FFD090',stroke:'#E09028'};
-  if(pct >  0)  return {fill:'#FFE8C0',stroke:'#E0B040'};
+function intColor(pct){
+  if(pct>=55) return {f:'#FF8068',s:'#C03020'};
+  if(pct>=28) return {f:'#FFB878',s:'#C86028'};
+  if(pct> 0)  return {f:'#FFF0B8',s:'#C8A028'};
   return null;
 }
-function intensityGradient(pct) {
-  if(pct >= 55) return 'linear-gradient(90deg,#f6ad55,#fc8181)';
-  if(pct >= 30) return 'linear-gradient(90deg,#68d391,#f6ad55)';
+function barGrad(pct){
+  if(pct>=55) return 'linear-gradient(90deg,#f6ad55,#fc8181)';
+  if(pct>=28) return 'linear-gradient(90deg,#68d391,#f6ad55)';
   return '#68d391';
 }
 
-// 장기 색상 적용
-Object.keys(AP).forEach(part => {
-  const pct = Math.round(AP[part]*100);
-  const zone = document.getElementById('oz-'+part);
+Object.keys(AP).forEach(part=>{
+  const pct=Math.round(AP[part]*100);
+  const zone=document.getElementById('ob-'+part);
   if(!zone) return;
-  const c = getIntColor(pct);
+  const c=intColor(pct);
   if(!c) return;
-  if(['skin','blood','lymph','immune'].includes(part)) {
-    zone.style.opacity = pct > 40 ? '0.88' : pct > 15 ? '0.55' : '0.3';
-    zone.style.pointerEvents = 'auto';
+  if(['skin','blood','lymph','immune'].includes(part)){
+    zone.style.opacity=pct>40?'0.85':pct>15?'0.5':'0.25';
+    zone.style.pointerEvents='auto';
     return;
   }
-  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el => {
-    const of = el.getAttribute('fill');
-    if(of && of !== 'none' && !of.startsWith('rgba') && !el.hasAttribute('data-of')) {
-      el.setAttribute('data-of', of);
-    }
-    if(of && of !== 'none' && !of.startsWith('rgba')) {
-      el.setAttribute('fill', c.fill);
-      el.setAttribute('stroke', c.stroke);
+  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{
+    const f=el.getAttribute('fill');
+    if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){
+      if(!el.hasAttribute('data-orig')) el.setAttribute('data-orig',f);
+      el.setAttribute('fill',c.f);
+      el.setAttribute('stroke',c.s);
     }
   });
 });
 
-// 활성 배지 렌더링
-const atEl = document.getElementById('activeTags');
-const sorted = Object.keys(AP).sort((a,b)=>AP[b]-AP[a]);
-if(sorted.length === 0) {
-  atEl.innerHTML = '<span class="tag tag-n">증상을 선택하면 연관 부위가 표시됩니다</span>';
+const sorted=Object.keys(AP).sort((a,b)=>AP[b]-AP[a]);
+const atEl=document.getElementById('activeTags');
+if(!sorted.length){
+  atEl.innerHTML='<span class="tag tag-n">증상 선택 후 표시됩니다</span>';
 } else {
-  sorted.slice(0,12).forEach(p => {
-    const pct = Math.round(AP[p]*100);
-    const cls = pct>=55?'tag-r':pct>=30?'tag-o':'tag-g';
-    const nm = PD[p]?PD[p].name:p;
-    atEl.innerHTML += `<span class="tag ${cls}" style="cursor:pointer" onclick="showDetail('${p}')">${nm} ${pct}%</span>`;
-  });
+  atEl.innerHTML=sorted.slice(0,12).map(p=>{
+    const pct=Math.round(AP[p]*100);
+    const cls=pct>=55?'tag-r':pct>=28?'tag-o':'tag-g';
+    const nm=PD[p]?PD[p].name:p;
+    return `<span class="tag ${cls}" style="cursor:pointer" onclick="showDetail('${p}')">${nm} ${pct}%</span>`;
+  }).join('');
 }
 
-function showDetail(part) {
-  const d = PD[part]; if(!d) return;
-  document.getElementById('defaultCard').style.display = 'none';
-  document.getElementById('detailCard').style.display  = 'block';
-  document.getElementById('dName').textContent = d.name;
-  document.getElementById('dSub').textContent  = d.sub || '';
-  document.getElementById('dDesc').textContent = d.desc || '';
-  const pct = d.intensity || 0;
-  const bar = document.getElementById('dBar');
-  bar.style.width = pct+'%';
-  bar.style.background = intensityGradient(pct);
-  document.getElementById('dPct').textContent = pct+'%';
-  const dd = document.getElementById('dDiseases');
-  dd.innerHTML = '';
-  if(d.diseases && d.diseases.length > 0) {
-    d.diseases.forEach(x => {
-      const cls = x.prob>=30?'tag-r':x.prob>=15?'tag-o':'tag-g';
-      dd.innerHTML += `<span class="tag ${cls}">${x.kr} ${x.prob.toFixed(1)}%</span>`;
+function showDetail(part){
+  const d=PD[part]; if(!d) return;
+  document.getElementById('defaultCard').style.display='none';
+  document.getElementById('detailCard').style.display='block';
+  document.getElementById('dName').textContent=d.name;
+  document.getElementById('dSub').textContent=d.sub;
+  document.getElementById('dDesc').textContent=d.desc;
+  const pct=d.intensity||0;
+  const bar=document.getElementById('dBar');
+  bar.style.width=pct+'%';
+  bar.style.background=barGrad(pct);
+  document.getElementById('dPct').textContent=pct+'%';
+  const dd=document.getElementById('dDiseases');
+  dd.innerHTML='';
+  if(d.diseases&&d.diseases.length>0){
+    d.diseases.forEach(x=>{
+      const cls=x.prob>=30?'tag-r':x.prob>=15?'tag-o':'tag-g';
+      dd.innerHTML+=`<span class="tag ${cls}">${x.kr} ${x.prob.toFixed(1)}%</span>`;
     });
   } else {
-    dd.innerHTML = '<span class="tag tag-n">예측된 질병 없음</span>';
+    dd.innerHTML='<span class="tag tag-n">예측된 질병 없음</span>';
   }
 }
 
-document.querySelectorAll('.oz').forEach(el => {
-  el.addEventListener('click', () => showDetail(el.getAttribute('data-part')));
+document.querySelectorAll('.ob').forEach(el=>{
+  el.addEventListener('click',()=>showDetail(el.getAttribute('data-part')));
 });
 
-// 첫 진입 시 가장 강한 연관 부위 자동 표시
-if(sorted.length > 0) showDetail(sorted[0]);
+if(sorted.length>0) showDetail(sorted[0]);
 </script>
 </body></html>"""
 
     components.html(html, height=780, scrolling=False)
-
 
 
 # ════════════════════════════════════════════════════════
