@@ -752,20 +752,27 @@ with tab1:
         st.markdown("<span style='color:#E24B4A'>■</span> 높은 가능성 (≥30%)　<span style='color:#BA7517'>■</span> 중간 (15~30%)　<span style='color:#378ADD'>■</span> 낮음 (<15%)", unsafe_allow_html=True)
     with col_cards:
         st.markdown("##### 상위 3개 질병")
+        URG_STYLE = {
+            "즉시 병원": ("🚨", "#FCEBEB", "#E24B4A", "#A32D2D"),
+            "빠른 진료": ("⚠️", "#FAEEDA", "#BA7517", "#854F0B"),
+            "경과 관찰": ("✅", "#EAF3DE", "#3B6D11", "#27500A"),
+        }
         for _, row in result_df.head(3).iterrows():
-            p = row["prob_pct"]
-            bg,bd,tc = (("#FCEBEB","#E24B4A","#A32D2D") if p>=30 else ("#FAEEDA","#BA7517","#854F0B") if p>=15 else ("#E6F1FB","#378ADD","#185FA5"))
-            urg = TREATMENT_DB.get(row["disease"],{}).get("urgency","")
-            icon = {"즉시 병원":"🚨","빠른 진료":"⚠️","경과 관찰":"✅"}.get(urg,"")
-            parts_kr = [BODY_PART_KR.get(p,"") for p in DISEASE_BODY_PARTS.get(row["disease"],[])[:3]]
+            p   = row["prob_pct"]
+            urg = TREATMENT_DB.get(row["disease"], {}).get("urgency", "경과 관찰")
+            icon, bg, bd, tc = URG_STYLE.get(urg, ("ℹ️", "#E6F1FB", "#185FA5", "#0C447C"))
+            parts_kr = [BODY_PART_KR.get(pt, "") for pt in DISEASE_BODY_PARTS.get(row["disease"], [])[:3]]
             st.markdown(
-                f"<div style='background:{bg};border:1px solid {bd};border-radius:10px;padding:.7rem 1rem;margin-bottom:8px;'>"
-                f"<div style='font-size:15px;font-weight:500;color:{tc};'>{row['disease_kr']}</div>"
-                f"<div style='font-size:11px;color:{tc};opacity:.7;'>{row['disease']}</div>"
-                f"<div style='display:flex;justify-content:space-between;align-items:center;margin-top:4px;'>"
-                f"<span style='font-size:22px;font-weight:700;color:{tc};'>{p:.1f}%</span>"
-                f"<span style='font-size:11px;color:{tc};'>{icon} {urg}</span></div>"
-                f"<div style='font-size:11px;color:{tc};opacity:.65;margin-top:2px;'>관련 부위: {' · '.join(parts_kr)}</div>"
+                f"<div style='background:{bg};border:1.5px solid {bd};border-radius:10px;padding:.8rem 1rem;margin-bottom:10px;'>"
+                f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;'>"
+                f"<span style='font-size:12px;font-weight:600;color:{tc};background:white;opacity:.85;padding:2px 8px;border-radius:999px;border:1px solid {bd};'>{icon} {urg}</span>"
+                f"<span style='font-size:11px;color:{tc};opacity:.6;'>{row['disease']}</span>"
+                f"</div>"
+                f"<div style='font-size:16px;font-weight:500;color:{tc};margin-bottom:2px;'>{row['disease_kr']}</div>"
+                f"<div style='display:flex;justify-content:space-between;align-items:flex-end;'>"
+                f"<span style='font-size:26px;font-weight:700;color:{tc};'>{p:.1f}%</span>"
+                f"<span style='font-size:11px;color:{tc};opacity:.65;text-align:right;'>{' · '.join(parts_kr)}</span>"
+                f"</div>"
                 f"</div>", unsafe_allow_html=True)
         with st.expander("📋 전체 결과 테이블"):
             disp=result_df[["disease_kr","disease","prob_pct"]].copy()
