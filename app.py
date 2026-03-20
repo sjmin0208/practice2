@@ -341,6 +341,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tag-g{background:#EAF3DE;color:#27500A;border-color:#97C459;}
 .tag-n{background:var(--color-background-secondary,#f5f5f3);color:var(--color-text-secondary,#888);border-color:var(--color-border-tertiary,rgba(0,0,0,.1));}
 .back-btn{font-size:11px;color:var(--color-text-secondary,#888);background:none;border:none;cursor:pointer;padding:0;margin-top:10px;display:block;}
+.sys-btn{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;border:1.5px solid;cursor:pointer;transition:opacity .15s;text-align:left;width:100%;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+.sys-btn:hover{opacity:.72;}
+.sys-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sys-lbl{font-size:12px;font-weight:600;}
+.sys-pct{font-size:11px;margin-left:auto;font-weight:500;}
 .hint{font-size:10px;color:var(--color-text-tertiary,#bbb);text-align:center;margin-top:5px;}
 @media(prefers-color-scheme:dark){
   .card{background:#1e1e1c;border-color:rgba(255,255,255,.1);}
@@ -516,33 +521,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         font-size="7.5" font-weight="600" fill="#404088">정맥</text>
 </g>
 
-<!-- 피부 — 몸통 윤곽을 따르는 클릭 가능한 반투명 테두리 -->
-<g class="ob" id="ob-skin" data-part="skin" style="opacity:0;pointer-events:none;">
-  <path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
-        fill="rgba(220,80,50,.12)" stroke="rgba(200,60,30,.5)" stroke-width="2" stroke-dasharray="7 4"/>
-  <ellipse cx="120" cy="68" rx="38" ry="44"
-           fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.4)" stroke-width="1.5" stroke-dasharray="6 4"/>
-</g>
 
-<!-- 혈액 — 심장 주변 클릭 가능한 원형 영역 -->
-<g class="ob" id="ob-blood" data-part="blood" style="opacity:0;pointer-events:none;">
-  <ellipse cx="120" cy="310" rx="46" ry="110"
-           fill="rgba(200,50,50,.08)" stroke="rgba(200,50,50,.38)" stroke-width="1.8" stroke-dasharray="6 4"/>
-</g>
 
-<!-- 림프 — 목·겨드랑이 클릭 가능한 원 -->
-<g class="ob" id="ob-lymph" data-part="lymph" style="opacity:0;pointer-events:none;">
-  <circle cx="104" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="136" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="96"  cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
-  <circle cx="144" cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
-</g>
 
-<!-- 면역 — 전신 타원 클릭 가능 -->
-<g class="ob" id="ob-immune" data-part="immune" style="opacity:0;pointer-events:none;">
-  <ellipse cx="120" cy="290" rx="92" ry="128"
-           fill="rgba(80,80,210,.06)" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
-</g>
 
 <!-- 라벨 -->
 <g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600">
@@ -577,10 +558,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <div class="panel">
+  <!-- 전신계 버튼 (피부·혈액·림프·면역) -->
+  <div id="systemicSection" style="display:none;margin-bottom:10px;">
+    <div class="sec" style="margin-bottom:6px;">전신계 — 클릭해서 상세 보기</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" id="systemicGrid"></div>
+  </div>
   <div class="card" id="defaultCard">
     <div class="card-name">인체 해부도</div>
     <div class="card-sub">장기를 클릭하면 상세 정보가 표시됩니다</div>
-    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>예측된 질병에 따라 연관 부위가 색으로 강조됩니다.</div>
+    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>피부·혈액·림프·면역계는 위 버튼으로 확인하세요.</div>
     <div class="sec">연관 부위</div>
     <div class="tags" id="activeTags"><span class="tag tag-n">증상 선택 후 표시됩니다</span></div>
   </div>
@@ -618,16 +604,11 @@ function barGrad(pct){
 }
 
 Object.keys(AP).forEach(part=>{
+  if(['skin','blood','lymph','immune'].includes(part)) return;
   const pct=Math.round(AP[part]*100);
   const zone=document.getElementById('ob-'+part);
   if(!zone) return;
-  const c=intColor(pct);
-  if(!c) return;
-  if(['skin','blood','lymph','immune'].includes(part)){
-    zone.style.opacity=pct>40?'0.88':pct>15?'0.55':'0.28';
-    zone.style.pointerEvents='auto';
-    return;
-  }
+  const c=intColor(pct); if(!c) return;
   zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{
     const f=el.getAttribute('fill');
     if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){
@@ -638,8 +619,31 @@ Object.keys(AP).forEach(part=>{
   });
 });
 
+const SYSTEMIC=['skin','blood','lymph','immune'];
 const sorted=Object.keys(AP).sort((a,b)=>AP[b]-AP[a]);
 const atEl=document.getElementById('activeTags');
+
+// 전신계 버튼 렌더
+const sysGrid=document.getElementById('systemicGrid');
+const sysSec=document.getElementById('systemicSection');
+const sysActive=SYSTEMIC.filter(p=>AP[p]&&AP[p]>0&&PD[p]);
+if(sysActive.length>0){
+  sysSec.style.display='block';
+  sysActive.forEach(part=>{
+    const d=PD[part]; const pct=Math.round((AP[part]||0)*100);
+    const col=pct>=55?{dot:'#FF8068',bd:'#C03020',txt:'#A32D2D',bg:'#FCEBEB'}
+               :pct>=28?{dot:'#FFB878',bd:'#C86028',txt:'#854F0B',bg:'#FAEEDA'}
+               :{dot:'#b7dfb4',bd:'#639922',txt:'#27500A',bg:'#EAF3DE'};
+    const btn=document.createElement('button');
+    btn.className='sys-btn';
+    btn.style.cssText='background:'+col.bg+';border-color:'+col.bd+';';
+    btn.innerHTML='<span class="sys-dot" style="background:'+col.dot+';"></span>'+
+      '<span class="sys-lbl" style="color:'+col.txt+';">'+d.name+'</span>'+
+      '<span class="sys-pct" style="color:'+col.txt+';">'+pct+'%</span>';
+    btn.onclick=function(){showDetail(part);};
+    sysGrid.appendChild(btn);
+  });
+}
 if(!sorted.length){
   atEl.innerHTML='<span class="tag tag-n">증상 선택 후 표시됩니다</span>';
 } else {
