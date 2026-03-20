@@ -260,15 +260,14 @@ def train_models():
     rf = RandomForestClassifier(n_estimators=120, random_state=42); rf.fit(X, y)
     return nb, rf, all_syms
 
-# ════════════════════════════════════════════════════════
-#  인체 SVG 해부도 렌더러
 
 # ════════════════════════════════════════════════════════
-#  고퀄리티 인체 해부도 렌더러 v2
-# ════════════════════════════════════════════════════════
-
-# ════════════════════════════════════════════════════════
-#  인체 해부도 렌더러 v5 — 흰 바탕, 분리된 두 다리
+#  인체 해부도 렌더러 v6
+#  ─ 수정 사항 ─
+#  1. blood / immune / lymph / skin 오버레이를 SVG에서 완전히 제거
+#     → 내부 장기 클릭 차단 문제 해결
+#  2. 위 4개 부위는 해부도 오른쪽 패널에 "가상 카드 버튼"으로 표시
+#  3. legs도 오버레이 없이 다리 윤곽 클릭으로만 동작
 # ════════════════════════════════════════════════════════
 BODY_PART_INFO = {
     "brain":       {"name":"뇌",        "sub":"중추신경계 · 두개골 내부",  "desc":"약 1,000억 개 신경세포로 이루어진 인체 제어 센터입니다. 편두통은 뇌혈관 수축·확장 이상, 뇌출혈은 혈관 파열로 뇌 조직이 손상되는 응급 상황입니다."},
@@ -297,9 +296,16 @@ BODY_PART_INFO = {
     "nose":        {"name":"코",        "sub":"호흡·후각기관",             "desc":"비강 점막이 공기를 가온·가습·여과합니다. 알레르기 비염은 알레르겐에 반응한 비만세포가 히스타민을 분비해 콧물·재채기를 유발합니다."},
 }
 
+# "전신계" 부위 — SVG에서 오버레이 없이 패널에 버튼으로 표시
+SYSTEMIC_PARTS = ["blood", "skin", "lymph", "immune"]
+
 
 def render_body_anatomy(active_parts: dict, part_disease_map: dict):
-    """인체 해부도 v5 — 흰 바탕, 분리된 두 다리, 차분한 장기 색감"""
+    """
+    인체 해부도 v6
+    - blood / skin / lymph / immune : SVG 오버레이 제거 → 오른쪽 패널에 클릭 버튼으로 표시
+    - 나머지 장기: 직접 클릭 가능 (오버레이가 없어 차단 없음)
+    """
 
     part_data_js = {}
     for part, info in BODY_PART_INFO.items():
@@ -315,45 +321,60 @@ def render_body_anatomy(active_parts: dict, part_disease_map: dict):
     active_json    = json.dumps({p: round(v, 3) for p, v in active_parts.items()})
     part_data_json = json.dumps(part_data_js, ensure_ascii=False)
 
-    html = """<!DOCTYPE html><html><head><meta charset="utf-8">
+    # 전신계 부위 버튼용 데이터
+    systemic_json = json.dumps(SYSTEMIC_PARTS)
+
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:transparent;}
-.layout{display:flex;gap:20px;align-items:flex-start;}
-.svg-wrap{flex:0 0 260px;}
-.panel{flex:1;min-width:0;}
-.ob{cursor:pointer;}
-.ob:hover > *{opacity:.7;}
-.card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:16px;margin-bottom:10px;}
-.card-name{font-size:17px;font-weight:500;color:var(--color-text-primary,#111);margin-bottom:2px;}
-.card-sub{font-size:11px;color:var(--color-text-secondary,#888);margin-bottom:12px;}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.bar-lbl{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.06em;min-width:40px;}
-.bar-track{flex:1;height:5px;background:var(--color-background-tertiary,#eee);border-radius:3px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:3px;transition:width .4s,background .3s;}
-.bar-pct{font-size:11px;font-weight:500;min-width:28px;text-align:right;color:var(--color-text-primary,#111);}
-.sec{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
-.desc{font-size:12px;color:var(--color-text-secondary,#555);line-height:1.65;margin-bottom:12px;}
-.tags{display:flex;flex-wrap:wrap;gap:4px;}
-.tag{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;border:1px solid;}
-.tag-r{background:#FCEBEB;color:#791F1F;border-color:#F09595;}
-.tag-o{background:#FAEEDA;color:#633806;border-color:#EF9F27;}
-.tag-g{background:#EAF3DE;color:#27500A;border-color:#97C459;}
-.tag-n{background:var(--color-background-secondary,#f5f5f3);color:var(--color-text-secondary,#888);border-color:var(--color-border-tertiary,rgba(0,0,0,.1));}
-.back-btn{font-size:11px;color:var(--color-text-secondary,#888);background:none;border:none;cursor:pointer;padding:0;margin-top:10px;display:block;}
-.hint{font-size:10px;color:var(--color-text-tertiary,#bbb);text-align:center;margin-top:5px;}
-@media(prefers-color-scheme:dark){
-  .card{background:#1e1e1c;border-color:rgba(255,255,255,.1);}
-  .card-name{color:#eee;}.card-sub,.desc,.sec{color:#999;}
-  .bar-track{background:#333;}.bar-pct{color:#ccc;}
-  .tag-r{background:#501313;color:#F7C1C1;border-color:#A32D2D;}
-  .tag-o{background:#412402;color:#FAC775;border-color:#854F0B;}
-  .tag-g{background:#173404;color:#C0DD97;border-color:#3B6D11;}
-  .tag-n{background:#2a2a28;color:#aaa;border-color:rgba(255,255,255,.1);}
-}
+*{{margin:0;padding:0;box-sizing:border-box;}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:transparent;}}
+.layout{{display:flex;gap:16px;align-items:flex-start;}}
+.svg-col{{flex:0 0 260px;}}
+.panel-col{{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;}}
+.ob{{cursor:pointer;}}
+.ob:hover > *{{opacity:.7;}}
+/* ── 카드 ── */
+.card{{background:var(--color-background-primary,#fff);border:.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:16px;}}
+.card-name{{font-size:17px;font-weight:500;color:var(--color-text-primary,#111);margin-bottom:2px;}}
+.card-sub{{font-size:11px;color:var(--color-text-secondary,#888);margin-bottom:12px;}}
+.bar-row{{display:flex;align-items:center;gap:8px;margin-bottom:12px;}}
+.bar-lbl{{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.06em;min-width:40px;}}
+.bar-track{{flex:1;height:5px;background:var(--color-background-tertiary,#eee);border-radius:3px;overflow:hidden;}}
+.bar-fill{{height:100%;border-radius:3px;transition:width .4s,background .3s;}}
+.bar-pct{{font-size:11px;font-weight:500;min-width:28px;text-align:right;color:var(--color-text-primary,#111);}}
+.sec{{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}}
+.desc{{font-size:12px;color:var(--color-text-secondary,#555);line-height:1.65;margin-bottom:12px;}}
+.tags{{display:flex;flex-wrap:wrap;gap:4px;}}
+.tag{{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;border:1px solid;cursor:default;}}
+.tag-r{{background:#FCEBEB;color:#791F1F;border-color:#F09595;}}
+.tag-o{{background:#FAEEDA;color:#633806;border-color:#EF9F27;}}
+.tag-g{{background:#EAF3DE;color:#27500A;border-color:#97C459;}}
+.tag-n{{background:var(--color-background-secondary,#f5f5f3);color:var(--color-text-secondary,#888);border-color:var(--color-border-tertiary,rgba(0,0,0,.1));}}
+.back-btn{{font-size:11px;color:var(--color-text-secondary,#888);background:none;border:none;cursor:pointer;padding:0;margin-top:10px;display:block;}}
+.hint{{font-size:10px;color:var(--color-text-tertiary,#bbb);text-align:center;margin-top:5px;}}
+/* ── 전신계 버튼 그리드 ── */
+.systemic-grid{{display:grid;grid-template-columns:1fr 1fr;gap:7px;}}
+.sys-btn{{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;border:1.8px solid;cursor:pointer;transition:opacity .15s,transform .1s;background:#fff;text-align:left;}}
+.sys-btn:hover{{opacity:.75;transform:scale(1.02);}}
+.sys-btn .sys-dot{{width:11px;height:11px;border-radius:50%;flex-shrink:0;}}
+.sys-btn .sys-name{{font-size:12px;font-weight:600;}}
+.sys-btn .sys-pct{{font-size:11px;margin-left:auto;font-weight:500;}}
+/* ── 다크모드 ── */
+@media(prefers-color-scheme:dark){{
+  .card{{background:#1e1e1c;border-color:rgba(255,255,255,.1);}}
+  .card-name{{color:#eee;}}.card-sub,.desc,.sec{{color:#999;}}
+  .bar-track{{background:#333;}}.bar-pct{{color:#ccc;}}
+  .tag-r{{background:#501313;color:#F7C1C1;border-color:#A32D2D;}}
+  .tag-o{{background:#412402;color:#FAC775;border-color:#854F0B;}}
+  .tag-g{{background:#173404;color:#C0DD97;border-color:#3B6D11;}}
+  .tag-n{{background:#2a2a28;color:#aaa;border-color:rgba(255,255,255,.1);}}
+  .sys-btn{{background:#1e1e1c;}}
+}}
 </style></head><body>
 <div class="layout">
-<div class="svg-wrap">
+
+<!-- ══ SVG 컬럼 ══ -->
+<div class="svg-col">
 <svg viewBox="0 0 240 760" width="100%" style="display:block;">
 
 <!-- 머리 -->
@@ -408,28 +429,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <path d="M150,672 Q153,683 156,692 Q158,699 150,702 L130,702 Q122,700 122,693 L126,683 L132,672 Z"
   fill="white" stroke="#CCC" stroke-width="1"/>
 
-<!-- ══ 장기 ══ -->
-<g class="ob" id="ob-brain"       data-part="brain">
+<!-- ══ 장기 (클릭 가능) ══ -->
+<g class="ob" id="ob-brain" data-part="brain">
   <ellipse cx="120" cy="46" rx="26" ry="22" fill="#E8EEF8" stroke="#90A4CC" stroke-width="1.2"/>
   <path d="M96,42 Q104,31 120,29 Q136,31 144,42" fill="none" stroke="#90A4CC" stroke-width=".8" opacity=".6"/>
   <path d="M97,51 Q106,42 120,40 Q134,42 143,51" fill="none" stroke="#90A4CC" stroke-width=".6" opacity=".4"/>
   <line x1="120" y1="25" x2="120" y2="68" stroke="#90A4CC" stroke-width=".5" opacity=".3"/>
 </g>
-<g class="ob" id="ob-eye"         data-part="eye">
+<g class="ob" id="ob-eye" data-part="eye">
   <ellipse cx="110" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
   <ellipse cx="130" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
 </g>
-<g class="ob" id="ob-ear"         data-part="ear">
-  <path d="M82,46 Q75,46 73,55 Q71,64 73,72 Q75,80 82,80" fill="transparent" stroke="transparent" stroke-width="12"/>
-  <path d="M158,46 Q165,46 167,55 Q169,64 167,72 Q165,80 158,80" fill="transparent" stroke="transparent" stroke-width="12"/>
+<!-- 귀: 넓은 투명 클릭 영역 -->
+<g class="ob" id="ob-ear" data-part="ear">
+  <rect x="62" y="44" width="22" height="40" rx="8" fill="transparent" stroke="none"/>
+  <rect x="156" y="44" width="22" height="40" rx="8" fill="transparent" stroke="none"/>
 </g>
-<g class="ob" id="ob-thyroid"     data-part="thyroid">
+<g class="ob" id="ob-thyroid" data-part="thyroid">
   <path d="M112,114 Q107,108 107,115 Q107,124 115,127 L120,128 L125,127 Q133,124 133,115 Q133,108 128,114 Q125,118 120,119 Q115,118 112,114 Z" fill="#FCE8C4" stroke="#D0A040" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-esophagus"   data-part="esophagus">
-  <rect x="118" y="124" width="4" height="44" rx="2" fill="#EEE098" stroke="#C0A840" stroke-width=".8"/>
+<g class="ob" id="ob-esophagus" data-part="esophagus">
+  <rect x="117" y="124" width="6" height="44" rx="3" fill="#EEE098" stroke="#C0A840" stroke-width=".8"/>
 </g>
-<g class="ob" id="ob-spine"       data-part="spine">
+<g class="ob" id="ob-spine" data-part="spine">
   <rect x="118" y="132" width="4" height="226" rx="2" fill="#EEEADC" stroke="#B8B090" stroke-width=".8"/>
   <rect x="116" y="139" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
   <rect x="116" y="157" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
@@ -444,7 +466,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <rect x="116" y="319" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
   <rect x="116" y="337" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
 </g>
-<g class="ob" id="ob-lungs"       data-part="lungs">
+<g class="ob" id="ob-lungs" data-part="lungs">
   <path d="M96,136 Q84,139 79,155 L75,202 Q73,229 83,241 Q93,250 107,246 L109,219 L110,136 Z" fill="#F4C4C4" stroke="#BC8080" stroke-width="1.3"/>
   <path d="M84,160 Q87,176 85,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
   <path d="M93,154 Q96,174 94,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
@@ -452,100 +474,60 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <path d="M156,160 Q153,176 155,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
   <path d="M147,154 Q144,174 146,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
 </g>
-<g class="ob" id="ob-heart"       data-part="heart">
+<g class="ob" id="ob-heart" data-part="heart">
   <path d="M120,160 Q106,150 96,161 Q85,172 96,186 L120,211 L144,186 Q155,172 144,161 Q134,150 120,160 Z" fill="#EEA0A0" stroke="#B85050" stroke-width="1.5"/>
   <path d="M108,167 Q103,176 108,186" fill="none" stroke="#E8BCBC" stroke-width=".9" opacity=".5"/>
   <path d="M120,152 Q121,142 124,135 Q127,127 125,122" fill="none" stroke="#B85050" stroke-width="1.6" stroke-linecap="round"/>
   <path d="M115,160 L100,147" fill="none" stroke="#8090B0" stroke-width="1.2" stroke-linecap="round"/>
   <path d="M125,160 L140,147" fill="none" stroke="#B87878" stroke-width="1.2" stroke-linecap="round"/>
 </g>
-<g class="ob" id="ob-liver"       data-part="liver">
+<g class="ob" id="ob-liver" data-part="liver">
   <path d="M129,224 Q148,218 162,226 L165,251 Q161,273 146,274 Q132,274 123,265 Q116,256 122,228 Z" fill="#E8B880" stroke="#B07838" stroke-width="1.2"/>
   <path d="M135,232 Q146,229 156,234" fill="none" stroke="#C89858" stroke-width=".7" opacity=".5"/>
 </g>
 <g class="ob" id="ob-gallbladder" data-part="gallbladder">
   <ellipse cx="155" cy="280" rx="8" ry="10" fill="#D4D880" stroke="#909030" stroke-width="1"/>
 </g>
-<g class="ob" id="ob-stomach"     data-part="stomach">
+<g class="ob" id="ob-stomach" data-part="stomach">
   <path d="M91,228 Q77,231 72,247 Q67,264 79,276 Q90,284 109,282 L111,256 L103,228 Z" fill="#EEC880" stroke="#B88840" stroke-width="1.2"/>
   <path d="M79,245 Q77,257 81,268" fill="none" stroke="#C09840" stroke-width=".7" opacity=".5"/>
 </g>
-<g class="ob" id="ob-spleen"      data-part="spleen">
+<g class="ob" id="ob-spleen" data-part="spleen">
   <ellipse cx="71" cy="262" rx="11" ry="14" fill="#D0B4DC" stroke="#9060B0" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-pancreas"    data-part="pancreas">
+<g class="ob" id="ob-pancreas" data-part="pancreas">
   <path d="M90,290 Q111,284 142,288 L144,299 Q120,306 94,302 Z" fill="#E8D478" stroke="#A89828" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-kidney"      data-part="kidney">
+<g class="ob" id="ob-kidney" data-part="kidney">
   <path d="M77,304 Q67,304 65,315 Q63,329 72,336 Q80,341 88,335 L90,315 Q90,304 77,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
   <path d="M72,314 Q70,324 74,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
   <path d="M163,304 Q173,304 175,315 Q177,329 168,336 Q160,341 152,335 L150,315 Q150,304 163,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
   <path d="M168,314 Q170,324 166,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
 </g>
-<g class="ob" id="ob-intestine"   data-part="intestine">
+<g class="ob" id="ob-intestine" data-part="intestine">
   <path d="M90,310 L89,342 Q89,362 107,364 L133,364 Q151,362 151,342 L150,310"
     fill="none" stroke="#E0B868" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
   <path d="M97,324 Q105,315 113,324 Q121,333 129,324 Q137,315 143,324 Q149,333 147,342 Q140,350 133,343 Q126,336 120,343 Q114,350 107,343 Q100,334 97,324 Z" fill="#EED08C" stroke="#C0A040" stroke-width=".9"/>
 </g>
-<g class="ob" id="ob-bladder"     data-part="bladder">
+<g class="ob" id="ob-bladder" data-part="bladder">
   <ellipse cx="120" cy="378" rx="17" ry="13" fill="#C0D4EE" stroke="#5888B8" stroke-width="1.2"/>
 </g>
-<g class="ob" id="ob-joints"      data-part="joints">
+<g class="ob" id="ob-joints" data-part="joints">
   <circle cx="80"  cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="160" cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="99"  cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="141" cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
 </g>
-<!-- 하지·정맥 — 다리 안쪽에 클릭 가능한 정맥 패널 2개 -->
+<!-- 하지·정맥 — 다리 안쪽 클릭 영역 (오버레이 없이 투명 rect) -->
 <g class="ob" id="ob-legs" data-part="legs">
-  <!-- 오른 다리 정맥 패널 -->
-  <rect x="84" y="415" width="32" height="145" rx="10"
-        fill="#E8E8F8" stroke="#8888C8" stroke-width="1" opacity=".75"/>
-  <!-- 정맥 라인 (장식용, 클릭은 rect가 받음) -->
-  <path d="M96,422 Q94,468 95,514 L96,548" fill="none" stroke="#9090C8" stroke-width="1.8" opacity=".6"/>
-  <path d="M104,420 Q106,468 105,514 L104,548" fill="none" stroke="#C07878" stroke-width="1.3" opacity=".5"/>
-  <!-- 왼 다리 정맥 패널 -->
-  <rect x="124" y="415" width="32" height="145" rx="10"
-        fill="#E8E8F8" stroke="#8888C8" stroke-width="1" opacity=".75"/>
-  <path d="M136,422 Q138,468 137,514 L136,548" fill="none" stroke="#9090C8" stroke-width="1.8" opacity=".6"/>
-  <path d="M144,420 Q142,468 143,514 L144,548" fill="none" stroke="#C07878" stroke-width="1.3" opacity=".5"/>
-  <!-- 레이블 -->
-  <text x="100" y="492" text-anchor="middle" font-family="-apple-system,sans-serif"
-        font-size="7.5" font-weight="600" fill="#404088">정맥</text>
-  <text x="140" y="492" text-anchor="middle" font-family="-apple-system,sans-serif"
-        font-size="7.5" font-weight="600" fill="#404088">정맥</text>
-</g>
-
-<!-- 피부 — 몸통 윤곽을 따르는 클릭 가능한 반투명 테두리 -->
-<g class="ob" id="ob-skin" data-part="skin" style="opacity:0;pointer-events:none;">
-  <path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
-        fill="rgba(220,80,50,.12)" stroke="rgba(200,60,30,.5)" stroke-width="2" stroke-dasharray="7 4"/>
-  <ellipse cx="120" cy="68" rx="38" ry="44"
-           fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.4)" stroke-width="1.5" stroke-dasharray="6 4"/>
-</g>
-
-<!-- 혈액 — 심장 주변 클릭 가능한 원형 영역 -->
-<g class="ob" id="ob-blood" data-part="blood" style="opacity:0;pointer-events:none;">
-  <ellipse cx="120" cy="310" rx="46" ry="110"
-           fill="rgba(200,50,50,.08)" stroke="rgba(200,50,50,.38)" stroke-width="1.8" stroke-dasharray="6 4"/>
-</g>
-
-<!-- 림프 — 목·겨드랑이 클릭 가능한 원 -->
-<g class="ob" id="ob-lymph" data-part="lymph" style="opacity:0;pointer-events:none;">
-  <circle cx="104" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="136" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="96"  cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
-  <circle cx="144" cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
-</g>
-
-<!-- 면역 — 전신 타원 클릭 가능 -->
-<g class="ob" id="ob-immune" data-part="immune" style="opacity:0;pointer-events:none;">
-  <ellipse cx="120" cy="290" rx="92" ry="128"
-           fill="rgba(80,80,210,.06)" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
+  <rect x="85" y="410" width="30" height="150" rx="10" fill="rgba(140,140,220,.12)" stroke="#8888C8" stroke-width="1.8" stroke-dasharray="5 3"/>
+  <rect x="125" y="410" width="30" height="150" rx="10" fill="rgba(140,140,220,.12)" stroke="#8888C8" stroke-width="1.8" stroke-dasharray="5 3"/>
+  <text x="100" y="490" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="7.5" font-weight="600" fill="#404088">정맥</text>
+  <text x="140" y="490" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="7.5" font-weight="600" fill="#404088">정맥</text>
 </g>
 
 <!-- 라벨 -->
-<g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600">
+<g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600" pointer-events="none">
   <text x="120" y="49"  fill="#4858A0">뇌</text>
   <text x="120" y="123" fill="#907030">갑상선</text>
   <text x="120" y="186" fill="#884040">심장</text>
@@ -576,14 +558,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="hint">장기를 클릭하면 상세 정보가 표시됩니다</div>
 </div>
 
-<div class="panel">
+<!-- ══ 패널 컬럼 ══ -->
+<div class="panel-col">
+
+  <!-- 전신계 버튼 (blood / skin / lymph / immune) -->
+  <div id="systemicSection" style="display:none;">
+    <div style="font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">전신계 (클릭하여 상세 보기)</div>
+    <div class="systemic-grid" id="systemicGrid"></div>
+  </div>
+
+  <!-- 기본 카드 -->
   <div class="card" id="defaultCard">
     <div class="card-name">인체 해부도</div>
     <div class="card-sub">장기를 클릭하면 상세 정보가 표시됩니다</div>
-    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>예측된 질병에 따라 연관 부위가 색으로 강조됩니다.</div>
+    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>혈액·피부·림프·면역계는 위 버튼으로 확인하세요.</div>
     <div class="sec">연관 부위</div>
     <div class="tags" id="activeTags"><span class="tag tag-n">증상 선택 후 표시됩니다</span></div>
   </div>
+
+  <!-- 상세 카드 -->
   <div class="card" id="detailCard" style="display:none;">
     <div class="card-name" id="dName"></div>
     <div class="card-sub"  id="dSub"></div>
@@ -596,62 +589,89 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="desc" id="dDesc"></div>
     <div class="sec">연관 질병</div>
     <div class="tags" id="dDiseases"></div>
-    <button class="back-btn" onclick="document.getElementById('defaultCard').style.display='block';document.getElementById('detailCard').style.display='none';">← 목록으로</button>
+    <button class="back-btn" onclick="showDefault();">← 목록으로</button>
   </div>
-</div>
-</div>
+
+</div><!-- /panel-col -->
+</div><!-- /layout -->
 
 <script>
-const PD=""" + part_data_json + """;
-const AP=""" + active_json + """;
+const PD={part_data_json};
+const AP={active_json};
+const SYSTEMIC={systemic_json};
 
-function intColor(pct){
-  if(pct>=55) return {f:'#FF8068',s:'#C03020'};
-  if(pct>=28) return {f:'#FFB878',s:'#C86028'};
-  if(pct> 0)  return {f:'#FFF0B8',s:'#C8A028'};
+function intColor(pct){{
+  if(pct>=55) return {{f:'#FF8068',s:'#C03020'}};
+  if(pct>=28) return {{f:'#FFB878',s:'#C86028'}};
+  if(pct> 0)  return {{f:'#FFF0B8',s:'#C8A028'}};
   return null;
-}
-function barGrad(pct){
+}}
+function barGrad(pct){{
   if(pct>=55) return 'linear-gradient(90deg,#f6ad55,#fc8181)';
   if(pct>=28) return 'linear-gradient(90deg,#68d391,#f6ad55)';
   return '#68d391';
-}
+}}
+function sysStyle(pct){{
+  if(pct>=55) return {{dot:'#FF8068',border:'#E03020',text:'#A32D2D',bg:'#FCEBEB'}};
+  if(pct>=28) return {{dot:'#FFB878',border:'#C86028',text:'#854F0B',bg:'#FAEEDA'}};
+  if(pct> 0)  return {{dot:'#FFF0B8',border:'#C8A028',text:'#5A4A00',bg:'#FFFBE8'}};
+  return {{dot:'#DDD',border:'#CCC',text:'#888',bg:'#F5F5F3'}};
+}}
 
-Object.keys(AP).forEach(part=>{
+// ── 장기 색 변경 (전신계 제외)
+Object.keys(AP).forEach(part=>{{
+  if(SYSTEMIC.includes(part)) return; // 전신계는 SVG 오버레이 없음
   const pct=Math.round(AP[part]*100);
   const zone=document.getElementById('ob-'+part);
   if(!zone) return;
   const c=intColor(pct);
   if(!c) return;
-  if(['skin','blood','lymph','immune'].includes(part)){
-    zone.style.opacity=pct>40?'0.88':pct>15?'0.55':'0.28';
-    zone.style.pointerEvents='auto';
-    return;
-  }
-  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{
+  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{{
     const f=el.getAttribute('fill');
-    if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){
-      if(!el.hasAttribute('data-orig')) el.setAttribute('data-orig',f);
+    if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){{
       el.setAttribute('fill',c.f);
       el.setAttribute('stroke',c.s);
-    }
-  });
-});
+    }}
+  }});
+}});
 
+// ── 연관 부위 태그 (전신계 포함)
 const sorted=Object.keys(AP).sort((a,b)=>AP[b]-AP[a]);
 const atEl=document.getElementById('activeTags');
-if(!sorted.length){
+if(!sorted.length){{
   atEl.innerHTML='<span class="tag tag-n">증상 선택 후 표시됩니다</span>';
-} else {
-  atEl.innerHTML=sorted.slice(0,12).map(p=>{
+}} else {{
+  atEl.innerHTML=sorted.slice(0,12).map(p=>{{
     const pct=Math.round(AP[p]*100);
     const cls=pct>=55?'tag-r':pct>=28?'tag-o':'tag-g';
     const nm=PD[p]?PD[p].name:p;
-    return `<span class="tag ${cls}" style="cursor:pointer" onclick="showDetail('${p}')">${nm} ${pct}%</span>`;
-  }).join('');
-}
+    return `<span class="tag ${{cls}}" style="cursor:pointer" onclick="showDetail('${{p}}')">${{nm}} ${{pct}}%</span>`;
+  }}).join('');
+}}
 
-function showDetail(part){
+// ── 전신계 버튼 렌더
+const systemicParts = SYSTEMIC.filter(p=>PD[p]);
+const secEl=document.getElementById('systemicSection');
+const grid=document.getElementById('systemicGrid');
+if(systemicParts.length>0){{
+  secEl.style.display='block';
+  systemicParts.forEach(part=>{{
+    const d=PD[part];
+    const pct=d.intensity||0;
+    const st=sysStyle(pct);
+    const btn=document.createElement('button');
+    btn.className='sys-btn';
+    btn.style.cssText=`border-color:${{st.border}};background:${{st.bg}};`;
+    btn.innerHTML=`<span class="sys-dot" style="background:${{st.dot}};border:1.5px solid ${{st.border}};"></span>`+
+      `<span class="sys-name" style="color:${{st.text}};">${{d.name}}</span>`+
+      `<span class="sys-pct" style="color:${{st.text}};">${{pct}}%</span>`;
+    btn.onclick=()=>showDetail(part);
+    grid.appendChild(btn);
+  }});
+}}
+
+// ── 상세 표시
+function showDetail(part){{
   const d=PD[part]; if(!d) return;
   document.getElementById('defaultCard').style.display='none';
   document.getElementById('detailCard').style.display='block';
@@ -665,41 +685,43 @@ function showDetail(part){
   document.getElementById('dPct').textContent=pct+'%';
   const dd=document.getElementById('dDiseases');
   dd.innerHTML='';
-  if(d.diseases&&d.diseases.length>0){
-    d.diseases.forEach(x=>{
+  if(d.diseases&&d.diseases.length>0){{
+    d.diseases.forEach(x=>{{
       const cls=x.prob>=30?'tag-r':x.prob>=15?'tag-o':'tag-g';
-      dd.innerHTML+=`<span class="tag ${cls}">${x.kr} ${x.prob.toFixed(1)}%</span>`;
-    });
-  } else {
+      dd.innerHTML+=`<span class="tag ${{cls}}">${{x.kr}} ${{x.prob.toFixed(1)}}%</span>`;
+    }});
+  }} else {{
     dd.innerHTML='<span class="tag tag-n">예측된 질병 없음</span>';
-  }
-}
+  }}
+}}
+function showDefault(){{
+  document.getElementById('defaultCard').style.display='block';
+  document.getElementById('detailCard').style.display='none';
+}}
 
-document.querySelectorAll('.ob').forEach(el=>{
+// ── SVG 장기 클릭 이벤트
+document.querySelectorAll('.ob').forEach(el=>{{
   el.addEventListener('click',()=>showDetail(el.getAttribute('data-part')));
-});
+}});
 
+// ── 초기: 가장 연관도 높은 부위 자동 표시
 if(sorted.length>0) showDetail(sorted[0]);
 </script>
 </body></html>"""
 
-    components.html(html, height=780, scrolling=False)
+    components.html(html, height=800, scrolling=False)
 
 
 # ════════════════════════════════════════════════════════
 #  성별·연령대별 질환 가중치 테이블
 # ════════════════════════════════════════════════════════
-# 형식: {질병: {(성별, 연령대): multiplier}}
-# multiplier > 1 → 해당 그룹에서 더 흔함, < 1 → 덜 흔함
 AGE_GENDER_WEIGHTS = {
-    # 심혈관
     "Heart attack":       {("남","10대"):0.2,("남","20대"):0.4,("남","30대"):0.7,("남","40대"):1.2,("남","50대"):1.8,("남","60대+"):2.5,
                            ("여","10대"):0.1,("여","20대"):0.2,("여","30대"):0.4,("여","40대"):0.8,("여","50대"):1.4,("여","60대+"):2.0},
     "Hypertension":       {("남","10대"):0.3,("남","20대"):0.6,("남","30대"):0.9,("남","40대"):1.3,("남","50대"):1.8,("남","60대+"):2.2,
                            ("여","10대"):0.2,("여","20대"):0.4,("여","30대"):0.7,("여","40대"):1.0,("여","50대"):1.6,("여","60대+"):2.0},
     "Varicose veins":     {("남","10대"):0.3,("남","20대"):0.5,("남","30대"):0.7,("남","40대"):1.0,("남","50대"):1.3,("남","60대+"):1.5,
                            ("여","10대"):0.5,("여","20대"):1.2,("여","30대"):1.5,("여","40대"):1.6,("여","50대"):1.4,("여","60대+"):1.3},
-    # 대사
     "Diabetes":           {("남","10대"):0.4,("남","20대"):0.6,("남","30대"):0.9,("남","40대"):1.3,("남","50대"):1.7,("남","60대+"):2.0,
                            ("여","10대"):0.4,("여","20대"):0.6,("여","30대"):0.9,("여","40대"):1.2,("여","50대"):1.5,("여","60대+"):1.8},
     "Hypoglycemia":       {("남","10대"):0.8,("남","20대"):1.0,("남","30대"):1.0,("남","40대"):1.1,("남","50대"):1.2,("남","60대+"):1.3,
@@ -708,38 +730,31 @@ AGE_GENDER_WEIGHTS = {
                            ("여","10대"):0.8,("여","20대"):1.5,("여","30대"):1.8,("여","40대"):2.0,("여","50대"):2.2,("여","60대+"):2.0},
     "Hyperthyroidism":    {("남","10대"):0.3,("남","20대"):0.4,("남","30대"):0.4,("남","40대"):0.5,("남","50대"):0.5,("남","60대+"):0.5,
                            ("여","10대"):0.8,("여","20대"):1.6,("여","30대"):1.8,("여","40대"):1.7,("여","50대"):1.5,("여","60대+"):1.2},
-    # 관절·뼈
     "Osteoarthritis":     {("남","10대"):0.1,("남","20대"):0.2,("남","30대"):0.4,("남","40대"):0.8,("남","50대"):1.5,("남","60대+"):2.2,
                            ("여","10대"):0.1,("여","20대"):0.2,("여","30대"):0.4,("여","40대"):1.0,("여","50대"):1.8,("여","60대+"):2.5},
     "Arthritis":          {("남","10대"):0.3,("남","20대"):0.5,("남","30대"):0.7,("남","40대"):1.0,("남","50대"):1.4,("남","60대+"):1.8,
                            ("여","10대"):0.5,("여","20대"):0.8,("여","30대"):1.2,("여","40대"):1.5,("여","50대"):1.8,("여","60대+"):2.0},
     "Cervical spondylosis":{("남","10대"):0.2,("남","20대"):0.5,("남","30대"):0.9,("남","40대"):1.4,("남","50대"):1.8,("남","60대+"):2.0,
                             ("여","10대"):0.2,("여","20대"):0.6,("여","30대"):1.0,("여","40대"):1.4,("여","50대"):1.7,("여","60대+"):1.8},
-    # 피부
     "Acne":               {("남","10대"):2.2,("남","20대"):1.5,("남","30대"):0.7,("남","40대"):0.4,("남","50대"):0.2,("남","60대+"):0.1,
                            ("여","10대"):2.0,("여","20대"):1.4,("여","30대"):0.8,("여","40대"):0.5,("여","50대"):0.3,("여","60대+"):0.1},
     "Psoriasis":          {("남","10대"):0.7,("남","20대"):1.0,("남","30대"):1.2,("남","40대"):1.2,("남","50대"):1.0,("남","60대+"):0.8,
                            ("여","10대"):0.7,("여","20대"):1.0,("여","30대"):1.1,("여","40대"):1.0,("여","50대"):0.9,("여","60대+"):0.7},
-    # 소화기
     "GERD":               {("남","10대"):0.4,("남","20대"):0.7,("남","30대"):1.0,("남","40대"):1.3,("남","50대"):1.5,("남","60대+"):1.6,
                            ("여","10대"):0.5,("여","20대"):0.8,("여","30대"):1.0,("여","40대"):1.1,("여","50대"):1.3,("여","60대+"):1.4},
     "Peptic ulcer disease":{("남","10대"):0.3,("남","20대"):0.7,("남","30대"):1.1,("남","40대"):1.3,("남","50대"):1.4,("남","60대+"):1.4,
                             ("여","10대"):0.3,("여","20대"):0.5,("여","30대"):0.8,("여","40대"):1.0,("여","50대"):1.1,("여","60대+"):1.2},
-    # 호흡기
     "Bronchial Asthma":   {("남","10대"):1.8,("남","20대"):1.3,("남","30대"):1.0,("남","40대"):0.9,("남","50대"):0.8,("남","60대+"):0.9,
                            ("여","10대"):1.4,("여","20대"):1.3,("여","30대"):1.2,("여","40대"):1.1,("여","50대"):1.0,("여","60대+"):0.9},
     "Common Cold":        {("남","10대"):1.5,("남","20대"):1.2,("남","30대"):1.0,("남","40대"):0.9,("남","50대"):0.8,("남","60대+"):1.0,
                            ("여","10대"):1.5,("여","20대"):1.2,("여","30대"):1.1,("여","40대"):0.9,("여","50대"):0.8,("여","60대+"):1.0},
-    # 신경
     "Migraine":           {("남","10대"):0.8,("남","20대"):0.9,("남","30대"):0.8,("남","40대"):0.7,("남","50대"):0.5,("남","60대+"):0.4,
                            ("여","10대"):1.2,("여","20대"):1.8,("여","30대"):2.0,("여","40대"):1.8,("여","50대"):1.3,("여","60대+"):0.8},
-    # 비뇨기
     "Urinary tract infection":{("남","10대"):0.3,("남","20대"):0.3,("남","30대"):0.4,("남","40대"):0.5,("남","50대"):0.8,("남","60대+"):1.2,
                                ("여","10대"):1.2,("여","20대"):1.8,("여","30대"):1.8,("여","40대"):1.6,("여","50대"):1.4,("여","60대+"):1.3},
 }
 
 def apply_age_gender_weight(result_rows, gender, age_group):
-    """성별·연령대 가중치를 확률에 적용하고 재정규화"""
     if gender == "선택 안 함":
         return result_rows
     weighted = []
@@ -754,8 +769,6 @@ def apply_age_gender_weight(result_rows, gender, age_group):
 # ════════════════════════════════════════════════════════
 #  사이드바
 # ════════════════════════════════════════════════════════
-
-# 세션 스테이트 초기화
 if "reset_trigger" not in st.session_state:
     st.session_state.reset_trigger = 0
 
@@ -774,7 +787,6 @@ with st.sidebar:
     st.caption("증상을 선택하면 AI가 질병을 예측합니다")
     st.divider()
 
-    # ── 성별·연령대 선택
     st.markdown("#### 👤 기본 정보")
     st.caption("선택 시 인구통계별 가중치가 적용됩니다")
     col_g, col_a = st.columns(2)
@@ -803,7 +815,6 @@ with st.sidebar:
 
     st.divider()
 
-    # ── 증상 검색 (multiselect 자동완성)
     st.markdown("#### 🔍 증상 검색")
     all_sym_options = {SYMPTOM_KR[s]: s for s in ALL_SYMS_FOR_RESET if s in SYMPTOM_KR}
     search_selected_kr = st.multiselect(
@@ -817,7 +828,6 @@ with st.sidebar:
 
     st.divider()
 
-    # ── 체크박스 (카테고리별)
     st.markdown("#### ☑️ 카테고리별 선택")
     checkbox_selected = []
     for cat, syms in categories.items():
@@ -832,12 +842,10 @@ with st.sidebar:
                     ):
                         checkbox_selected.append(s)
 
-    # 검색 + 체크박스 병합 (중복 제거)
     selected_symptoms = list(dict.fromkeys(search_selected + checkbox_selected))
 
     st.divider()
 
-    # ── 선택 증상 요약 배지
     if selected_symptoms:
         badge_str = "".join([
             f"<span style='display:inline-block;background:#E6F1FB;color:#185FA5;"
@@ -853,7 +861,6 @@ with st.sidebar:
         )
         st.markdown("")
 
-        # ── 초기화 버튼
         if st.button("🔄 전체 초기화", use_container_width=True, type="secondary"):
             st.session_state.reset_trigger += 1
             st.rerun()
@@ -877,7 +884,6 @@ with st.sidebar:
 # ════════════════════════════════════════════════════════
 st.title("🩺 증상 기반 질병·인체 시각화 대시보드")
 
-# 헤더 행: 적용 중인 필터 표시
 hcol1, hcol2 = st.columns([4, 1])
 with hcol1:
     st.caption("ML 확률 예측 · SVG 인체 해부도 · 약품·치료법·민간요법 안내")
@@ -912,14 +918,13 @@ for d in DISEASE_SYMPTOMS:
     prob = (nb_v+rf_v)/2 if model_choice=="앙상블 (권장)" else (nb_v if model_choice=="Naive Bayes" else rf_v)
     result_rows.append({"disease": d, "disease_kr": DISEASE_KR.get(d, d), "probability": prob})
 
-# 성별·연령대 가중치 적용
 result_rows = apply_age_gender_weight(result_rows, gender, age_group)
 
 result_df = (pd.DataFrame(result_rows).sort_values("probability", ascending=False)
              .head(top_n).reset_index(drop=True))
 result_df["prob_pct"] = (result_df["probability"] * 100).round(1)
 
-# 신체 부위 활성화 강도
+# 신체 부위 활성화
 part_intensity: dict = {}
 part_disease_map: dict = {}
 for _, row in result_df.iterrows():
@@ -935,14 +940,12 @@ if part_intensity:
 tab1, tab2, tab3 = st.tabs(["📊 예측 결과", "🫀 인체 해부도", "💊 치료법 안내"])
 
 with tab1:
-    # 선택 증상 배지
     badge_html_tab = "".join([
         f"<span style='display:inline-block;background:#E6F1FB;color:#0C447C;"
         f"border:1px solid #B5D4F4;border-radius:999px;font-size:11px;"
         f"padding:2px 9px;margin:2px;'>{SYMPTOM_KR.get(s,s)}</span>"
         for s in selected_symptoms
     ])
-    # 성별·연령대 배지
     demo_badge = ""
     if gender != "선택 안 함":
         demo_badge = (
@@ -992,22 +995,17 @@ with tab1:
             icon, bg, bd, tc = URG_STYLE.get(urg, ("ℹ️", "#E6F1FB", "#185FA5", "#0C447C"))
             parts_kr = [BODY_PART_KR.get(pt, "") for pt in DISEASE_BODY_PARTS.get(row["disease"], [])[:3]]
 
-            # 근처 병원 찾기 링크 (긴급도에 따라 표시)
+            # ── 네이버지도 링크만 (카카오맵 제거)
             disease_kr_enc = row["disease_kr"].replace(" ", "+")
-            kakao_url  = f"https://map.kakao.com/?q={disease_kr_enc}+병원"
             naver_url  = f"https://map.naver.com/v5/search/{disease_kr_enc}+병원"
             hospital_btn = ""
             if urg in ("즉시 병원", "빠른 진료"):
                 hospital_btn = (
-                    f"<div style='margin-top:8px;display:flex;gap:6px;'>"
-                    f"<a href='{kakao_url}' target='_blank' style='flex:1;text-align:center;"
+                    f"<div style='margin-top:8px;'>"
+                    f"<a href='{naver_url}' target='_blank' style='display:block;text-align:center;"
                     f"background:white;color:{tc};border:1px solid {bd};border-radius:6px;"
-                    f"padding:4px 0;font-size:11px;font-weight:600;text-decoration:none;"
-                    f"display:block;'>🗺 카카오맵</a>"
-                    f"<a href='{naver_url}' target='_blank' style='flex:1;text-align:center;"
-                    f"background:white;color:{tc};border:1px solid {bd};border-radius:6px;"
-                    f"padding:4px 0;font-size:11px;font-weight:600;text-decoration:none;"
-                    f"display:block;'>🗺 네이버지도</a>"
+                    f"padding:5px 0;font-size:12px;font-weight:600;text-decoration:none;'>"
+                    f"🗺 네이버지도에서 근처 병원 찾기</a>"
                     f"</div>"
                 )
 
@@ -1037,7 +1035,7 @@ with tab1:
 
 with tab2:
     st.markdown("##### 🫀 인체 해부도 — 예측 질병 연관 부위 시각화")
-    st.caption("빨간색이 진할수록 연관도 높음 · 장기를 클릭하면 상세 정보 확인")
+    st.caption("빨간색이 진할수록 연관도 높음 · 장기 클릭 또는 전신계 버튼으로 상세 정보 확인")
     sorted_parts = sorted(part_intensity.items(), key=lambda x:-x[1])
     badge_html = "".join([
         f"<span style='{"background:#FCEBEB;color:#A32D2D;border:1px solid #E24B4A;" if int(v*100)>=60 else "background:#FAEEDA;color:#854F0B;border:1px solid #BA7517;" if int(v*100)>=30 else "background:#EAF3DE;color:#27500A;border:1px solid #3B6D11;"}border-radius:999px;font-size:12px;font-weight:500;padding:3px 11px;margin:2px;display:inline-block;'>{BODY_PART_KR.get(p,p)} {int(v*100)}%</span>"
