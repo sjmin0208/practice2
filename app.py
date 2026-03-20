@@ -237,6 +237,39 @@ def train_models():
     rf.fit(X, y)
     return nb, rf, all_syms
 
+
+# ════════════════════════════════════════════════════════
+#  성별·연령대별 질환 가중치
+# ════════════════════════════════════════════════════════
+AGE_GENDER_WEIGHTS = {
+    "Heart attack":{("남","10대"):0.2,("남","20대"):0.4,("남","30대"):0.7,("남","40대"):1.2,("남","50대"):1.8,("남","60대+"):2.5,("여","10대"):0.1,("여","20대"):0.2,("여","30대"):0.4,("여","40대"):0.8,("여","50대"):1.4,("여","60대+"):2.0},
+    "Hypertension":{("남","10대"):0.3,("남","20대"):0.6,("남","30대"):0.9,("남","40대"):1.3,("남","50대"):1.8,("남","60대+"):2.2,("여","10대"):0.2,("여","20대"):0.4,("여","30대"):0.7,("여","40대"):1.0,("여","50대"):1.6,("여","60대+"):2.0},
+    "Diabetes":{("남","10대"):0.4,("남","20대"):0.6,("남","30대"):0.9,("남","40대"):1.3,("남","50대"):1.7,("남","60대+"):2.0,("여","10대"):0.4,("여","20대"):0.6,("여","30대"):0.9,("여","40대"):1.2,("여","50대"):1.5,("여","60대+"):1.8},
+    "Hypothyroidism":{("남","10대"):0.3,("남","20대"):0.3,("남","30대"):0.4,("남","40대"):0.5,("남","50대"):0.6,("남","60대+"):0.7,("여","10대"):0.8,("여","20대"):1.5,("여","30대"):1.8,("여","40대"):2.0,("여","50대"):2.2,("여","60대+"):2.0},
+    "Hyperthyroidism":{("남","10대"):0.3,("남","20대"):0.4,("남","30대"):0.4,("남","40대"):0.5,("남","50대"):0.5,("남","60대+"):0.5,("여","10대"):0.8,("여","20대"):1.6,("여","30대"):1.8,("여","40대"):1.7,("여","50대"):1.5,("여","60대+"):1.2},
+    "Osteoarthritis":{("남","10대"):0.1,("남","20대"):0.2,("남","30대"):0.4,("남","40대"):0.8,("남","50대"):1.5,("남","60대+"):2.2,("여","10대"):0.1,("여","20대"):0.2,("여","30대"):0.4,("여","40대"):1.0,("여","50대"):1.8,("여","60대+"):2.5},
+    "Arthritis":{("남","10대"):0.3,("남","20대"):0.5,("남","30대"):0.7,("남","40대"):1.0,("남","50대"):1.4,("남","60대+"):1.8,("여","10대"):0.5,("여","20대"):0.8,("여","30대"):1.2,("여","40대"):1.5,("여","50대"):1.8,("여","60대+"):2.0},
+    "Acne":{("남","10대"):2.2,("남","20대"):1.5,("남","30대"):0.7,("남","40대"):0.4,("남","50대"):0.2,("남","60대+"):0.1,("여","10대"):2.0,("여","20대"):1.4,("여","30대"):0.8,("여","40대"):0.5,("여","50대"):0.3,("여","60대+"):0.1},
+    "Migraine":{("남","10대"):0.8,("남","20대"):0.9,("남","30대"):0.8,("남","40대"):0.7,("남","50대"):0.5,("남","60대+"):0.4,("여","10대"):1.2,("여","20대"):1.8,("여","30대"):2.0,("여","40대"):1.8,("여","50대"):1.3,("여","60대+"):0.8},
+    "Urinary tract infection":{("남","10대"):0.3,("남","20대"):0.3,("남","30대"):0.4,("남","40대"):0.5,("남","50대"):0.8,("남","60대+"):1.2,("여","10대"):1.2,("여","20대"):1.8,("여","30대"):1.8,("여","40대"):1.6,("여","50대"):1.4,("여","60대+"):1.3},
+    "Bronchial Asthma":{("남","10대"):1.8,("남","20대"):1.3,("남","30대"):1.0,("남","40대"):0.9,("남","50대"):0.8,("남","60대+"):0.9,("여","10대"):1.4,("여","20대"):1.3,("여","30대"):1.2,("여","40대"):1.1,("여","50대"):1.0,("여","60대+"):0.9},
+    "Varicose veins":{("남","10대"):0.3,("남","20대"):0.5,("남","30대"):0.7,("남","40대"):1.0,("남","50대"):1.3,("남","60대+"):1.5,("여","10대"):0.5,("여","20대"):1.2,("여","30대"):1.5,("여","40대"):1.6,("여","50대"):1.4,("여","60대+"):1.3},
+    "Cervical spondylosis":{("남","10대"):0.2,("남","20대"):0.5,("남","30대"):0.9,("남","40대"):1.4,("남","50대"):1.8,("남","60대+"):2.0,("여","10대"):0.2,("여","20대"):0.6,("여","30대"):1.0,("여","40대"):1.4,("여","50대"):1.7,("여","60대+"):1.8},
+    "GERD":{("남","10대"):0.4,("남","20대"):0.7,("남","30대"):1.0,("남","40대"):1.3,("남","50대"):1.5,("남","60대+"):1.6,("여","10대"):0.5,("여","20대"):0.8,("여","30대"):1.0,("여","40대"):1.1,("여","50대"):1.3,("여","60대+"):1.4},
+}
+
+def apply_age_gender_weight(result_rows, gender, age_group):
+    if gender == "선택 안 함":
+        return result_rows
+    weighted = []
+    for r in result_rows:
+        w = AGE_GENDER_WEIGHTS.get(r["disease"], {}).get((gender, age_group), 1.0)
+        weighted.append({**r, "probability": r["probability"] * w})
+    total = sum(r["probability"] for r in weighted)
+    if total > 0:
+        weighted = [{**r, "probability": r["probability"] / total} for r in weighted]
+    return weighted
+
 # ════════════════════════════════════════════════════════
 #  인체 해부도 렌더러 — 전신계 오버레이 없이 패널 버튼 방식
 # ════════════════════════════════════════════════════════
@@ -614,33 +647,91 @@ if(sorted.length>0) showDetail(sorted[0]);
 # ════════════════════════════════════════════════════════
 #  사이드바
 # ════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════
+#  사이드바
+# ════════════════════════════════════════════════════════
+if "reset_trigger" not in st.session_state:
+    st.session_state.reset_trigger = 0
+
+categories = {
+    "전신 증상": ["fatigue","weight_loss","weight_gain","lethargy","malaise","restlessness","anxiety","mood_swings"],
+    "발열·통증":  ["high_fever","mild_fever","headache","joint_pain","back_pain","stomach_pain","chest_pain","abdominal_pain","pain_behind_the_eyes"],
+    "피부·외형":  ["itching","skin_rash","nodal_skin_eruptions","yellowish_skin","yellowing_of_eyes","dark_urine"],
+    "소화기":     ["vomiting","nausea","indigestion","acidity","diarrhoea","constipation","loss_of_appetite"],
+    "호흡기":     ["cough","breathlessness","phlegm","congestion","runny_nose","sinus_pressure","throat_irritation","continuous_sneezing"],
+    "기타":       ["sweating","chills","shivering","dehydration","blurred_and_distorted_vision","fast_heart_rate","burning_micturition","weakness_in_limbs"],
+}
+ALL_SYMS_FOR_RESET = [s for syms in categories.values() for s in syms]
+
 with st.sidebar:
-    st.markdown("## 🏥 증상 체크")
-    st.caption("해당 증상을 모두 선택하세요")
-    st.markdown(
-        "**데이터 출처**\n"
-        "- [Kaggle kaushil268](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning)\n"
-        "- [Columbia DBMI KB](https://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html)\n"
-        "- [HPO JAX.org](https://hpo.jax.org/data/annotations)"
-    )
+    st.markdown("## 🏥 증상 분석기")
+    st.caption("증상을 선택하면 AI가 질병을 예측합니다")
     st.divider()
-    categories = {
-        "전신 증상": ["fatigue","weight_loss","weight_gain","lethargy","malaise","restlessness","anxiety","mood_swings"],
-        "발열·통증":  ["high_fever","mild_fever","headache","joint_pain","back_pain","stomach_pain","chest_pain","abdominal_pain","pain_behind_the_eyes"],
-        "피부·외형":  ["itching","skin_rash","nodal_skin_eruptions","yellowish_skin","yellowing_of_eyes","dark_urine"],
-        "소화기":     ["vomiting","nausea","indigestion","acidity","diarrhoea","constipation","loss_of_appetite"],
-        "호흡기":     ["cough","breathlessness","phlegm","congestion","runny_nose","sinus_pressure","throat_irritation","continuous_sneezing"],
-        "기타":       ["sweating","chills","shivering","dehydration","blurred_and_distorted_vision","fast_heart_rate","burning_micturition","weakness_in_limbs"],
-    }
-    selected_symptoms = []
+    st.markdown("#### 👤 기본 정보")
+    col_g, col_a = st.columns(2)
+    with col_g:
+        gender = st.selectbox("성별", ["선택 안 함","남","여"],
+                              key="gender_select", label_visibility="collapsed")
+        st.caption("🧑 성별")
+    with col_a:
+        age_group = st.selectbox("연령대", ["10대","20대","30대","40대","50대","60대+"],
+                                 index=2, key="age_select", label_visibility="collapsed")
+        st.caption("📅 연령대")
+    if gender != "선택 안 함":
+        st.success(f"✅ {gender}성 · {age_group} 가중치 적용 중")
+    st.divider()
+    st.markdown("#### 🔍 증상 검색")
+    all_sym_options = {SYMPTOM_KR[s]: s for s in ALL_SYMS_FOR_RESET if s in SYMPTOM_KR}
+    search_selected_kr = st.multiselect(
+        "증상 검색", options=list(all_sym_options.keys()),
+        placeholder="증상 이름을 입력하거나 선택하세요",
+        label_visibility="collapsed",
+        key=f"sym_search_{st.session_state.reset_trigger}",
+    )
+    search_selected = [all_sym_options[kr] for kr in search_selected_kr]
+    st.divider()
+    st.markdown("#### ☑️ 카테고리별 선택")
+    checkbox_selected = []
     for cat, syms in categories.items():
-        with st.expander(cat, expanded=(cat == "전신 증상")):
+        with st.expander(cat, expanded=False):
             for s in syms:
-                if s in SYMPTOM_KR and st.checkbox(SYMPTOM_KR[s], key=s):
-                    selected_symptoms.append(s)
+                if s in SYMPTOM_KR:
+                    if st.checkbox(SYMPTOM_KR[s],
+                                   key=f"cb_{s}_{st.session_state.reset_trigger}",
+                                   value=(s in search_selected)):
+                        checkbox_selected.append(s)
+    selected_symptoms = list(dict.fromkeys(search_selected + checkbox_selected))
+    st.divider()
+    if selected_symptoms:
+        badge_html_sb = "".join(
+            "<span style='display:inline-block;background:#E6F1FB;color:#185FA5;"
+            "border:1px solid #B5D4F4;border-radius:999px;font-size:11px;"
+            "padding:2px 9px;margin:2px;'>" + SYMPTOM_KR.get(s_,s_) + "</span>"
+            for s_ in selected_symptoms
+        )
+        st.markdown(
+            "<div style='line-height:2;'><span style='font-size:12px;font-weight:600;"
+            "color:#555;'>선택된 증상 (" + str(len(selected_symptoms)) + "개)</span><br>"
+            + badge_html_sb + "</div>",
+            unsafe_allow_html=True,
+        )
+        st.markdown("")
+        if st.button("🔄 전체 초기화", use_container_width=True, type="secondary"):
+            st.session_state.reset_trigger += 1
+            st.rerun()
     st.divider()
     top_n        = st.slider("상위 N개 질병", 3, 15, 8)
-    model_choice = st.radio("예측 모델", ["앙상블 (권장)", "Naive Bayes", "Random Forest"])
+    model_choice = st.radio("예측 모델", ["앙상블 (권장)","Naive Bayes","Random Forest"])
+    st.divider()
+    st.markdown(
+        "<div style='font-size:11px;color:#888;line-height:1.7;'>"
+        "<b>데이터 출처</b><br>"
+        "· <a href='https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning' target='_blank'>Kaggle kaushil268</a><br>"
+        "· <a href='https://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html' target='_blank'>Columbia DBMI KB</a><br>"
+        "· <a href='https://hpo.jax.org/data/annotations' target='_blank'>HPO JAX.org</a>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
 
 # ════════════════════════════════════════════════════════
 #  메인
