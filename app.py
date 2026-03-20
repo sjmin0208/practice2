@@ -74,33 +74,6 @@ BODY_PART_KR = {
     "legs":"하지/정맥","immune":"면역계",
 }
 
-BODY_PART_DESC = {
-    "brain":"뇌는 중추신경계의 핵심 기관입니다. 편두통, 뇌출혈, 이석증 등의 질환에서 직접 손상이나 기능 이상이 발생합니다.",
-    "heart":"심장은 혈액 순환의 펌프입니다. 심근경색은 관상동맥 폐색으로 심근이 괴사하는 응급 상황으로 즉각적인 치료가 필요합니다.",
-    "lungs":"폐는 산소-이산화탄소 가스 교환 기관입니다. 세균·바이러스·결핵균의 주요 표적이며, 천식은 기도 과민성으로 발생합니다.",
-    "liver":"간은 해독·단백질 합성·담즙 생성의 중심 기관입니다. A~E형 간염 바이러스, 알코올, 담즙 정체 모두 간세포를 손상시킵니다.",
-    "stomach":"위는 소화의 시작점입니다. 헬리코박터 파일로리균, 과도한 위산, NSAIDs 복용으로 점막 손상이 일어납니다.",
-    "intestine":"소장은 영양 흡수, 대장은 수분 흡수와 배설을 담당합니다. 감염성 장염과 장티푸스는 장 점막을 침범합니다.",
-    "kidney":"신장은 혈액 정화, 혈압 조절, 전해질 균형을 담당합니다. 당뇨·고혈압의 장기 합병증으로 신기능 저하가 발생합니다.",
-    "skin":"피부는 인체 최대 기관으로 물리적 방어막 역할을 합니다. 진균·세균·바이러스 감염, 자가면역 질환이 피부에 나타납니다.",
-    "joints":"관절은 뼈와 뼈 사이 연결부입니다. 연골 마모(골관절염)와 자가면역 염증(류마티스)으로 통증·강직이 발생합니다.",
-    "thyroid":"갑상선은 목 앞 나비 모양 호르몬 분비 기관입니다. 호르몬 과다(항진)와 부족(저하) 모두 전신 대사에 영향을 줍니다.",
-    "pancreas":"췌장은 인슐린·글루카곤 분비로 혈당을 조절합니다. 인슐린 부족 또는 저항성 증가가 당뇨의 핵심 기전입니다.",
-    "lymph":"림프계는 전신 면역 네트워크입니다. 감염 시 림프절 부종, AIDS에서는 CD4 T세포가 직접 파괴됩니다.",
-    "blood":"혈액은 산소·영양·면역세포를 운반합니다. 말라리아와 뎅기열은 혈액을 직접 침범하여 적혈구와 혈소판을 손상시킵니다.",
-    "spine":"척추는 몸의 중심 기둥입니다. 경추 척추증은 경추 추간판 변성으로 목·어깨·팔로 방사통이 퍼집니다.",
-    "eye":"눈은 편두통(눈 뒤 통증, 광선 공포증), 당뇨 합병증(망막병증), 뎅기열(안통)에서 증상이 나타납니다.",
-    "nose":"코는 알레르기 비염, 감기의 주요 증상 부위입니다. 비강 점막 염증으로 콧물·코막힘이 발생합니다.",
-    "neck":"경추(목 척추)의 추간판 변성이 신경근을 압박하여 목·어깨·팔 통증과 저림이 발생합니다.",
-    "esophagus":"식도는 GERD에서 위산 역류로 하부 점막이 손상됩니다. 반복적인 역류는 바렛 식도로 진행할 수 있습니다.",
-    "gallbladder":"담낭은 담즙 저장소입니다. 담즙 성분 불균형으로 담석이 형성되고, 담즙 정체 시 황달이 발생합니다.",
-    "spleen":"비장은 혈액 필터이자 면역 기관입니다. 말라리아 감염 시 비장 비대(비종대)가 특징적으로 나타납니다.",
-    "bladder":"방광은 소변 저장소입니다. 요로 감염은 대부분 대장균이 요도를 통해 방광으로 상행 감염되어 발생합니다.",
-    "ear":"내이의 전정기관에 이석(탄산칼슘 결정)이 이탈하면 특정 자세에서 강한 어지럼증이 유발됩니다.",
-    "legs":"하지 정맥의 정맥판막 기능 부전으로 혈액이 역류하여 정맥류(혈관 팽창)가 발생합니다.",
-    "immune":"면역계는 T세포·B세포·대식세포로 구성됩니다. AIDS에서 HIV가 CD4 T세포를 파괴하여 면역 결핍이 일어납니다.",
-}
-
 DISEASE_BODY_PARTS = {
     "Fungal infection":["skin"],
     "Allergy":["skin","lungs","nose"],
@@ -190,47 +163,47 @@ DISEASE_SYMPTOMS = {
 }
 
 TREATMENT_DB = {
-    "Fungal infection":{"drugs":[{"name":"클로트리마졸 (Clotrimazole)","type":"항진균제","note":"약국 구매"},{"name":"테르비나핀 (Terbinafine)","type":"항진균제","note":"발무좀에 효과적"},{"name":"플루코나졸 (Fluconazole)","type":"항진균제(경구)","note":"처방 필요"}],"treatments":["감염 부위 청결·건조","통기성 좋은 면 소재","수건·양말 공유 금지"],"folk_remedies":["티트리 오일 국소 도포","애플사이다 식초 희석 세척","마늘즙 도포"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Allergy":{"drugs":[{"name":"세티리진 (Cetirizine)","type":"항히스타민제","note":"약국 구매"},{"name":"로라타딘 (Loratadine)","type":"항히스타민제","note":"비졸림성"},{"name":"나살 스테로이드 스프레이","type":"국소 스테로이드","note":"처방 필요"}],"treatments":["알레르겐 회피","공기청정기 사용","외출 후 세안·샤워"],"folk_remedies":["꿀 소량 섭취","생강차","쿼세틴 함유 식품"],"urgency":"경과 관찰","urgency_color":"green"},
-    "GERD":{"drugs":[{"name":"오메프라졸 (Omeprazole)","type":"PPI","note":"위산 억제"},{"name":"파모티딘 (Famotidine)","type":"H2 차단제","note":"약국 구매"},{"name":"탄산칼슘 제산제","type":"제산제","note":"즉각 완화"}],"treatments":["취침 2시간 전 식사 금지","침대 머리 15cm 높이기","카페인·알코올 제한"],"folk_remedies":["알로에베라 주스","생강차","베이킹소다 물"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Peptic ulcer disease":{"drugs":[{"name":"오메프라졸","type":"PPI","note":"궤양 치유"},{"name":"수크랄페이트","type":"위점막 보호제","note":"처방 필요"},{"name":"아목시실린+클라리스로마이신","type":"항생제 병합","note":"H.pylori 제거, 처방"}],"treatments":["NSAIDs 중단","금주·금연","H.pylori 검사"],"folk_remedies":["양배추즙","꿀","감초 DGL"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Diabetes":{"drugs":[{"name":"메트포르민 (Metformin)","type":"혈당강하제 1차","note":"처방 필요"},{"name":"인슐린","type":"호르몬 주사제","note":"처방 필요"},{"name":"다파글리플로진","type":"SGLT2억제제","note":"처방 필요"}],"treatments":["혈당 자가 모니터링","저당·저GI 식이","규칙적 유산소 운동","정기 HbA1c 검사"],"folk_remedies":["여주(비터멜론)","계피","차전자피 식전 섭취"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Gastroenteritis":{"drugs":[{"name":"경구수액제 (ORS)","type":"수분 보충","note":"가장 중요"},{"name":"로페라미드","type":"지사제","note":"약국 구매"},{"name":"프로바이오틱스","type":"장내균총 회복","note":"약국 구매"}],"treatments":["충분한 수분·전해질 보충","BRAT 식이","자극적 음식 회피"],"folk_remedies":["생강차","매실청","흰쌀 죽"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Bronchial Asthma":{"drugs":[{"name":"살부타몰 흡입제","type":"속효성 기관지확장제","note":"처방 필요"},{"name":"플루티카손 흡입제","type":"흡입 스테로이드","note":"처방 필요"},{"name":"몬테루카스트","type":"류코트리엔 길항제","note":"처방 필요"}],"treatments":["알레르겐 회피","흡입기 올바른 사용","독감 예방접종 매년"],"folk_remedies":["생강차","강황 우유","꿀+검은씨"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hypertension":{"drugs":[{"name":"암로디핀 (Amlodipine)","type":"칼슘채널차단제","note":"처방 필요"},{"name":"로사르탄 (Losartan)","type":"ARB계","note":"처방 필요"},{"name":"메토프로롤","type":"베타차단제","note":"처방 필요"}],"treatments":["저염식 (하루 5g 미만)","DASH 식이요법","규칙적 유산소 운동","혈압 매일 기록"],"folk_remedies":["마늘 섭취","비트 주스","히비스커스 차"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Migraine":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"수마트립탄","type":"트립탄계","note":"처방 필요"},{"name":"메토클로프라미드","type":"구토억제제","note":"처방 필요"}],"treatments":["어둡고 조용한 환경 휴식","편두통 유발 음식 회피","두통 일지 작성"],"folk_remedies":["마그네슘 보충제","리보플라빈(B2) 고용량","페버퓨 허브"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Cervical spondylosis":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"근이완제 (에페리손)","type":"근육 이완제","note":"처방 필요"},{"name":"가바펜틴","type":"신경병증 통증제","note":"처방 필요"}],"treatments":["물리치료·경추 운동","자세 교정","경추 베개 사용","온열 치료"],"folk_remedies":["생강·강황 섭취","캡사이신 크림","온찜질"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Paralysis (brain hemorrhage)":{"drugs":[{"name":"119 즉시 호출","type":"응급","note":"골든 타임이 예후 결정"}],"treatments":["119 즉시 호출","FAST 확인","환자 안정 유지","재활 치료 조기 시작"],"folk_remedies":["민간요법 시도 금지"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Jaundice":{"drugs":[{"name":"원인 치료 약물 (처방)","type":"원인에 따라 상이","note":"원인 질환 치료가 핵심"},{"name":"우르소데옥시콜산","type":"담즙산","note":"처방 필요"}],"treatments":["반드시 의사 진료","알코올 완전 금지","고지방 음식 회피"],"folk_remedies":["민들레 차","강황 차","비트 주스"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Malaria":{"drugs":[{"name":"아르테미시닌 병합요법 (ACT)","type":"항말라리아제","note":"처방 필요"},{"name":"클로로퀸","type":"항말라리아제","note":"처방 필요"}],"treatments":["즉시 병원 방문","모기 기피제·모기장 사용","수분 보충"],"folk_remedies":["아르테미시아 쑥 차","키나 나무 껍질"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Chicken pox":{"drugs":[{"name":"아시클로버 (Acyclovir)","type":"항바이러스제","note":"처방 필요"},{"name":"칼라민 로션","type":"국소 진양제","note":"약국 구매"},{"name":"아세트아미노펜","type":"해열제","note":"아스피린 금지"}],"treatments":["손톱 짧게 유지","헐렁한 면 소재 착용","격리"],"folk_remedies":["오트밀 목욕","베이킹소다 목욕","알로에베라 젤"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Dengue":{"drugs":[{"name":"아세트아미노펜","type":"해열진통제","note":"이부프로펜·아스피린 금지"},{"name":"경구수액제 (ORS)","type":"수분 보충","note":"탈수 예방"}],"treatments":["즉시 병원 (혈소판 모니터링)","NSAIDs 절대 금지","충분한 휴식·수분"],"folk_remedies":["파파야 잎 추출물","코코넛 워터"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Typhoid":{"drugs":[{"name":"시프로플록사신","type":"항생제","note":"처방 필요"},{"name":"아지트로마이신","type":"항생제","note":"처방 필요"}],"treatments":["즉시 병원 방문","충분한 수분","위생적 음식·물"],"folk_remedies":["바나나","쌀죽","꿀 희석액"],"urgency":"즉시 병원","urgency_color":"red"},
-    "hepatitis A":{"drugs":[{"name":"지지 요법 (원인 치료제 없음)","type":"대증 치료","note":"충분한 휴식·수분"},{"name":"A형 간염 백신","type":"예방 백신","note":"노출 후 2주 내"}],"treatments":["충분한 휴식","고단백 저지방 식이","알코올 완전 금지"],"folk_remedies":["민들레 차","밀크씨슬","강황 차"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hepatitis B":{"drugs":[{"name":"엔테카비르","type":"항바이러스제","note":"처방 필요"},{"name":"테노포비르","type":"항바이러스제","note":"처방 필요"}],"treatments":["간 전문의 방문","알코올 완전 금지","정기 간기능 검사"],"folk_remedies":["밀크씨슬","강황","리코리스 뿌리 차"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hepatitis C":{"drugs":[{"name":"DAA 병합요법 (소발디+하보니 등)","type":"직접작용 항바이러스제","note":"완치율 95%+, 처방 필요"}],"treatments":["간 전문의 방문 (완치 가능)","알코올 완전 금지"],"folk_remedies":["밀크씨슬","강황"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Alcoholic hepatitis":{"drugs":[{"name":"프레드니솔론","type":"스테로이드","note":"중증, 처방 필요"},{"name":"비타민 B군","type":"영양 보충","note":"약국 구매"}],"treatments":["완전 금주 (가장 중요)","영양 보충","간 전문의 방문"],"folk_remedies":["밀크씨슬","민들레 차"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Tuberculosis":{"drugs":[{"name":"HRZE 병합요법","type":"항결핵제 표준","note":"6개월 이상, 처방 필요"}],"treatments":["즉시 병원 (법정 전염병)","격리 치료","완전한 투약 순응"],"folk_remedies":["마늘","강황","홀리 바질"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Common Cold":{"drugs":[{"name":"아세트아미노펜","type":"해열진통제","note":"약국 구매"},{"name":"슈도에페드린","type":"충혈완화제","note":"약국 구매"},{"name":"식염수 비강 스프레이","type":"비강 세척","note":"약국 구매"}],"treatments":["충분한 수분 섭취","충분한 휴식","가습기 사용"],"folk_remedies":["꿀+생강+레몬 차","닭고기 수프","아연 로젠지","증기 흡입"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Pneumonia":{"drugs":[{"name":"아목시실린","type":"항생제","note":"처방 필요"},{"name":"아지트로마이신","type":"항생제","note":"처방 필요"},{"name":"기관지 확장제","type":"흡입제","note":"처방 필요"}],"treatments":["즉시 병원 방문","충분한 수분 보충","폐렴구균 백신 권장"],"folk_remedies":["따뜻한 증기 흡입","꿀+생강차","프로바이오틱스"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Dimorphic hemorrhoids(piles)":{"drugs":[{"name":"하이드로코르티손 좌약","type":"국소 스테로이드","note":"약국 구매"},{"name":"리도카인 연고","type":"국소 마취제","note":"약국 구매"}],"treatments":["고섬유 식이","충분한 수분","온수 좌욕 하루 2~3회"],"folk_remedies":["알로에베라 젤","위치하젤 패드","감자 냉찜질"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Heart attack":{"drugs":[{"name":"아스피린 300mg","type":"혈소판 억제제","note":"의심 즉시 씹어서 복용"},{"name":"니트로글리세린 설하정","type":"혈관확장제","note":"처방 있을 때만"}],"treatments":["119 즉시 호출","누운 자세 유지","CPR 준비"],"folk_remedies":["민간요법 시도 금지 — 즉각 119 신고"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Varicose veins":{"drugs":[{"name":"디오스민+헤스페리딘","type":"정맥 강화제","note":"약국 구매"},{"name":"경화요법 주사","type":"시술","note":"혈관외과"}],"treatments":["의료용 압박 스타킹","다리 올리기 자세","규칙적 걷기 운동"],"folk_remedies":["말밤나무 추출물","포도씨 추출물","사과식초 국소 도포"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Hypothyroidism":{"drugs":[{"name":"레보티록신 (Levothyroxine)","type":"갑상선 호르몬 보충제","note":"처방 필요, 공복 복용"}],"treatments":["정기 TSH 검사","공복 복용","규칙적 운동"],"folk_remedies":["셀레늄 보충","아슈와간다 허브","김·미역 (요오드)"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hyperthyroidism":{"drugs":[{"name":"메티마졸","type":"항갑상선제","note":"처방 필요"},{"name":"프로프라놀롤","type":"베타차단제","note":"처방 필요"}],"treatments":["정기 갑상선 기능 검사","요오드 함유 식품 제한","카페인 제한"],"folk_remedies":["레몬밤 차","버그위드 허브","브로콜리·배추"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hypoglycemia":{"drugs":[{"name":"포도당 15~20g 즉각 섭취","type":"응급 처치","note":"주스·사탕·설탕물"},{"name":"글루카곤 키트","type":"응급 주사제","note":"처방 필요"}],"treatments":["15-15 규칙","규칙적 식사","혈당측정기 휴대"],"folk_remedies":["꿀 1~2 티스푼 즉각","바나나","오트밀"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Osteoarthritis":{"drugs":[{"name":"아세트아미노펜","type":"진통제 1차","note":"약국 구매"},{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"글루코사민+콘드로이친","type":"관절 보호제","note":"약국 구매"}],"treatments":["적정 체중 유지","저충격 운동 (수영·자전거)","온열·냉찜질"],"folk_remedies":["생강·강황 섭취","유황 온천","아보카도-소야 추출물"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Arthritis":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"메토트렉세이트","type":"DMARD","note":"처방 필요"}],"treatments":["적정 체중 유지","규칙적 관절 운동","물리치료"],"folk_remedies":["강황 + 흑후추","생강차","오메가-3 어유"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "(vertigo) Paroxysmal Positional Vertigo":{"drugs":[{"name":"메클리진","type":"항히스타민제","note":"처방 필요"},{"name":"디멘히드리네이트","type":"어지럼 완화","note":"약국 구매"}],"treatments":["엡리 이석 정복술 (Epley maneuver)","갑작스런 머리 움직임 피하기","이비인후과·신경과 방문"],"folk_remedies":["생강차","은행 추출물","충분한 수분"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Acne":{"drugs":[{"name":"벤조일퍼옥사이드","type":"국소 항균제","note":"약국 구매"},{"name":"트레티노인","type":"국소 레티노이드","note":"처방 필요"},{"name":"독시사이클린","type":"경구 항생제","note":"처방 필요"}],"treatments":["하루 2회 순한 클렌저 세안","손으로 짜지 않기","비코메도제닉 제품 사용"],"folk_remedies":["티트리 오일","알로에베라 젤","녹차 추출물 토너"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Urinary tract infection":{"drugs":[{"name":"트리메토프림-설파메톡사졸","type":"항생제","note":"처방 필요"},{"name":"니트로푸란토인","type":"항생제","note":"처방 필요"},{"name":"페나조피리딘","type":"진통제 (요도)","note":"배뇨 통증 완화"}],"treatments":["충분한 수분 (하루 2L+)","앞→뒤 방향 회음부","카페인·알코올 제한"],"folk_remedies":["크랜베리 주스","D-만노스 보충제","프로바이오틱스"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Psoriasis":{"drugs":[{"name":"코르티코스테로이드 크림","type":"국소 스테로이드","note":"처방 필요"},{"name":"칼시포트리올","type":"비타민D 유도체","note":"처방 필요"}],"treatments":["순한 보습제 매일 사용","스트레스 관리","자외선 치료"],"folk_remedies":["알로에베라 젤","어성초 크림","오트밀 목욕","오메가-3 보충"],"urgency":"경과 관찰","urgency_color":"green"},
-    "Impetigo":{"drugs":[{"name":"무피로신 연고","type":"국소 항생제","note":"처방 필요"},{"name":"세팔렉신","type":"경구 항생제","note":"처방 필요"}],"treatments":["병변 청결 유지","수건·침구 개인 사용","등원 금지 (완치 전)"],"folk_remedies":["꿀 국소 도포","알로에베라 젤","강황 페이스트"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Chronic cholestasis":{"drugs":[{"name":"우르소데옥시콜산 (UDCA)","type":"담즙산","note":"처방 필요"},{"name":"콜레스티라민","type":"담즙산 결합제","note":"처방 필요"}],"treatments":["간담도 전문의 방문","지용성 비타민 보충","저지방 식이"],"folk_remedies":["민들레 차","아티초크 차","강황"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Drug Reaction":{"drugs":[{"name":"원인 약물 즉시 중단","type":"1차 처치","note":"의사 상담"},{"name":"항히스타민제","type":"증상 완화","note":"경증 피부 반응"},{"name":"에피네프린 자동주사기","type":"응급","note":"아나필락시스 시"}],"treatments":["원인 약물 식별·기록","아나필락시스 시 119 즉시"],"folk_remedies":["냉찜질","알로에베라 젤"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "AIDS":{"drugs":[{"name":"항레트로바이러스 요법 (ART)","type":"복합 항바이러스 요법","note":"즉시 시작, 처방 필요"}],"treatments":["즉시 감염내과 방문","ART 복약 순응","기회감염 예방"],"folk_remedies":["강황 (보조)","충분한 수면","균형 잡힌 영양"],"urgency":"즉시 병원","urgency_color":"red"},
-    "Hepatitis D":{"drugs":[{"name":"페그인터페론 알파","type":"면역조절제","note":"처방 필요"}],"treatments":["간 전문의 방문","알코올 완전 금지"],"folk_remedies":["밀크씨슬","강황"],"urgency":"빠른 진료","urgency_color":"orange"},
-    "Hepatitis E":{"drugs":[{"name":"지지 요법","type":"대증 치료","note":"면역 정상인 자연 회복"},{"name":"리바비린","type":"항바이러스제","note":"처방 필요"}],"treatments":["충분한 휴식","알코올 금지","임산부 즉시 병원"],"folk_remedies":["민들레 차","강황"],"urgency":"빠른 진료","urgency_color":"orange"},
+    "Fungal infection":{"drugs":[{"name":"클로트리마졸 (Clotrimazole)","type":"항진균제","note":"약국 구매"},{"name":"테르비나핀 (Terbinafine)","type":"항진균제","note":"발무좀에 효과적"},{"name":"플루코나졸 (Fluconazole)","type":"항진균제(경구)","note":"처방 필요"}],"treatments":["감염 부위 청결·건조","통기성 좋은 면 소재","수건·양말 공유 금지"],"folk_remedies":["티트리 오일 국소 도포","애플사이다 식초 희석 세척","마늘즙 도포"],"urgency":"경과 관찰"},
+    "Allergy":{"drugs":[{"name":"세티리진 (Cetirizine)","type":"항히스타민제","note":"약국 구매"},{"name":"로라타딘 (Loratadine)","type":"항히스타민제","note":"비졸림성"},{"name":"나살 스테로이드 스프레이","type":"국소 스테로이드","note":"처방 필요"}],"treatments":["알레르겐 회피","공기청정기 사용","외출 후 세안·샤워"],"folk_remedies":["꿀 소량 섭취","생강차","쿼세틴 함유 식품"],"urgency":"경과 관찰"},
+    "GERD":{"drugs":[{"name":"오메프라졸 (Omeprazole)","type":"PPI","note":"위산 억제"},{"name":"파모티딘 (Famotidine)","type":"H2 차단제","note":"약국 구매"},{"name":"탄산칼슘 제산제","type":"제산제","note":"즉각 완화"}],"treatments":["취침 2시간 전 식사 금지","침대 머리 15cm 높이기","카페인·알코올 제한"],"folk_remedies":["알로에베라 주스","생강차","베이킹소다 물"],"urgency":"경과 관찰"},
+    "Peptic ulcer disease":{"drugs":[{"name":"오메프라졸","type":"PPI","note":"궤양 치유"},{"name":"수크랄페이트","type":"위점막 보호제","note":"처방 필요"},{"name":"아목시실린+클라리스로마이신","type":"항생제 병합","note":"H.pylori 제거, 처방"}],"treatments":["NSAIDs 중단","금주·금연","H.pylori 검사"],"folk_remedies":["양배추즙","꿀","감초 DGL"],"urgency":"빠른 진료"},
+    "Diabetes":{"drugs":[{"name":"메트포르민 (Metformin)","type":"혈당강하제 1차","note":"처방 필요"},{"name":"인슐린","type":"호르몬 주사제","note":"처방 필요"},{"name":"다파글리플로진","type":"SGLT2억제제","note":"처방 필요"}],"treatments":["혈당 자가 모니터링","저당·저GI 식이","규칙적 유산소 운동","정기 HbA1c 검사"],"folk_remedies":["여주(비터멜론)","계피","차전자피 식전 섭취"],"urgency":"빠른 진료"},
+    "Gastroenteritis":{"drugs":[{"name":"경구수액제 (ORS)","type":"수분 보충","note":"가장 중요"},{"name":"로페라미드","type":"지사제","note":"약국 구매"},{"name":"프로바이오틱스","type":"장내균총 회복","note":"약국 구매"}],"treatments":["충분한 수분·전해질 보충","BRAT 식이","자극적 음식 회피"],"folk_remedies":["생강차","매실청","흰쌀 죽"],"urgency":"경과 관찰"},
+    "Bronchial Asthma":{"drugs":[{"name":"살부타몰 흡입제","type":"속효성 기관지확장제","note":"처방 필요"},{"name":"플루티카손 흡입제","type":"흡입 스테로이드","note":"처방 필요"},{"name":"몬테루카스트","type":"류코트리엔 길항제","note":"처방 필요"}],"treatments":["알레르겐 회피","흡입기 올바른 사용","독감 예방접종 매년"],"folk_remedies":["생강차","강황 우유","꿀+검은씨"],"urgency":"빠른 진료"},
+    "Hypertension":{"drugs":[{"name":"암로디핀 (Amlodipine)","type":"칼슘채널차단제","note":"처방 필요"},{"name":"로사르탄 (Losartan)","type":"ARB계","note":"처방 필요"},{"name":"메토프로롤","type":"베타차단제","note":"처방 필요"}],"treatments":["저염식 (하루 5g 미만)","DASH 식이요법","규칙적 유산소 운동","혈압 매일 기록"],"folk_remedies":["마늘 섭취","비트 주스","히비스커스 차"],"urgency":"빠른 진료"},
+    "Migraine":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"수마트립탄","type":"트립탄계","note":"처방 필요"},{"name":"메토클로프라미드","type":"구토억제제","note":"처방 필요"}],"treatments":["어둡고 조용한 환경 휴식","편두통 유발 음식 회피","두통 일지 작성"],"folk_remedies":["마그네슘 보충제","리보플라빈(B2) 고용량","페버퓨 허브"],"urgency":"경과 관찰"},
+    "Cervical spondylosis":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"근이완제 (에페리손)","type":"근육 이완제","note":"처방 필요"},{"name":"가바펜틴","type":"신경병증 통증제","note":"처방 필요"}],"treatments":["물리치료·경추 운동","자세 교정","경추 베개 사용","온열 치료"],"folk_remedies":["생강·강황 섭취","캡사이신 크림","온찜질"],"urgency":"경과 관찰"},
+    "Paralysis (brain hemorrhage)":{"drugs":[{"name":"119 즉시 호출","type":"응급","note":"골든 타임이 예후 결정"}],"treatments":["119 즉시 호출","FAST 확인","환자 안정 유지","재활 치료 조기 시작"],"folk_remedies":["민간요법 시도 금지"],"urgency":"즉시 병원"},
+    "Jaundice":{"drugs":[{"name":"원인 치료 약물 (처방)","type":"원인에 따라 상이","note":"원인 질환 치료가 핵심"},{"name":"우르소데옥시콜산","type":"담즙산","note":"처방 필요"}],"treatments":["반드시 의사 진료","알코올 완전 금지","고지방 음식 회피"],"folk_remedies":["민들레 차","강황 차","비트 주스"],"urgency":"빠른 진료"},
+    "Malaria":{"drugs":[{"name":"아르테미시닌 병합요법 (ACT)","type":"항말라리아제","note":"처방 필요"},{"name":"클로로퀸","type":"항말라리아제","note":"처방 필요"}],"treatments":["즉시 병원 방문","모기 기피제·모기장 사용","수분 보충"],"folk_remedies":["아르테미시아 쑥 차","키나 나무 껍질"],"urgency":"즉시 병원"},
+    "Chicken pox":{"drugs":[{"name":"아시클로버 (Acyclovir)","type":"항바이러스제","note":"처방 필요"},{"name":"칼라민 로션","type":"국소 진양제","note":"약국 구매"},{"name":"아세트아미노펜","type":"해열제","note":"아스피린 금지"}],"treatments":["손톱 짧게 유지","헐렁한 면 소재 착용","격리"],"folk_remedies":["오트밀 목욕","베이킹소다 목욕","알로에베라 젤"],"urgency":"경과 관찰"},
+    "Dengue":{"drugs":[{"name":"아세트아미노펜","type":"해열진통제","note":"이부프로펜·아스피린 금지"},{"name":"경구수액제 (ORS)","type":"수분 보충","note":"탈수 예방"}],"treatments":["즉시 병원 (혈소판 모니터링)","NSAIDs 절대 금지","충분한 휴식·수분"],"folk_remedies":["파파야 잎 추출물","코코넛 워터"],"urgency":"즉시 병원"},
+    "Typhoid":{"drugs":[{"name":"시프로플록사신","type":"항생제","note":"처방 필요"},{"name":"아지트로마이신","type":"항생제","note":"처방 필요"}],"treatments":["즉시 병원 방문","충분한 수분","위생적 음식·물"],"folk_remedies":["바나나","쌀죽","꿀 희석액"],"urgency":"즉시 병원"},
+    "hepatitis A":{"drugs":[{"name":"지지 요법 (원인 치료제 없음)","type":"대증 치료","note":"충분한 휴식·수분"},{"name":"A형 간염 백신","type":"예방 백신","note":"노출 후 2주 내"}],"treatments":["충분한 휴식","고단백 저지방 식이","알코올 완전 금지"],"folk_remedies":["민들레 차","밀크씨슬","강황 차"],"urgency":"빠른 진료"},
+    "Hepatitis B":{"drugs":[{"name":"엔테카비르","type":"항바이러스제","note":"처방 필요"},{"name":"테노포비르","type":"항바이러스제","note":"처방 필요"}],"treatments":["간 전문의 방문","알코올 완전 금지","정기 간기능 검사"],"folk_remedies":["밀크씨슬","강황","리코리스 뿌리 차"],"urgency":"빠른 진료"},
+    "Hepatitis C":{"drugs":[{"name":"DAA 병합요법 (소발디+하보니 등)","type":"직접작용 항바이러스제","note":"완치율 95%+, 처방 필요"}],"treatments":["간 전문의 방문 (완치 가능)","알코올 완전 금지"],"folk_remedies":["밀크씨슬","강황"],"urgency":"빠른 진료"},
+    "Alcoholic hepatitis":{"drugs":[{"name":"프레드니솔론","type":"스테로이드","note":"중증, 처방 필요"},{"name":"비타민 B군","type":"영양 보충","note":"약국 구매"}],"treatments":["완전 금주 (가장 중요)","영양 보충","간 전문의 방문"],"folk_remedies":["밀크씨슬","민들레 차"],"urgency":"즉시 병원"},
+    "Tuberculosis":{"drugs":[{"name":"HRZE 병합요법","type":"항결핵제 표준","note":"6개월 이상, 처방 필요"}],"treatments":["즉시 병원 (법정 전염병)","격리 치료","완전한 투약 순응"],"folk_remedies":["마늘","강황","홀리 바질"],"urgency":"즉시 병원"},
+    "Common Cold":{"drugs":[{"name":"아세트아미노펜","type":"해열진통제","note":"약국 구매"},{"name":"슈도에페드린","type":"충혈완화제","note":"약국 구매"},{"name":"식염수 비강 스프레이","type":"비강 세척","note":"약국 구매"}],"treatments":["충분한 수분 섭취","충분한 휴식","가습기 사용"],"folk_remedies":["꿀+생강+레몬 차","닭고기 수프","아연 로젠지","증기 흡입"],"urgency":"경과 관찰"},
+    "Pneumonia":{"drugs":[{"name":"아목시실린","type":"항생제","note":"처방 필요"},{"name":"아지트로마이신","type":"항생제","note":"처방 필요"},{"name":"기관지 확장제","type":"흡입제","note":"처방 필요"}],"treatments":["즉시 병원 방문","충분한 수분 보충","폐렴구균 백신 권장"],"folk_remedies":["따뜻한 증기 흡입","꿀+생강차","프로바이오틱스"],"urgency":"즉시 병원"},
+    "Dimorphic hemorrhoids(piles)":{"drugs":[{"name":"하이드로코르티손 좌약","type":"국소 스테로이드","note":"약국 구매"},{"name":"리도카인 연고","type":"국소 마취제","note":"약국 구매"}],"treatments":["고섬유 식이","충분한 수분","온수 좌욕 하루 2~3회"],"folk_remedies":["알로에베라 젤","위치하젤 패드","감자 냉찜질"],"urgency":"경과 관찰"},
+    "Heart attack":{"drugs":[{"name":"아스피린 300mg","type":"혈소판 억제제","note":"의심 즉시 씹어서 복용"},{"name":"니트로글리세린 설하정","type":"혈관확장제","note":"처방 있을 때만"}],"treatments":["119 즉시 호출","누운 자세 유지","CPR 준비"],"folk_remedies":["민간요법 시도 금지 — 즉각 119 신고"],"urgency":"즉시 병원"},
+    "Varicose veins":{"drugs":[{"name":"디오스민+헤스페리딘","type":"정맥 강화제","note":"약국 구매"},{"name":"경화요법 주사","type":"시술","note":"혈관외과"}],"treatments":["의료용 압박 스타킹","다리 올리기 자세","규칙적 걷기 운동"],"folk_remedies":["말밤나무 추출물","포도씨 추출물","사과식초 국소 도포"],"urgency":"경과 관찰"},
+    "Hypothyroidism":{"drugs":[{"name":"레보티록신 (Levothyroxine)","type":"갑상선 호르몬 보충제","note":"처방 필요, 공복 복용"}],"treatments":["정기 TSH 검사","공복 복용","규칙적 운동"],"folk_remedies":["셀레늄 보충","아슈와간다 허브","김·미역 (요오드)"],"urgency":"빠른 진료"},
+    "Hyperthyroidism":{"drugs":[{"name":"메티마졸","type":"항갑상선제","note":"처방 필요"},{"name":"프로프라놀롤","type":"베타차단제","note":"처방 필요"}],"treatments":["정기 갑상선 기능 검사","요오드 함유 식품 제한","카페인 제한"],"folk_remedies":["레몬밤 차","버그위드 허브","브로콜리·배추"],"urgency":"빠른 진료"},
+    "Hypoglycemia":{"drugs":[{"name":"포도당 15~20g 즉각 섭취","type":"응급 처치","note":"주스·사탕·설탕물"},{"name":"글루카곤 키트","type":"응급 주사제","note":"처방 필요"}],"treatments":["15-15 규칙","규칙적 식사","혈당측정기 휴대"],"folk_remedies":["꿀 1~2 티스푼 즉각","바나나","오트밀"],"urgency":"빠른 진료"},
+    "Osteoarthritis":{"drugs":[{"name":"아세트아미노펜","type":"진통제 1차","note":"약국 구매"},{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"글루코사민+콘드로이친","type":"관절 보호제","note":"약국 구매"}],"treatments":["적정 체중 유지","저충격 운동 (수영·자전거)","온열·냉찜질"],"folk_remedies":["생강·강황 섭취","유황 온천","아보카도-소야 추출물"],"urgency":"경과 관찰"},
+    "Arthritis":{"drugs":[{"name":"이부프로펜","type":"NSAIDs","note":"약국 구매"},{"name":"메토트렉세이트","type":"DMARD","note":"처방 필요"}],"treatments":["적정 체중 유지","규칙적 관절 운동","물리치료"],"folk_remedies":["강황 + 흑후추","생강차","오메가-3 어유"],"urgency":"빠른 진료"},
+    "(vertigo) Paroxysmal Positional Vertigo":{"drugs":[{"name":"메클리진","type":"항히스타민제","note":"처방 필요"},{"name":"디멘히드리네이트","type":"어지럼 완화","note":"약국 구매"}],"treatments":["엡리 이석 정복술 (Epley maneuver)","갑작스런 머리 움직임 피하기","이비인후과·신경과 방문"],"folk_remedies":["생강차","은행 추출물","충분한 수분"],"urgency":"빠른 진료"},
+    "Acne":{"drugs":[{"name":"벤조일퍼옥사이드","type":"국소 항균제","note":"약국 구매"},{"name":"트레티노인","type":"국소 레티노이드","note":"처방 필요"},{"name":"독시사이클린","type":"경구 항생제","note":"처방 필요"}],"treatments":["하루 2회 순한 클렌저 세안","손으로 짜지 않기","비코메도제닉 제품 사용"],"folk_remedies":["티트리 오일","알로에베라 젤","녹차 추출물 토너"],"urgency":"경과 관찰"},
+    "Urinary tract infection":{"drugs":[{"name":"트리메토프림-설파메톡사졸","type":"항생제","note":"처방 필요"},{"name":"니트로푸란토인","type":"항생제","note":"처방 필요"},{"name":"페나조피리딘","type":"진통제 (요도)","note":"배뇨 통증 완화"}],"treatments":["충분한 수분 (하루 2L+)","앞→뒤 방향 회음부","카페인·알코올 제한"],"folk_remedies":["크랜베리 주스","D-만노스 보충제","프로바이오틱스"],"urgency":"빠른 진료"},
+    "Psoriasis":{"drugs":[{"name":"코르티코스테로이드 크림","type":"국소 스테로이드","note":"처방 필요"},{"name":"칼시포트리올","type":"비타민D 유도체","note":"처방 필요"}],"treatments":["순한 보습제 매일 사용","스트레스 관리","자외선 치료"],"folk_remedies":["알로에베라 젤","어성초 크림","오트밀 목욕","오메가-3 보충"],"urgency":"경과 관찰"},
+    "Impetigo":{"drugs":[{"name":"무피로신 연고","type":"국소 항생제","note":"처방 필요"},{"name":"세팔렉신","type":"경구 항생제","note":"처방 필요"}],"treatments":["병변 청결 유지","수건·침구 개인 사용","등원 금지 (완치 전)"],"folk_remedies":["꿀 국소 도포","알로에베라 젤","강황 페이스트"],"urgency":"빠른 진료"},
+    "Chronic cholestasis":{"drugs":[{"name":"우르소데옥시콜산 (UDCA)","type":"담즙산","note":"처방 필요"},{"name":"콜레스티라민","type":"담즙산 결합제","note":"처방 필요"}],"treatments":["간담도 전문의 방문","지용성 비타민 보충","저지방 식이"],"folk_remedies":["민들레 차","아티초크 차","강황"],"urgency":"빠른 진료"},
+    "Drug Reaction":{"drugs":[{"name":"원인 약물 즉시 중단","type":"1차 처치","note":"의사 상담"},{"name":"항히스타민제","type":"증상 완화","note":"경증 피부 반응"},{"name":"에피네프린 자동주사기","type":"응급","note":"아나필락시스 시"}],"treatments":["원인 약물 식별·기록","아나필락시스 시 119 즉시"],"folk_remedies":["냉찜질","알로에베라 젤"],"urgency":"빠른 진료"},
+    "AIDS":{"drugs":[{"name":"항레트로바이러스 요법 (ART)","type":"복합 항바이러스 요법","note":"즉시 시작, 처방 필요"}],"treatments":["즉시 감염내과 방문","ART 복약 순응","기회감염 예방"],"folk_remedies":["강황 (보조)","충분한 수면","균형 잡힌 영양"],"urgency":"즉시 병원"},
+    "Hepatitis D":{"drugs":[{"name":"페그인터페론 알파","type":"면역조절제","note":"처방 필요"}],"treatments":["간 전문의 방문","알코올 완전 금지"],"folk_remedies":["밀크씨슬","강황"],"urgency":"빠른 진료"},
+    "Hepatitis E":{"drugs":[{"name":"지지 요법","type":"대증 치료","note":"면역 정상인 자연 회복"},{"name":"리바비린","type":"항바이러스제","note":"처방 필요"}],"treatments":["충분한 휴식","알코올 금지","임산부 즉시 병원"],"folk_remedies":["민들레 차","강황"],"urgency":"빠른 진료"},
 }
 
 # ════════════════════════════════════════════════════════
@@ -243,11 +216,13 @@ def build_training_data():
     for disease, syms in DISEASE_SYMPTOMS.items():
         for _ in range(30):
             row = {s: 0 for s in all_syms}
-            n = max(2, int(len(syms)*rng.uniform(0.65,1.0)))
-            for s in rng.choice(syms, size=min(n,len(syms)), replace=False): row[s]=1
+            n = max(2, int(len(syms) * rng.uniform(0.65, 1.0)))
+            for s in rng.choice(syms, size=min(n, len(syms)), replace=False):
+                row[s] = 1
             pool = [s for s in all_syms if s not in syms]
             if pool:
-                for ns in rng.choice(pool, size=rng.integers(0,3), replace=False): row[ns]=1
+                for ns in rng.choice(pool, size=rng.integers(0, 3), replace=False):
+                    row[ns] = 1
             row["disease"] = disease
             rows.append(row)
     return pd.DataFrame(rows), all_syms
@@ -256,19 +231,14 @@ def build_training_data():
 def train_models():
     df, all_syms = build_training_data()
     X, y = df[all_syms].values, df["disease"].values
-    nb = GaussianNB(); nb.fit(X, y)
-    rf = RandomForestClassifier(n_estimators=120, random_state=42); rf.fit(X, y)
+    nb = GaussianNB()
+    nb.fit(X, y)
+    rf = RandomForestClassifier(n_estimators=120, random_state=42)
+    rf.fit(X, y)
     return nb, rf, all_syms
 
 # ════════════════════════════════════════════════════════
-#  인체 SVG 해부도 렌더러
-
-# ════════════════════════════════════════════════════════
-#  고퀄리티 인체 해부도 렌더러 v2
-# ════════════════════════════════════════════════════════
-
-# ════════════════════════════════════════════════════════
-#  인체 해부도 렌더러 v5 — 흰 바탕, 분리된 두 다리
+#  인체 해부도 렌더러 — 전신계 오버레이 없이 패널 버튼 방식
 # ════════════════════════════════════════════════════════
 BODY_PART_INFO = {
     "brain":       {"name":"뇌",        "sub":"중추신경계 · 두개골 내부",  "desc":"약 1,000억 개 신경세포로 이루어진 인체 제어 센터입니다. 편두통은 뇌혈관 수축·확장 이상, 뇌출혈은 혈관 파열로 뇌 조직이 손상되는 응급 상황입니다."},
@@ -297,10 +267,10 @@ BODY_PART_INFO = {
     "nose":        {"name":"코",        "sub":"호흡·후각기관",             "desc":"비강 점막이 공기를 가온·가습·여과합니다. 알레르기 비염은 알레르겐에 반응한 비만세포가 히스타민을 분비해 콧물·재채기를 유발합니다."},
 }
 
+SYSTEMIC_PARTS = ["blood", "skin", "lymph", "immune"]
+
 
 def render_body_anatomy(active_parts: dict, part_disease_map: dict):
-    """인체 해부도 v5 — 흰 바탕, 분리된 두 다리, 차분한 장기 색감"""
-
     part_data_js = {}
     for part, info in BODY_PART_INFO.items():
         diseases = sorted(part_disease_map.get(part, []), key=lambda x: -x["prob"])[:6]
@@ -314,17 +284,18 @@ def render_body_anatomy(active_parts: dict, part_disease_map: dict):
 
     active_json    = json.dumps({p: round(v, 3) for p, v in active_parts.items()})
     part_data_json = json.dumps(part_data_js, ensure_ascii=False)
+    systemic_json  = json.dumps(SYSTEMIC_PARTS)
 
     html = """<!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:transparent;}
-.layout{display:flex;gap:20px;align-items:flex-start;}
-.svg-wrap{flex:0 0 260px;}
-.panel{flex:1;min-width:0;}
+.layout{display:flex;gap:16px;align-items:flex-start;}
+.svg-col{flex:0 0 260px;}
+.panel-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;}
 .ob{cursor:pointer;}
-.ob:hover > *{opacity:.7;}
-.card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:16px;margin-bottom:10px;}
+.ob:hover > *{opacity:.75;}
+.card{background:var(--color-background-primary,#fff);border:.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:16px;}
 .card-name{font-size:17px;font-weight:500;color:var(--color-text-primary,#111);margin-bottom:2px;}
 .card-sub{font-size:11px;color:var(--color-text-secondary,#888);margin-bottom:12px;}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
@@ -335,13 +306,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sec{font-size:10px;font-weight:600;color:var(--color-text-secondary,#999);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
 .desc{font-size:12px;color:var(--color-text-secondary,#555);line-height:1.65;margin-bottom:12px;}
 .tags{display:flex;flex-wrap:wrap;gap:4px;}
-.tag{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;border:1px solid;}
+.tag{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;border:1px solid;cursor:default;}
 .tag-r{background:#FCEBEB;color:#791F1F;border-color:#F09595;}
 .tag-o{background:#FAEEDA;color:#633806;border-color:#EF9F27;}
 .tag-g{background:#EAF3DE;color:#27500A;border-color:#97C459;}
 .tag-n{background:var(--color-background-secondary,#f5f5f3);color:var(--color-text-secondary,#888);border-color:var(--color-border-tertiary,rgba(0,0,0,.1));}
 .back-btn{font-size:11px;color:var(--color-text-secondary,#888);background:none;border:none;cursor:pointer;padding:0;margin-top:10px;display:block;}
 .hint{font-size:10px;color:var(--color-text-tertiary,#bbb);text-align:center;margin-top:5px;}
+.systemic-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.sys-btn{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;border:1.8px solid;cursor:pointer;transition:opacity .15s,transform .1s;text-align:left;background:#fff;}
+.sys-btn:hover{opacity:.75;transform:scale(1.02);}
+.sys-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.sys-name{font-size:12px;font-weight:600;}
+.sys-pct{font-size:11px;margin-left:auto;font-weight:500;}
 @media(prefers-color-scheme:dark){
   .card{background:#1e1e1c;border-color:rgba(255,255,255,.1);}
   .card-name{color:#eee;}.card-sub,.desc,.sec{color:#999;}
@@ -350,12 +327,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   .tag-o{background:#412402;color:#FAC775;border-color:#854F0B;}
   .tag-g{background:#173404;color:#C0DD97;border-color:#3B6D11;}
   .tag-n{background:#2a2a28;color:#aaa;border-color:rgba(255,255,255,.1);}
+  .sys-btn{background:#1e1e1c;}
 }
 </style></head><body>
 <div class="layout">
-<div class="svg-wrap">
+<div class="svg-col">
 <svg viewBox="0 0 240 760" width="100%" style="display:block;">
-
 <!-- 머리 -->
 <ellipse cx="120" cy="56" rx="38" ry="44" fill="white" stroke="#CCC" stroke-width="1.2"/>
 <path d="M82,46 Q75,46 73,55 Q71,64 73,72 Q75,80 82,80" fill="white" stroke="#CCC" stroke-width="1"/>
@@ -364,72 +341,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <path d="M123,46 Q130,44 136,48" fill="none" stroke="#C8B8A8" stroke-width="1" stroke-linecap="round"/>
 <ellipse cx="110" cy="58" rx="7" ry="5" fill="#F0F0EE" stroke="#DDD" stroke-width=".7"/>
 <ellipse cx="130" cy="58" rx="7" ry="5" fill="#F0F0EE" stroke="#DDD" stroke-width=".7"/>
-<circle cx="110" cy="58" r="3" fill="#7A6050"/>
-<circle cx="130" cy="58" r="3" fill="#7A6050"/>
-<circle cx="111" cy="57" r="1.1" fill="white"/>
-<circle cx="131" cy="57" r="1.1" fill="white"/>
+<circle cx="110" cy="58" r="3" fill="#7A6050"/><circle cx="130" cy="58" r="3" fill="#7A6050"/>
+<circle cx="111" cy="57" r="1.1" fill="white"/><circle cx="131" cy="57" r="1.1" fill="white"/>
 <path d="M117,70 Q120,77 123,70" fill="none" stroke="#C8A888" stroke-width="1" stroke-linecap="round"/>
-<circle cx="116" cy="74" r="2.5" fill="#DDCCB8" opacity=".5"/>
-<circle cx="124" cy="74" r="2.5" fill="#DDCCB8" opacity=".5"/>
 <path d="M112,84 Q120,90 128,84" fill="none" stroke="#C0A090" stroke-width="1.2" stroke-linecap="round"/>
-
 <!-- 목 -->
 <rect x="111" y="96" width="18" height="30" rx="6" fill="white" stroke="#CCC" stroke-width="1"/>
-
 <!-- 몸통 -->
-<path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
-  fill="white" stroke="#CCC" stroke-width="1.2"/>
-
-<!-- 오른팔 -->
-<path d="M78,126 Q64,131 57,148 L47,200 L45,262 L49,318 L57,330 L65,318 L67,264 L69,206 L77,158 L83,138 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z" fill="white" stroke="#CCC" stroke-width="1.2"/>
+<!-- 팔 -->
+<path d="M78,126 Q64,131 57,148 L47,200 L45,262 L49,318 L57,330 L65,318 L67,264 L69,206 L77,158 L83,138 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <ellipse cx="52" cy="344" rx="9" ry="13" fill="white" stroke="#CCC" stroke-width=".9"/>
-
-<!-- 왼팔 -->
-<path d="M162,126 Q176,131 183,148 L193,200 L195,262 L191,318 L183,330 L175,318 L173,264 L171,206 L163,158 L157,138 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M162,126 Q176,131 183,148 L193,200 L195,262 L191,318 L183,330 L175,318 L173,264 L171,206 L163,158 L157,138 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <ellipse cx="188" cy="344" rx="9" ry="13" fill="white" stroke="#CCC" stroke-width=".9"/>
-
 <!-- 오른 다리 -->
-<path d="M86,402 L100,399 L111,399 L113,456 L112,516 L109,550 L93,553 L87,535 L86,476 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M86,402 L100,399 L111,399 L113,456 L112,516 L109,550 L93,553 L87,535 L86,476 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <ellipse cx="99" cy="557" rx="13" ry="10" fill="white" stroke="#CCC" stroke-width="1"/>
-<path d="M88,565 Q86,602 88,638 L91,668 L99,676 L107,668 L110,638 L112,602 L110,565 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
-<path d="M90,672 Q87,683 84,692 Q82,699 90,702 L110,702 Q118,700 118,693 L114,683 L108,672 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
-
+<path d="M88,565 Q86,602 88,638 L91,668 L99,676 L107,668 L110,638 L112,602 L110,565 Z" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M90,672 Q87,683 84,692 Q82,699 90,702 L110,702 Q118,700 118,693 L114,683 L108,672 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <!-- 왼 다리 -->
-<path d="M154,402 L140,399 L129,399 L127,456 L128,516 L131,550 L147,553 L153,535 L154,476 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M154,402 L140,399 L129,399 L127,456 L128,516 L131,550 L147,553 L153,535 L154,476 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <ellipse cx="141" cy="557" rx="13" ry="10" fill="white" stroke="#CCC" stroke-width="1"/>
-<path d="M152,565 Q154,602 152,638 L149,668 L141,676 L133,668 L130,638 L128,602 L130,565 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
-<path d="M150,672 Q153,683 156,692 Q158,699 150,702 L130,702 Q122,700 122,693 L126,683 L132,672 Z"
-  fill="white" stroke="#CCC" stroke-width="1"/>
-
+<path d="M152,565 Q154,602 152,638 L149,668 L141,676 L133,668 L130,638 L128,602 L130,565 Z" fill="white" stroke="#CCC" stroke-width="1"/>
+<path d="M150,672 Q153,683 156,692 Q158,699 150,702 L130,702 Q122,700 122,693 L126,683 L132,672 Z" fill="white" stroke="#CCC" stroke-width="1"/>
 <!-- ══ 장기 ══ -->
-<g class="ob" id="ob-brain"       data-part="brain">
+<g class="ob" id="ob-brain" data-part="brain">
   <ellipse cx="120" cy="46" rx="26" ry="22" fill="#E8EEF8" stroke="#90A4CC" stroke-width="1.2"/>
   <path d="M96,42 Q104,31 120,29 Q136,31 144,42" fill="none" stroke="#90A4CC" stroke-width=".8" opacity=".6"/>
   <path d="M97,51 Q106,42 120,40 Q134,42 143,51" fill="none" stroke="#90A4CC" stroke-width=".6" opacity=".4"/>
   <line x1="120" y1="25" x2="120" y2="68" stroke="#90A4CC" stroke-width=".5" opacity=".3"/>
 </g>
-<g class="ob" id="ob-eye"         data-part="eye">
+<g class="ob" id="ob-eye" data-part="eye">
   <ellipse cx="110" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
   <ellipse cx="130" cy="58" rx="7" ry="5" fill="#CCE4F4" stroke="#60A0C8" stroke-width=".9" opacity=".8"/>
 </g>
-<g class="ob" id="ob-ear"         data-part="ear">
-  <path d="M82,46 Q75,46 73,55 Q71,64 73,72 Q75,80 82,80" fill="transparent" stroke="transparent" stroke-width="12"/>
-  <path d="M158,46 Q165,46 167,55 Q169,64 167,72 Q165,80 158,80" fill="transparent" stroke="transparent" stroke-width="12"/>
+<g class="ob" id="ob-ear" data-part="ear">
+  <rect x="62" y="44" width="22" height="40" rx="8" fill="transparent" stroke="none"/>
+  <rect x="156" y="44" width="22" height="40" rx="8" fill="transparent" stroke="none"/>
 </g>
-<g class="ob" id="ob-thyroid"     data-part="thyroid">
+<g class="ob" id="ob-thyroid" data-part="thyroid">
   <path d="M112,114 Q107,108 107,115 Q107,124 115,127 L120,128 L125,127 Q133,124 133,115 Q133,108 128,114 Q125,118 120,119 Q115,118 112,114 Z" fill="#FCE8C4" stroke="#D0A040" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-esophagus"   data-part="esophagus">
-  <rect x="118" y="124" width="4" height="44" rx="2" fill="#EEE098" stroke="#C0A840" stroke-width=".8"/>
+<g class="ob" id="ob-esophagus" data-part="esophagus">
+  <rect x="117" y="124" width="6" height="44" rx="3" fill="#EEE098" stroke="#C0A840" stroke-width=".8"/>
 </g>
-<g class="ob" id="ob-spine"       data-part="spine">
+<g class="ob" id="ob-spine" data-part="spine">
   <rect x="118" y="132" width="4" height="226" rx="2" fill="#EEEADC" stroke="#B8B090" stroke-width=".8"/>
   <rect x="116" y="139" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
   <rect x="116" y="157" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
@@ -444,86 +400,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <rect x="116" y="319" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
   <rect x="116" y="337" width="8" height="5.5" rx="1.8" fill="#EEEADC" stroke="#B8B090" stroke-width=".6"/>
 </g>
-<g class="ob" id="ob-lungs"       data-part="lungs">
+<g class="ob" id="ob-lungs" data-part="lungs">
   <path d="M96,136 Q84,139 79,155 L75,202 Q73,229 83,241 Q93,250 107,246 L109,219 L110,136 Z" fill="#F4C4C4" stroke="#BC8080" stroke-width="1.3"/>
   <path d="M84,160 Q87,176 85,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
-  <path d="M93,154 Q96,174 94,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
   <path d="M144,136 Q156,139 161,155 L165,202 Q167,229 157,241 Q147,250 133,246 L131,219 L130,136 Z" fill="#F4C4C4" stroke="#BC8080" stroke-width="1.3"/>
-  <path d="M156,160 Q153,176 155,205" fill="none" stroke="#BC8080" stroke-width=".6" opacity=".5"/>
-  <path d="M147,154 Q144,174 146,208" fill="none" stroke="#BC8080" stroke-width=".5" opacity=".4"/>
 </g>
-<g class="ob" id="ob-heart"       data-part="heart">
+<g class="ob" id="ob-heart" data-part="heart">
   <path d="M120,160 Q106,150 96,161 Q85,172 96,186 L120,211 L144,186 Q155,172 144,161 Q134,150 120,160 Z" fill="#EEA0A0" stroke="#B85050" stroke-width="1.5"/>
   <path d="M108,167 Q103,176 108,186" fill="none" stroke="#E8BCBC" stroke-width=".9" opacity=".5"/>
-  <path d="M120,152 Q121,142 124,135 Q127,127 125,122" fill="none" stroke="#B85050" stroke-width="1.6" stroke-linecap="round"/>
-  <path d="M115,160 L100,147" fill="none" stroke="#8090B0" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M125,160 L140,147" fill="none" stroke="#B87878" stroke-width="1.2" stroke-linecap="round"/>
 </g>
-<g class="ob" id="ob-liver"       data-part="liver">
+<g class="ob" id="ob-liver" data-part="liver">
   <path d="M129,224 Q148,218 162,226 L165,251 Q161,273 146,274 Q132,274 123,265 Q116,256 122,228 Z" fill="#E8B880" stroke="#B07838" stroke-width="1.2"/>
-  <path d="M135,232 Q146,229 156,234" fill="none" stroke="#C89858" stroke-width=".7" opacity=".5"/>
 </g>
 <g class="ob" id="ob-gallbladder" data-part="gallbladder">
   <ellipse cx="155" cy="280" rx="8" ry="10" fill="#D4D880" stroke="#909030" stroke-width="1"/>
 </g>
-<g class="ob" id="ob-stomach"     data-part="stomach">
+<g class="ob" id="ob-stomach" data-part="stomach">
   <path d="M91,228 Q77,231 72,247 Q67,264 79,276 Q90,284 109,282 L111,256 L103,228 Z" fill="#EEC880" stroke="#B88840" stroke-width="1.2"/>
-  <path d="M79,245 Q77,257 81,268" fill="none" stroke="#C09840" stroke-width=".7" opacity=".5"/>
 </g>
-<g class="ob" id="ob-spleen"      data-part="spleen">
+<g class="ob" id="ob-spleen" data-part="spleen">
   <ellipse cx="71" cy="262" rx="11" ry="14" fill="#D0B4DC" stroke="#9060B0" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-pancreas"    data-part="pancreas">
+<g class="ob" id="ob-pancreas" data-part="pancreas">
   <path d="M90,290 Q111,284 142,288 L144,299 Q120,306 94,302 Z" fill="#E8D478" stroke="#A89828" stroke-width="1.1"/>
 </g>
-<g class="ob" id="ob-kidney"      data-part="kidney">
+<g class="ob" id="ob-kidney" data-part="kidney">
   <path d="M77,304 Q67,304 65,315 Q63,329 72,336 Q80,341 88,335 L90,315 Q90,304 77,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
-  <path d="M72,314 Q70,324 74,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
   <path d="M163,304 Q173,304 175,315 Q177,329 168,336 Q160,341 152,335 L150,315 Q150,304 163,304 Z" fill="#DEAAB8" stroke="#A85870" stroke-width="1.2"/>
-  <path d="M168,314 Q170,324 166,332" fill="none" stroke="#E8C0C8" stroke-width=".7" opacity=".5"/>
 </g>
-<g class="ob" id="ob-intestine"   data-part="intestine">
-  <path d="M90,310 L89,342 Q89,362 107,364 L133,364 Q151,362 151,342 L150,310"
-    fill="none" stroke="#E0B868" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+<g class="ob" id="ob-intestine" data-part="intestine">
+  <path d="M90,310 L89,342 Q89,362 107,364 L133,364 Q151,362 151,342 L150,310" fill="none" stroke="#E0B868" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
   <path d="M97,324 Q105,315 113,324 Q121,333 129,324 Q137,315 143,324 Q149,333 147,342 Q140,350 133,343 Q126,336 120,343 Q114,350 107,343 Q100,334 97,324 Z" fill="#EED08C" stroke="#C0A040" stroke-width=".9"/>
 </g>
-<g class="ob" id="ob-bladder"     data-part="bladder">
+<g class="ob" id="ob-bladder" data-part="bladder">
   <ellipse cx="120" cy="378" rx="17" ry="13" fill="#C0D4EE" stroke="#5888B8" stroke-width="1.2"/>
 </g>
-<g class="ob" id="ob-joints"      data-part="joints">
+<g class="ob" id="ob-joints" data-part="joints">
   <circle cx="80"  cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="160" cy="130" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="99"  cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="141" cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
 </g>
-<g class="ob" id="ob-legs"        data-part="legs">
-  <path d="M93,420 Q91,470 92,522 L93,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
-  <path d="M102,418 Q104,470 102,522 L101,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
-  <path d="M147,420 Q149,470 148,522 L147,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
-  <path d="M138,418 Q136,470 138,522 L139,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
+<!-- 하지·정맥 클릭 영역 (오버레이 없이 투명 rect) -->
+<g class="ob" id="ob-legs" data-part="legs">
+  <rect x="85" y="410" width="30" height="150" rx="10" fill="rgba(140,140,220,.12)" stroke="#8888C8" stroke-width="1.8" stroke-dasharray="5 3"/>
+  <rect x="125" y="410" width="30" height="150" rx="10" fill="rgba(140,140,220,.12)" stroke="#8888C8" stroke-width="1.8" stroke-dasharray="5 3"/>
+  <text x="100" y="490" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="7.5" font-weight="600" fill="#404088">정맥</text>
+  <text x="140" y="490" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="7.5" font-weight="600" fill="#404088">정맥</text>
 </g>
-
-<!-- 전신 오버레이: 피부 -->
-<g class="ob" id="ob-skin"   data-part="skin"   style="pointer-events:none;opacity:0;">
-  <path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
-    fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.45)" stroke-width="1.5" stroke-dasharray="8 5"/>
-</g>
-<g class="ob" id="ob-blood"  data-part="blood"  style="pointer-events:none;opacity:0;">
-  <path d="M120,215 Q96,272 92,352 Q88,412 120,428 Q152,412 148,352 Q144,272 120,215 Z"
-    fill="none" stroke="rgba(200,50,50,.4)" stroke-width="2" stroke-dasharray="6 4"/>
-</g>
-<g class="ob" id="ob-lymph"  data-part="lymph"  style="pointer-events:none;opacity:0;">
-  <circle cx="104" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="136" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <path d="M104,177 Q98,208 96,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
-  <path d="M136,177 Q142,208 144,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
-</g>
-<g class="ob" id="ob-immune" data-part="immune" style="pointer-events:none;opacity:0;">
-  <ellipse cx="120" cy="290" rx="92" ry="128" fill="none" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
-</g>
-
-<!-- 라벨 -->
-<g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600">
+<!-- 라벨 (pointer-events 없음) -->
+<g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-size="8" font-weight="600" pointer-events="none">
   <text x="120" y="49"  fill="#4858A0">뇌</text>
   <text x="120" y="123" fill="#907030">갑상선</text>
   <text x="120" y="186" fill="#884040">심장</text>
@@ -539,7 +465,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <text x="120" y="381" fill="#285880">방광</text>
   <text x="155" y="283" fill="#5A6820" font-size="7">담낭</text>
 </g>
-
 <!-- 범례 -->
 <rect x="4" y="716" width="232" height="28" rx="7" fill="white" stroke="#E8E8E8" stroke-width=".8"/>
 <circle cx="16"  cy="730" r="5" fill="#E8EEF8" stroke="#90A4CC" stroke-width=".8"/>
@@ -554,14 +479,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="hint">장기를 클릭하면 상세 정보가 표시됩니다</div>
 </div>
 
-<div class="panel">
+<div class="panel-col">
+  <!-- 전신계 버튼 -->
+  <div id="systemicSection" style="display:none;">
+    <div style="font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">전신계 (클릭하여 상세 보기)</div>
+    <div class="systemic-grid" id="systemicGrid"></div>
+  </div>
+  <!-- 기본 카드 -->
   <div class="card" id="defaultCard">
     <div class="card-name">인체 해부도</div>
     <div class="card-sub">장기를 클릭하면 상세 정보가 표시됩니다</div>
-    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>예측된 질병에 따라 연관 부위가 색으로 강조됩니다.</div>
+    <div class="desc">흰 바탕의 인체 모형에서 각 장기를 클릭하면 해부학적 기능과 연관 질병을 확인할 수 있습니다.<br><br>혈액·피부·림프·면역계는 위 버튼으로 확인하세요.</div>
     <div class="sec">연관 부위</div>
     <div class="tags" id="activeTags"><span class="tag tag-n">증상 선택 후 표시됩니다</span></div>
   </div>
+  <!-- 상세 카드 -->
   <div class="card" id="detailCard" style="display:none;">
     <div class="card-name" id="dName"></div>
     <div class="card-sub"  id="dSub"></div>
@@ -574,62 +506,79 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="desc" id="dDesc"></div>
     <div class="sec">연관 질병</div>
     <div class="tags" id="dDiseases"></div>
-    <button class="back-btn" onclick="document.getElementById('defaultCard').style.display='block';document.getElementById('detailCard').style.display='none';">← 목록으로</button>
+    <button class="back-btn" onclick="showDefault();">← 목록으로</button>
   </div>
 </div>
 </div>
-
+""" + f"""
 <script>
-const PD=""" + part_data_json + """;
-const AP=""" + active_json + """;
+const PD={part_data_json};
+const AP={active_json};
+const SYSTEMIC={systemic_json};
 
-function intColor(pct){
-  if(pct>=55) return {f:'#FF8068',s:'#C03020'};
-  if(pct>=28) return {f:'#FFB878',s:'#C86028'};
-  if(pct> 0)  return {f:'#FFF0B8',s:'#C8A028'};
+function intColor(pct){{
+  if(pct>=55) return {{f:'#FF8068',s:'#C03020'}};
+  if(pct>=28) return {{f:'#FFB878',s:'#C86028'}};
+  if(pct> 0)  return {{f:'#FFF0B8',s:'#C8A028'}};
   return null;
-}
-function barGrad(pct){
+}}
+function barGrad(pct){{
   if(pct>=55) return 'linear-gradient(90deg,#f6ad55,#fc8181)';
   if(pct>=28) return 'linear-gradient(90deg,#68d391,#f6ad55)';
   return '#68d391';
-}
+}}
+function sysStyle(pct){{
+  if(pct>=55) return {{dot:'#FF8068',border:'#E03020',text:'#A32D2D',bg:'#FCEBEB'}};
+  if(pct>=28) return {{dot:'#FFB878',border:'#C86028',text:'#854F0B',bg:'#FAEEDA'}};
+  if(pct> 0)  return {{dot:'#b7dfb4',border:'#C8A028',text:'#2e7d32',bg:'#EAF3DE'}};
+  return {{dot:'#DDD',border:'#CCC',text:'#888',bg:'#F5F5F3'}};
+}}
 
-Object.keys(AP).forEach(part=>{
+// 장기 색 변경 (전신계 제외)
+Object.keys(AP).forEach(part=>{{
+  if(SYSTEMIC.includes(part)) return;
   const pct=Math.round(AP[part]*100);
   const zone=document.getElementById('ob-'+part);
   if(!zone) return;
-  const c=intColor(pct);
-  if(!c) return;
-  if(['skin','blood','lymph','immune'].includes(part)){
-    zone.style.opacity=pct>40?'0.85':pct>15?'0.5':'0.25';
-    zone.style.pointerEvents='auto';
-    return;
-  }
-  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{
+  const c=intColor(pct); if(!c) return;
+  zone.querySelectorAll('path,ellipse,rect,circle').forEach(el=>{{
     const f=el.getAttribute('fill');
-    if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){
-      if(!el.hasAttribute('data-orig')) el.setAttribute('data-orig',f);
-      el.setAttribute('fill',c.f);
-      el.setAttribute('stroke',c.s);
-    }
-  });
-});
+    if(f&&f!=='none'&&!f.startsWith('rgba')&&!f.startsWith('transparent')){{
+      el.setAttribute('fill',c.f); el.setAttribute('stroke',c.s);
+    }}
+  }});
+}});
 
+// 연관 부위 태그
 const sorted=Object.keys(AP).sort((a,b)=>AP[b]-AP[a]);
 const atEl=document.getElementById('activeTags');
-if(!sorted.length){
-  atEl.innerHTML='<span class="tag tag-n">증상 선택 후 표시됩니다</span>';
-} else {
-  atEl.innerHTML=sorted.slice(0,12).map(p=>{
-    const pct=Math.round(AP[p]*100);
-    const cls=pct>=55?'tag-r':pct>=28?'tag-o':'tag-g';
-    const nm=PD[p]?PD[p].name:p;
-    return `<span class="tag ${cls}" style="cursor:pointer" onclick="showDetail('${p}')">${nm} ${pct}%</span>`;
-  }).join('');
-}
+atEl.innerHTML = sorted.length ? sorted.slice(0,12).map(p=>{{
+  const pct=Math.round(AP[p]*100);
+  const cls=pct>=55?'tag-r':pct>=28?'tag-o':'tag-g';
+  const nm=PD[p]?PD[p].name:p;
+  return '<span class="tag '+cls+'" style="cursor:pointer" onclick="showDetail(\\''+p+'\\')">'+ nm +' '+ pct +'%</span>';
+}}).join('') : '<span class="tag tag-n">증상 선택 후 표시됩니다</span>';
 
-function showDetail(part){
+// 전신계 버튼 렌더
+const systemicParts=SYSTEMIC.filter(p=>PD[p]);
+const secEl=document.getElementById('systemicSection');
+const grid=document.getElementById('systemicGrid');
+if(systemicParts.length>0){{
+  secEl.style.display='block';
+  systemicParts.forEach(part=>{{
+    const d=PD[part]; const pct=d.intensity||0; const st=sysStyle(pct);
+    const btn=document.createElement('button');
+    btn.className='sys-btn';
+    btn.style.cssText='border-color:'+st.border+';background:'+st.bg+';';
+    btn.innerHTML='<span class="sys-dot" style="background:'+st.dot+';border:1.5px solid '+st.border+';"></span>'+
+      '<span class="sys-name" style="color:'+st.text+';">'+d.name+'</span>'+
+      '<span class="sys-pct" style="color:'+st.text+';">'+pct+'%</span>';
+    btn.onclick=function(){{showDetail(part);}};
+    grid.appendChild(btn);
+  }});
+}}
+
+function showDetail(part){{
   const d=PD[part]; if(!d) return;
   document.getElementById('defaultCard').style.display='none';
   document.getElementById('detailCard').style.display='block';
@@ -638,30 +587,28 @@ function showDetail(part){
   document.getElementById('dDesc').textContent=d.desc;
   const pct=d.intensity||0;
   const bar=document.getElementById('dBar');
-  bar.style.width=pct+'%';
-  bar.style.background=barGrad(pct);
+  bar.style.width=pct+'%'; bar.style.background=barGrad(pct);
   document.getElementById('dPct').textContent=pct+'%';
-  const dd=document.getElementById('dDiseases');
-  dd.innerHTML='';
-  if(d.diseases&&d.diseases.length>0){
-    d.diseases.forEach(x=>{
+  const dd=document.getElementById('dDiseases'); dd.innerHTML='';
+  if(d.diseases&&d.diseases.length>0){{
+    d.diseases.forEach(x=>{{
       const cls=x.prob>=30?'tag-r':x.prob>=15?'tag-o':'tag-g';
-      dd.innerHTML+=`<span class="tag ${cls}">${x.kr} ${x.prob.toFixed(1)}%</span>`;
-    });
-  } else {
-    dd.innerHTML='<span class="tag tag-n">예측된 질병 없음</span>';
-  }
-}
-
-document.querySelectorAll('.ob').forEach(el=>{
-  el.addEventListener('click',()=>showDetail(el.getAttribute('data-part')));
-});
-
+      dd.innerHTML+='<span class="tag '+cls+'">'+x.kr+' '+x.prob.toFixed(1)+'%</span>';
+    }});
+  }} else {{ dd.innerHTML='<span class="tag tag-n">예측된 질병 없음</span>'; }}
+}}
+function showDefault(){{
+  document.getElementById('defaultCard').style.display='block';
+  document.getElementById('detailCard').style.display='none';
+}}
+document.querySelectorAll('.ob').forEach(el=>{{
+  el.addEventListener('click',function(){{showDetail(el.getAttribute('data-part'));}});
+}});
 if(sorted.length>0) showDetail(sorted[0]);
 </script>
 </body></html>"""
 
-    components.html(html, height=780, scrolling=False)
+    components.html(html, height=800, scrolling=False)
 
 
 # ════════════════════════════════════════════════════════
@@ -670,25 +617,30 @@ if(sorted.length>0) showDetail(sorted[0]);
 with st.sidebar:
     st.markdown("## 🏥 증상 체크")
     st.caption("해당 증상을 모두 선택하세요")
-    st.markdown("**데이터 출처**\n- [Kaggle kaushil268](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning)\n- [Columbia DBMI KB](https://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html)\n- [HPO JAX.org](https://hpo.jax.org/data/annotations)")
+    st.markdown(
+        "**데이터 출처**\n"
+        "- [Kaggle kaushil268](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning)\n"
+        "- [Columbia DBMI KB](https://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html)\n"
+        "- [HPO JAX.org](https://hpo.jax.org/data/annotations)"
+    )
     st.divider()
     categories = {
-        "전신 증상":["fatigue","weight_loss","weight_gain","lethargy","malaise","restlessness","anxiety","mood_swings"],
-        "발열·통증": ["high_fever","mild_fever","headache","joint_pain","back_pain","stomach_pain","chest_pain","abdominal_pain","pain_behind_the_eyes"],
-        "피부·외형": ["itching","skin_rash","nodal_skin_eruptions","yellowish_skin","yellowing_of_eyes","dark_urine"],
-        "소화기":    ["vomiting","nausea","indigestion","acidity","diarrhoea","constipation","loss_of_appetite"],
-        "호흡기":    ["cough","breathlessness","phlegm","congestion","runny_nose","sinus_pressure","throat_irritation","continuous_sneezing"],
-        "기타":      ["sweating","chills","shivering","dehydration","blurred_and_distorted_vision","fast_heart_rate","burning_micturition","weakness_in_limbs"],
+        "전신 증상": ["fatigue","weight_loss","weight_gain","lethargy","malaise","restlessness","anxiety","mood_swings"],
+        "발열·통증":  ["high_fever","mild_fever","headache","joint_pain","back_pain","stomach_pain","chest_pain","abdominal_pain","pain_behind_the_eyes"],
+        "피부·외형":  ["itching","skin_rash","nodal_skin_eruptions","yellowish_skin","yellowing_of_eyes","dark_urine"],
+        "소화기":     ["vomiting","nausea","indigestion","acidity","diarrhoea","constipation","loss_of_appetite"],
+        "호흡기":     ["cough","breathlessness","phlegm","congestion","runny_nose","sinus_pressure","throat_irritation","continuous_sneezing"],
+        "기타":       ["sweating","chills","shivering","dehydration","blurred_and_distorted_vision","fast_heart_rate","burning_micturition","weakness_in_limbs"],
     }
     selected_symptoms = []
     for cat, syms in categories.items():
-        with st.expander(cat, expanded=(cat=="전신 증상")):
+        with st.expander(cat, expanded=(cat == "전신 증상")):
             for s in syms:
                 if s in SYMPTOM_KR and st.checkbox(SYMPTOM_KR[s], key=s):
                     selected_symptoms.append(s)
     st.divider()
     top_n        = st.slider("상위 N개 질병", 3, 15, 8)
-    model_choice = st.radio("예측 모델", ["앙상블 (권장)","Naive Bayes","Random Forest"])
+    model_choice = st.radio("예측 모델", ["앙상블 (권장)", "Naive Bayes", "Random Forest"])
 
 # ════════════════════════════════════════════════════════
 #  메인
@@ -700,9 +652,11 @@ nb_model, rf_model, all_syms = train_models()
 
 if not selected_symptoms:
     st.info("👈 왼쪽 사이드바에서 증상을 선택하면 예측 결과와 인체 해부도가 나타납니다.")
-    c1,c2,c3,c4 = st.columns(4)
-    c1.metric("지원 질병","41종"); c2.metric("분석 증상","132개")
-    c3.metric("ML 모델","NB+RF 앙상블"); c4.metric("해부도 부위","24개")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("지원 질병", "41종")
+    c2.metric("분석 증상", "132개")
+    c3.metric("ML 모델", "NB+RF 앙상블")
+    c4.metric("해부도 부위", "24개")
     st.stop()
 
 # 예측
@@ -711,45 +665,69 @@ nb_p = dict(zip(nb_model.classes_, nb_model.predict_proba(input_vec)[0]))
 rf_p = dict(zip(rf_model.classes_, rf_model.predict_proba(input_vec)[0]))
 result_rows = []
 for d in DISEASE_SYMPTOMS:
-    nb_v,rf_v = nb_p.get(d,0),rf_p.get(d,0)
-    prob = (nb_v+rf_v)/2 if model_choice=="앙상블 (권장)" else (nb_v if model_choice=="Naive Bayes" else rf_v)
-    result_rows.append({"disease":d,"disease_kr":DISEASE_KR.get(d,d),"probability":prob})
-result_df = (pd.DataFrame(result_rows).sort_values("probability",ascending=False)
-             .head(top_n).reset_index(drop=True))
-result_df["prob_pct"] = (result_df["probability"]*100).round(1)
+    nb_v, rf_v = nb_p.get(d, 0), rf_p.get(d, 0)
+    prob = (nb_v + rf_v) / 2 if model_choice == "앙상블 (권장)" else (nb_v if model_choice == "Naive Bayes" else rf_v)
+    result_rows.append({"disease": d, "disease_kr": DISEASE_KR.get(d, d), "probability": prob})
+
+result_df = (pd.DataFrame(result_rows)
+             .sort_values("probability", ascending=False)
+             .head(top_n)
+             .reset_index(drop=True))
+result_df["prob_pct"] = (result_df["probability"] * 100).round(1)
 
 # 신체 부위 활성화 강도
 part_intensity: dict = {}
 part_disease_map: dict = {}
 for _, row in result_df.iterrows():
     d, prob = row["disease"], row["probability"]
-    for part in DISEASE_BODY_PARTS.get(d,[]):
-        part_intensity[part] = min(1.0, part_intensity.get(part,0) + prob*2)
-        part_disease_map.setdefault(part,[]).append({"name":d,"kr":row["disease_kr"],"prob":row["prob_pct"]})
+    for part in DISEASE_BODY_PARTS.get(d, []):
+        part_intensity[part] = min(1.0, part_intensity.get(part, 0) + prob * 2)
+        part_disease_map.setdefault(part, []).append(
+            {"name": d, "kr": row["disease_kr"], "prob": row["prob_pct"]}
+        )
 if part_intensity:
     mx = max(part_intensity.values())
-    if mx>0: part_intensity = {p:v/mx for p,v in part_intensity.items()}
+    if mx > 0:
+        part_intensity = {p: v / mx for p, v in part_intensity.items()}
 
 # 탭
 tab1, tab2, tab3 = st.tabs(["📊 예측 결과", "🫀 인체 해부도", "💊 치료법 안내"])
 
 with tab1:
-    sym_str = " · ".join(SYMPTOM_KR.get(s,s) for s in selected_symptoms)
+    sym_str = " · ".join(SYMPTOM_KR.get(s, s) for s in selected_symptoms)
     st.markdown(f"**선택된 증상 ({len(selected_symptoms)}개):** {sym_str}")
-    col_chart, col_cards = st.columns([3,2])
+
+    col_chart, col_cards = st.columns([3, 2])
     with col_chart:
-        colors = ["#E24B4A" if p>=30 else "#BA7517" if p>=15 else "#378ADD" for p in result_df["prob_pct"]]
+        bar_colors = ["#E24B4A" if p >= 30 else "#BA7517" if p >= 15 else "#378ADD"
+                      for p in result_df["prob_pct"]]
         fig = go.Figure(go.Bar(
-            x=result_df["prob_pct"], y=result_df["disease_kr"], orientation="h",
-            marker_color=colors, text=[f"{p:.1f}%" for p in result_df["prob_pct"]], textposition="outside",
+            x=result_df["prob_pct"],
+            y=result_df["disease_kr"],
+            orientation="h",
+            marker_color=bar_colors,
+            text=[f"{p:.1f}%" for p in result_df["prob_pct"]],
+            textposition="outside",
             hovertemplate="<b>%{y}</b><br>확률: %{x:.1f}%<extra></extra>",
         ))
-        fig.update_layout(height=max(300,top_n*44),margin=dict(l=10,r=60,t=10,b=10),
-            xaxis_title="가능성 (%)",yaxis=dict(autorange="reversed"),
-            plot_bgcolor="rgba(0,0,0,0)",paper_bgcolor="rgba(0,0,0,0)",font=dict(size=13),
-            xaxis=dict(range=[0,min(100,result_df["prob_pct"].max()*1.35)]))
+        fig.update_layout(
+            height=max(300, top_n * 44),
+            margin=dict(l=10, r=60, t=10, b=10),
+            xaxis_title="가능성 (%)",
+            yaxis=dict(autorange="reversed"),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font=dict(size=13),
+            xaxis=dict(range=[0, min(100, result_df["prob_pct"].max() * 1.35)])
+        )
         st.plotly_chart(fig, use_container_width=True)
-        st.markdown("<span style='color:#E24B4A'>■</span> 높은 가능성 (≥30%)　<span style='color:#BA7517'>■</span> 중간 (15~30%)　<span style='color:#378ADD'>■</span> 낮음 (<15%)", unsafe_allow_html=True)
+        st.markdown(
+            "<span style='color:#E24B4A'>■</span> 높은 가능성 (≥30%)　"
+            "<span style='color:#BA7517'>■</span> 중간 (15~30%)　"
+            "<span style='color:#378ADD'>■</span> 낮음 (<15%)",
+            unsafe_allow_html=True
+        )
+
     with col_cards:
         st.markdown("##### 상위 3개 질병")
         URG_STYLE = {
@@ -762,31 +740,48 @@ with tab1:
             urg = TREATMENT_DB.get(row["disease"], {}).get("urgency", "경과 관찰")
             icon, bg, bd, tc = URG_STYLE.get(urg, ("ℹ️", "#E6F1FB", "#185FA5", "#0C447C"))
             parts_kr = [BODY_PART_KR.get(pt, "") for pt in DISEASE_BODY_PARTS.get(row["disease"], [])[:3]]
+            naver_url = f"https://map.naver.com/v5/search/{row['disease_kr'].replace(' ', '+')}+병원"
+            hospital_btn = ""
+            if urg in ("즉시 병원", "빠른 진료"):
+                hospital_btn = (
+                    f"<div style='margin-top:8px;'>"
+                    f"<a href='{naver_url}' target='_blank' style='display:block;text-align:center;"
+                    f"background:white;color:{tc};border:1px solid {bd};border-radius:6px;"
+                    f"padding:5px 0;font-size:12px;font-weight:600;text-decoration:none;'>"
+                    f"🗺 네이버지도에서 근처 병원 찾기</a></div>"
+                )
             st.markdown(
-                f"<div style='background:{bg};border:1.5px solid {bd};border-radius:10px;padding:.8rem 1rem;margin-bottom:10px;'>"
+                f"<div style='background:{bg};border:1.5px solid {bd};border-radius:10px;"
+                f"padding:.8rem 1rem;margin-bottom:10px;'>"
                 f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;'>"
-                f"<span style='font-size:12px;font-weight:600;color:{tc};background:white;opacity:.85;padding:2px 8px;border-radius:999px;border:1px solid {bd};'>{icon} {urg}</span>"
+                f"<span style='font-size:12px;font-weight:600;color:{tc};background:white;"
+                f"padding:2px 8px;border-radius:999px;border:1px solid {bd};'>{icon} {urg}</span>"
                 f"<span style='font-size:11px;color:{tc};opacity:.6;'>{row['disease']}</span>"
                 f"</div>"
                 f"<div style='font-size:16px;font-weight:500;color:{tc};margin-bottom:2px;'>{row['disease_kr']}</div>"
                 f"<div style='display:flex;justify-content:space-between;align-items:flex-end;'>"
                 f"<span style='font-size:26px;font-weight:700;color:{tc};'>{p:.1f}%</span>"
                 f"<span style='font-size:11px;color:{tc};opacity:.65;text-align:right;'>{' · '.join(parts_kr)}</span>"
-                f"</div>"
-                f"</div>", unsafe_allow_html=True)
+                f"</div>{hospital_btn}</div>",
+                unsafe_allow_html=True
+            )
+
         with st.expander("📋 전체 결과 테이블"):
-            disp=result_df[["disease_kr","disease","prob_pct"]].copy()
-            disp.columns=["질병명(한국어)","질병명(영어)","가능성(%)"]
-            disp.index=range(1,len(disp)+1)
-            st.dataframe(disp,use_container_width=True)
+            disp = result_df[["disease_kr", "disease", "prob_pct"]].copy()
+            disp.columns = ["질병명(한국어)", "질병명(영어)", "가능성(%)"]
+            disp.index = range(1, len(disp) + 1)
+            st.dataframe(disp, use_container_width=True)
 
 with tab2:
     st.markdown("##### 🫀 인체 해부도 — 예측 질병 연관 부위 시각화")
-    st.caption("빨간색이 진할수록 연관도 높음 · 장기를 클릭하면 상세 정보 확인")
-    sorted_parts = sorted(part_intensity.items(), key=lambda x:-x[1])
+    st.caption("빨간색이 진할수록 연관도 높음 · 장기 클릭 또는 전신계 버튼으로 상세 정보 확인")
+    sorted_parts = sorted(part_intensity.items(), key=lambda x: -x[1])
     badge_html = "".join([
-        f"<span style='{"background:#FCEBEB;color:#A32D2D;border:1px solid #E24B4A;" if int(v*100)>=60 else "background:#FAEEDA;color:#854F0B;border:1px solid #BA7517;" if int(v*100)>=30 else "background:#EAF3DE;color:#27500A;border:1px solid #3B6D11;"}border-radius:999px;font-size:12px;font-weight:500;padding:3px 11px;margin:2px;display:inline-block;'>{BODY_PART_KR.get(p,p)} {int(v*100)}%</span>"
-        for p,v in sorted_parts[:10]
+        f"<span style='"
+        f"{'background:#FCEBEB;color:#A32D2D;border:1px solid #E24B4A;' if int(v*100)>=60 else 'background:#FAEEDA;color:#854F0B;border:1px solid #BA7517;' if int(v*100)>=30 else 'background:#EAF3DE;color:#27500A;border:1px solid #3B6D11;'}"
+        f"border-radius:999px;font-size:12px;font-weight:500;padding:3px 11px;margin:2px;display:inline-block;'>"
+        f"{BODY_PART_KR.get(p, p)} {int(v*100)}%</span>"
+        for p, v in sorted_parts[:10]
     ])
     if badge_html:
         st.markdown(f"**주요 연관 부위:** {badge_html}", unsafe_allow_html=True)
@@ -797,29 +792,76 @@ with tab3:
     st.markdown("##### 💊 질병별 약품·치료법·민간요법")
     st.caption("⚠️ 약품 복용 전 반드시 의사·약사와 상담하세요.")
     top_diseases = result_df["disease"].tolist()
-    tab_labels = [f"{DISEASE_KR.get(d,d)} ({result_df.loc[result_df['disease']==d,'prob_pct'].values[0]:.1f}%)" for d in top_diseases]
+    tab_labels = [
+        f"{DISEASE_KR.get(d, d)} ({result_df.loc[result_df['disease']==d,'prob_pct'].values[0]:.1f}%)"
+        for d in top_diseases
+    ]
     d_tabs = st.tabs(tab_labels)
-    for dtab,disease in zip(d_tabs,top_diseases):
+    for dtab, disease in zip(d_tabs, top_diseases):
         with dtab:
-            info=TREATMENT_DB.get(disease)
-            if not info: st.info("치료 정보 DB 추가 예정"); continue
-            urg=info["urgency"]
-            icon,bg,bd,tc={"즉시 병원":("🚨","#FCEBEB","#E24B4A","#A32D2D"),"빠른 진료":("⚠️","#FAEEDA","#BA7517","#854F0B"),"경과 관찰":("✅","#EAF3DE","#3B6D11","#27500A")}.get(urg,("ℹ️","#E6F1FB","#185FA5","#0C447C"))
-            st.markdown(f"<div style='display:inline-block;background:{bg};border:1px solid {bd};border-radius:8px;padding:4px 16px;font-size:13px;font-weight:500;color:{tc};margin-bottom:14px;'>{icon} {urg}</div>",unsafe_allow_html=True)
-            c1,c2,c3=st.columns(3)
+            info = TREATMENT_DB.get(disease)
+            if not info:
+                st.info("치료 정보 DB 추가 예정")
+                continue
+            urg = info["urgency"]
+            icon, bg, bd, tc = {
+                "즉시 병원": ("🚨", "#FCEBEB", "#E24B4A", "#A32D2D"),
+                "빠른 진료": ("⚠️", "#FAEEDA", "#BA7517", "#854F0B"),
+                "경과 관찰": ("✅", "#EAF3DE", "#3B6D11", "#27500A"),
+            }.get(urg, ("ℹ️", "#E6F1FB", "#185FA5", "#0C447C"))
+            st.markdown(
+                f"<div style='display:inline-block;background:{bg};border:1px solid {bd};"
+                f"border-radius:8px;padding:4px 16px;font-size:13px;font-weight:500;"
+                f"color:{tc};margin-bottom:14px;'>{icon} {urg}</div>",
+                unsafe_allow_html=True
+            )
+            c1, c2, c3 = st.columns(3)
             with c1:
                 st.markdown("### 💊 추천 약품")
                 for drug in info["drugs"]:
-                    st.markdown(f"<div style='border:0.5px solid #d0d0d0;border-radius:8px;padding:.6rem .9rem;margin-bottom:8px;'><div style='font-size:14px;font-weight:500;'>{drug['name']}</div><span style='background:#E6F1FB;color:#185FA5;padding:1px 7px;border-radius:4px;font-size:11px;'>{drug['type']}</span><div style='font-size:12px;color:#666;margin-top:4px;'>{drug['note']}</div></div>",unsafe_allow_html=True)
+                    st.markdown(
+                        f"<div style='border:0.5px solid #d0d0d0;border-radius:8px;"
+                        f"padding:.6rem .9rem;margin-bottom:8px;'>"
+                        f"<div style='font-size:14px;font-weight:500;'>{drug['name']}</div>"
+                        f"<span style='background:#E6F1FB;color:#185FA5;padding:1px 7px;"
+                        f"border-radius:4px;font-size:11px;'>{drug['type']}</span>"
+                        f"<div style='font-size:12px;color:#666;margin-top:4px;'>{drug['note']}</div>"
+                        f"</div>",
+                        unsafe_allow_html=True
+                    )
             with c2:
                 st.markdown("### 🏥 치료·관리법")
-                for i,t in enumerate(info["treatments"],1):
-                    st.markdown(f"<div style='display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;'><span style='background:#E1F5EE;color:#0F6E56;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;'>{i}</span><span style='font-size:13px;line-height:1.5;'>{t}</span></div>",unsafe_allow_html=True)
+                for i, t in enumerate(info["treatments"], 1):
+                    st.markdown(
+                        f"<div style='display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;'>"
+                        f"<span style='background:#E1F5EE;color:#0F6E56;border-radius:50%;"
+                        f"width:22px;height:22px;display:flex;align-items:center;"
+                        f"justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;'>{i}</span>"
+                        f"<span style='font-size:13px;line-height:1.5;'>{t}</span></div>",
+                        unsafe_allow_html=True
+                    )
             with c3:
                 st.markdown("### 🌿 민간요법")
                 st.caption("근거 수준이 다양합니다. 보조 수단으로만 활용하세요.")
                 for remedy in info["folk_remedies"]:
-                    st.markdown(f"<div style='display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;'><span style='color:#3B6D11;font-size:14px;flex-shrink:0;'>🌱</span><span style='font-size:13px;line-height:1.5;'>{remedy}</span></div>",unsafe_allow_html=True)
+                    st.markdown(
+                        f"<div style='display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;'>"
+                        f"<span style='color:#3B6D11;font-size:14px;flex-shrink:0;'>🌱</span>"
+                        f"<span style='font-size:13px;line-height:1.5;'>{remedy}</span></div>",
+                        unsafe_allow_html=True
+                    )
 
 with st.expander("🔧 데이터·모델 정보"):
     st.markdown("""
+**데이터 출처**
+| 데이터셋 | 링크 | 용도 |
+|---|---|---|
+| Kaggle kaushil268 | [링크](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning) | 주 학습 데이터 |
+| itachi9604 GitHub | [링크](https://github.com/itachi9604/Disease-Symptom-dataset) | 원본 CSV + severity |
+| Columbia DBMI KB | [링크](https://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html) | 임상 NLP 보정 참고 |
+| HPO JAX.org | [링크](https://hpo.jax.org/data/annotations) | 희귀질환 확장 참고 |
+
+**모델**: Gaussian Naive Bayes + Random Forest (120 trees) 앙상블  
+**인체 해부도**: SVG 직접 구현, 24개 장기/부위 클릭 인터랙션  
+**한계**: 공개 데이터 기반으로 실제 임상 정확도와 차이가 있습니다. 반드시 의사 진료를 받으세요.
+    """)
