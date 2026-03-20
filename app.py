@@ -1023,20 +1023,15 @@ with tab1:
 
             # 근처 병원 찾기 링크 (긴급도에 따라 표시)
             disease_kr_enc = row["disease_kr"].replace(" ", "+")
-            kakao_url  = f"https://map.kakao.com/?q={disease_kr_enc}+병원"
-            naver_url  = f"https://map.naver.com/v5/search/{disease_kr_enc}+병원"
+            naver_url = f"https://map.naver.com/v5/search/{disease_kr_enc}+병원"
             hospital_btn = ""
             if urg in ("즉시 병원", "빠른 진료"):
                 hospital_btn = (
-                    f"<div style='margin-top:8px;display:flex;gap:6px;'>"
-                    f"<a href='{kakao_url}' target='_blank' style='flex:1;text-align:center;"
+                    f"<div style='margin-top:8px;'>"
+                    f"<a href='{naver_url}' target='_blank' style='display:block;text-align:center;"
                     f"background:white;color:{tc};border:1px solid {bd};border-radius:6px;"
-                    f"padding:4px 0;font-size:11px;font-weight:600;text-decoration:none;"
-                    f"display:block;'>🗺 카카오맵</a>"
-                    f"<a href='{naver_url}' target='_blank' style='flex:1;text-align:center;"
-                    f"background:white;color:{tc};border:1px solid {bd};border-radius:6px;"
-                    f"padding:4px 0;font-size:11px;font-weight:600;text-decoration:none;"
-                    f"display:block;'>🗺 네이버지도</a>"
+                    f"padding:5px 0;font-size:12px;font-weight:600;text-decoration:none;'>"
+                    f"🗺 네이버지도에서 근처 병원 찾기</a>"
                     f"</div>"
                 )
 
