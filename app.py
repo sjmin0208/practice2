@@ -496,30 +496,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <circle cx="99"  cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
   <circle cx="141" cy="555" r="10" fill="#EEEADC" stroke="#A8A478" stroke-width="1.1" opacity=".9"/>
 </g>
-<g class="ob" id="ob-legs"        data-part="legs">
-  <path d="M93,420 Q91,470 92,522 L93,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
-  <path d="M102,418 Q104,470 102,522 L101,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
-  <path d="M147,420 Q149,470 148,522 L147,550" fill="none" stroke="#9898C8" stroke-width="1.6" opacity=".4"/>
-  <path d="M138,418 Q136,470 138,522 L139,550" fill="none" stroke="#C07878" stroke-width="1.1" opacity=".3"/>
+<!-- 하지·정맥 — 다리 안쪽에 클릭 가능한 정맥 패널 2개 -->
+<g class="ob" id="ob-legs" data-part="legs">
+  <!-- 오른 다리 정맥 패널 -->
+  <rect x="84" y="415" width="32" height="145" rx="10"
+        fill="#E8E8F8" stroke="#8888C8" stroke-width="1" opacity=".75"/>
+  <!-- 정맥 라인 (장식용, 클릭은 rect가 받음) -->
+  <path d="M96,422 Q94,468 95,514 L96,548" fill="none" stroke="#9090C8" stroke-width="1.8" opacity=".6"/>
+  <path d="M104,420 Q106,468 105,514 L104,548" fill="none" stroke="#C07878" stroke-width="1.3" opacity=".5"/>
+  <!-- 왼 다리 정맥 패널 -->
+  <rect x="124" y="415" width="32" height="145" rx="10"
+        fill="#E8E8F8" stroke="#8888C8" stroke-width="1" opacity=".75"/>
+  <path d="M136,422 Q138,468 137,514 L136,548" fill="none" stroke="#9090C8" stroke-width="1.8" opacity=".6"/>
+  <path d="M144,420 Q142,468 143,514 L144,548" fill="none" stroke="#C07878" stroke-width="1.3" opacity=".5"/>
+  <!-- 레이블 -->
+  <text x="100" y="492" text-anchor="middle" font-family="-apple-system,sans-serif"
+        font-size="7.5" font-weight="600" fill="#404088">정맥</text>
+  <text x="140" y="492" text-anchor="middle" font-family="-apple-system,sans-serif"
+        font-size="7.5" font-weight="600" fill="#404088">정맥</text>
 </g>
 
-<!-- 전신 오버레이: 피부 -->
-<g class="ob" id="ob-skin"   data-part="skin"   style="pointer-events:none;opacity:0;">
+<!-- 피부 — 몸통 윤곽을 따르는 클릭 가능한 반투명 테두리 -->
+<g class="ob" id="ob-skin" data-part="skin" style="opacity:0;pointer-events:none;">
   <path d="M78,124 L94,119 L120,117 L146,119 L162,124 L165,154 L166,202 L166,308 L164,358 L160,376 L154,380 L154,402 L86,402 L80,380 L76,358 L74,308 L74,202 L75,154 Z"
-    fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.45)" stroke-width="1.5" stroke-dasharray="8 5"/>
+        fill="rgba(220,80,50,.12)" stroke="rgba(200,60,30,.5)" stroke-width="2" stroke-dasharray="7 4"/>
+  <ellipse cx="120" cy="68" rx="38" ry="44"
+           fill="rgba(220,80,50,.1)" stroke="rgba(200,60,30,.4)" stroke-width="1.5" stroke-dasharray="6 4"/>
 </g>
-<g class="ob" id="ob-blood"  data-part="blood"  style="pointer-events:none;opacity:0;">
-  <path d="M120,215 Q96,272 92,352 Q88,412 120,428 Q152,412 148,352 Q144,272 120,215 Z"
-    fill="none" stroke="rgba(200,50,50,.4)" stroke-width="2" stroke-dasharray="6 4"/>
+
+<!-- 혈액 — 심장 주변 클릭 가능한 원형 영역 -->
+<g class="ob" id="ob-blood" data-part="blood" style="opacity:0;pointer-events:none;">
+  <ellipse cx="120" cy="310" rx="46" ry="110"
+           fill="rgba(200,50,50,.08)" stroke="rgba(200,50,50,.38)" stroke-width="1.8" stroke-dasharray="6 4"/>
 </g>
-<g class="ob" id="ob-lymph"  data-part="lymph"  style="pointer-events:none;opacity:0;">
-  <circle cx="104" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <circle cx="136" cy="172" r="5" fill="none" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
-  <path d="M104,177 Q98,208 96,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
-  <path d="M136,177 Q142,208 144,248" fill="none" stroke="rgba(50,170,80,.35)" stroke-width="1.1" stroke-dasharray="4 3"/>
+
+<!-- 림프 — 목·겨드랑이 클릭 가능한 원 -->
+<g class="ob" id="ob-lymph" data-part="lymph" style="opacity:0;pointer-events:none;">
+  <circle cx="104" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
+  <circle cx="136" cy="172" r="7" fill="rgba(50,170,80,.15)" stroke="rgba(50,170,80,.6)" stroke-width="1.4"/>
+  <circle cx="96"  cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
+  <circle cx="144" cy="252" r="6" fill="rgba(50,170,80,.12)" stroke="rgba(50,170,80,.5)" stroke-width="1.2"/>
 </g>
-<g class="ob" id="ob-immune" data-part="immune" style="pointer-events:none;opacity:0;">
-  <ellipse cx="120" cy="290" rx="92" ry="128" fill="none" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
+
+<!-- 면역 — 전신 타원 클릭 가능 -->
+<g class="ob" id="ob-immune" data-part="immune" style="opacity:0;pointer-events:none;">
+  <ellipse cx="120" cy="290" rx="92" ry="128"
+           fill="rgba(80,80,210,.06)" stroke="rgba(80,80,210,.2)" stroke-width="1.8" stroke-dasharray="9 5"/>
 </g>
 
 <!-- 라벨 -->
@@ -602,7 +624,7 @@ Object.keys(AP).forEach(part=>{
   const c=intColor(pct);
   if(!c) return;
   if(['skin','blood','lymph','immune'].includes(part)){
-    zone.style.opacity=pct>40?'0.85':pct>15?'0.5':'0.25';
+    zone.style.opacity=pct>40?'0.88':pct>15?'0.55':'0.28';
     zone.style.pointerEvents='auto';
     return;
   }
@@ -972,7 +994,7 @@ with tab1:
 
             # 근처 병원 찾기 링크 (긴급도에 따라 표시)
             disease_kr_enc = row["disease_kr"].replace(" ", "+")
-            kakao_url  = f"https://map.kakao.com/?q={disease_kr_enc}+전문의"
+            kakao_url  = f"https://map.kakao.com/?q={disease_kr_enc}+병원"
             naver_url  = f"https://map.naver.com/v5/search/{disease_kr_enc}+병원"
             hospital_btn = ""
             if urg in ("즉시 병원", "빠른 진료"):
